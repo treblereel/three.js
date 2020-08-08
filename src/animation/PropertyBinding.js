@@ -95,6 +95,15 @@ Object.assign( Composite.prototype, {
 
 } );
 
+<<<<<<< HEAD
+=======
+// Note: This class uses a State pattern on a per-method basis:
+// 'bind' sets 'this.getValue' / 'setValue' and shadows the
+// prototype version of these methods with one that represents
+// the bound state. When the property is not found, the methods
+// become no-ops.
+class PropertyBinding {
+>>>>>>> 7a08899e35... PropertyBinding: Clean up state initialization
 
 function PropertyBinding( rootNode, path, parsedPath ) {
 
@@ -105,7 +114,15 @@ function PropertyBinding( rootNode, path, parsedPath ) {
 
 	this.rootNode = rootNode;
 
+<<<<<<< HEAD
 }
+=======
+		// initial state of these methods that calls 'bind'
+		this.getValue = this._getValue_unbound;
+		this.setValue = this._setValue_unbound;
+
+	}
+>>>>>>> 7a08899e35... PropertyBinding: Clean up state initialization
 
 Object.assign( PropertyBinding, {
 
@@ -422,11 +439,16 @@ Object.assign( PropertyBinding.prototype, { // prototype, continued
 
 	],
 
+<<<<<<< HEAD
 	getValue: function getValue_unbound( targetArray, offset ) {
+=======
+	_getValue_unbound( targetArray, offset ) {
+>>>>>>> 7a08899e35... PropertyBinding: Clean up state initialization
 
 		this.bind();
 		this.getValue( targetArray, offset );
 
+<<<<<<< HEAD
 		// Note: This class uses a State pattern on a per-method basis:
 		// 'bind' sets 'this.getValue' / 'setValue' and shadows the
 		// prototype version of these methods with one that represents
@@ -436,6 +458,11 @@ Object.assign( PropertyBinding.prototype, { // prototype, continued
 	},
 
 	setValue: function getValue_unbound( sourceArray, offset ) {
+=======
+	}
+
+	_setValue_unbound( sourceArray, offset ) {
+>>>>>>> 7a08899e35... PropertyBinding: Clean up state initialization
 
 		this.bind();
 		this.setValue( sourceArray, offset );
@@ -675,9 +702,16 @@ Object.assign( PropertyBinding.prototype, { // prototype, continued
 // DECLARE ALIAS AFTER assign prototype
 Object.assign( PropertyBinding.prototype, {
 
+<<<<<<< HEAD
 	// initial state of these methods that calls 'bind'
 	_getValue_unbound: PropertyBinding.prototype.getValue,
 	_setValue_unbound: PropertyBinding.prototype.setValue,
+=======
+	BindingType,
+	Versioning,
+	GetterByBindingType,
+	SetterByBindingTypeAndVersioning,
+>>>>>>> 7a08899e35... PropertyBinding: Clean up state initialization
 
 } );
 
