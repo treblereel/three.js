@@ -1,52 +1,55 @@
-function WebGLAnimation() {
+class WebGLAnimation {
 
-	let context = null;
-	let isAnimating = false;
-	let animationLoop = null;
-	let requestId = null;
+	constructor() {
 
-	function onAnimationFrame( time, frame ) {
+		this._context = null;
+		this._isAnimating = false;
+		this._animationLoop = null;
+		this._requestId = null;
 
-		animationLoop( time, frame );
-
-		requestId = context.requestAnimationFrame( onAnimationFrame );
+		// Re-bind the prototype function so that `this` can be used with rAF:
+		this._onAnimationFrame = this._onAnimationFrame.bind( this );
 
 	}
 
-	return {
+	_onAnimationFrame( time, frame ) {
 
-		start: function () {
+		this._animationLoop( time, frame );
 
-			if ( isAnimating === true ) return;
-			if ( animationLoop === null ) return;
+		this._requestId = this._context.requestAnimationFrame( this._onAnimationFrame );
 
-			requestId = context.requestAnimationFrame( onAnimationFrame );
+	}
 
-			isAnimating = true;
+	start() {
 
-		},
+		if ( this._isAnimating === true ) return;
+		if ( this._animationLoop === null ) return;
 
-		stop: function () {
+		this._requestId = this._context.requestAnimationFrame( this._onAnimationFrame );
 
-			context.cancelAnimationFrame( requestId );
+		this._isAnimating = true;
 
-			isAnimating = false;
+	}
 
-		},
+	stop() {
 
-		setAnimationLoop: function ( callback ) {
+		this._context.cancelAnimationFrame( this._requestId );
 
-			animationLoop = callback;
+		this._isAnimating = false;
 
-		},
+	}
 
-		setContext: function ( value ) {
+	setAnimationLoop( callback ) {
 
-			context = value;
+		this._animationLoop = callback;
 
-		}
+	}
 
-	};
+	setContext( value ) {
+
+		this._context = value;
+
+	}
 
 }
 
