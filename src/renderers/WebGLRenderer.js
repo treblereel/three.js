@@ -13,7 +13,6 @@ import { Matrix4 } from '../math/Matrix4.js';
 import { Vector2 } from '../math/Vector2.js';
 import { Vector3 } from '../math/Vector3.js';
 import { Vector4 } from '../math/Vector4.js';
-import { Color } from '../math/Color.js';
 import { WebGLAnimation } from './webgl/WebGLAnimation.js';
 import { WebGLAttributes } from './webgl/WebGLAttributes.js';
 import { WebGLBackground } from './webgl/WebGLBackground.js';
@@ -38,21 +37,13 @@ import { WebGLTextures } from './webgl/WebGLTextures.js';
 import { WebGLUniforms } from './webgl/WebGLUniforms.js';
 import { WebGLUtils } from './webgl/WebGLUtils.js';
 import { WebXRManager } from './webxr/WebXRManager.js';
-import { WebGLMaterials } from './webgl/WebGLMaterials.js';
-
-function createCanvasElement() {
-
-	const canvas = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
-	canvas.style.display = 'block';
-	return canvas;
-
-}
+import { WebGLMaterials } from "./webgl/WebGLMaterials.js";
 
 function WebGLRenderer( parameters ) {
 
 	parameters = parameters || {};
 
-	const _canvas = parameters.canvas !== undefined ? parameters.canvas : createCanvasElement(),
+	const _canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ),
 		_context = parameters.context !== undefined ? parameters.context : null,
 
 		_alpha = parameters.alpha !== undefined ? parameters.alpha : false,
@@ -66,11 +57,6 @@ function WebGLRenderer( parameters ) {
 
 	let currentRenderList = null;
 	let currentRenderState = null;
-
-	// render() can be called from within a callback triggered by another render.
-	// We track this so that the nested render call gets its state isolated from the parent render call.
-
-	const renderStateStack = [];
 
 	// public properties
 
@@ -138,6 +124,7 @@ function WebGLRenderer( parameters ) {
 	let _currentMaterialId = - 1;
 
 	let _currentCamera = null;
+	let _currentArrayCamera = null;
 
 	const _currentViewport = new Vector4();
 	const _currentScissor = new Vector4();
@@ -310,7 +297,7 @@ function WebGLRenderer( parameters ) {
 		programCache = new WebGLPrograms( _this, cubemaps, extensions, capabilities, bindingStates, clipping );
 		materials = new WebGLMaterials( properties );
 		renderLists = new WebGLRenderLists( properties );
-		renderStates = new WebGLRenderStates( extensions, capabilities );
+		renderStates = new WebGLRenderStates();
 		background = new WebGLBackground( _this, cubemaps, state, objects, _premultipliedAlpha );
 
 		bufferRenderer = new WebGLBufferRenderer( _gl, extensions, info, capabilities );
@@ -537,17 +524,9 @@ function WebGLRenderer( parameters ) {
 
 	// Clearing
 
-	this.getClearColor = function ( target ) {
+	this.getClearColor = function () {
 
-		if ( target === undefined ) {
-
-			console.warn( 'WebGLRenderer: .getClearColor() now requires a Color as an argument' );
-
-			target = new Color();
-
-		}
-
-		return target.copy( background.getClearColor() );
+		return background.getClearColor();
 
 	};
 
@@ -891,12 +870,12 @@ function WebGLRenderer( parameters ) {
 
 	this.compile = function ( scene, camera ) {
 
-		currentRenderState = renderStates.get( scene );
+		currentRenderState = renderStates.get( scene, camera );
 		currentRenderState.init();
 
-		scene.traverseVisible( function ( object ) {
+		scene.traverse( function ( object ) {
 
-			if ( object.isLight && object.layers.test( camera.layers ) ) {
+			if ( object.isLight ) {
 
 				currentRenderState.pushLight( object );
 
@@ -910,7 +889,7 @@ function WebGLRenderer( parameters ) {
 
 		} );
 
-		currentRenderState.setupLights();
+		currentRenderState.setupLights( camera );
 
 		const compiled = new WeakMap();
 
@@ -1025,10 +1004,8 @@ function WebGLRenderer( parameters ) {
 		//
 		if ( scene.isScene === true ) scene.onBeforeRender( _this, scene, camera, renderTarget || _currentRenderTarget );
 
-		currentRenderState = renderStates.get( scene, renderStateStack.length );
+		currentRenderState = renderStates.get( scene, camera );
 		currentRenderState.init();
-
-		renderStateStack.push( currentRenderState );
 
 		_projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
 		_frustum.setFromProjectionMatrix( _projScreenMatrix );
@@ -1057,8 +1034,7 @@ function WebGLRenderer( parameters ) {
 
 		shadowMap.render( shadowsArray, scene, camera );
 
-		currentRenderState.setupLights();
-		currentRenderState.setupLightsView( camera );
+		currentRenderState.setupLights( camera );
 
 		if ( _clippingEnabled === true ) clipping.endShadows();
 
@@ -1112,18 +1088,8 @@ function WebGLRenderer( parameters ) {
 
 		// _gl.finish();
 
-		renderStateStack.pop();
-		if ( renderStateStack.length > 0 ) {
-
-			currentRenderState = renderStateStack[ renderStateStack.length - 1 ];
-
-		} else {
-
-			currentRenderState = null;
-
-		}
-
 		currentRenderList = null;
+		currentRenderState = null;
 
 	};
 
@@ -1267,6 +1233,8 @@ function WebGLRenderer( parameters ) {
 
 			if ( camera.isArrayCamera ) {
 
+				_currentArrayCamera = camera;
+
 				const cameras = camera.cameras;
 
 				for ( let j = 0, jl = cameras.length; j < jl; j ++ ) {
@@ -1277,7 +1245,7 @@ function WebGLRenderer( parameters ) {
 
 						state.viewport( _currentViewport.copy( camera2.viewport ) );
 
-						currentRenderState.setupLightsView( camera2 );
+						currentRenderState.setupLights( camera2 );
 
 						renderObject( object, scene, camera2, geometry, material, group );
 
@@ -1286,6 +1254,8 @@ function WebGLRenderer( parameters ) {
 				}
 
 			} else {
+
+				_currentArrayCamera = null;
 
 				renderObject( object, scene, camera, geometry, material, group );
 
@@ -1298,6 +1268,7 @@ function WebGLRenderer( parameters ) {
 	function renderObject( object, scene, camera, geometry, material, group ) {
 
 		object.onBeforeRender( _this, scene, camera, geometry, material, group );
+		currentRenderState = renderStates.get( scene, _currentArrayCamera || camera );
 
 		object.modelViewMatrix.multiplyMatrices( camera.matrixWorldInverse, object.matrixWorld );
 		object.normalMatrix.getNormalMatrix( object.modelViewMatrix );
@@ -1319,6 +1290,7 @@ function WebGLRenderer( parameters ) {
 		}
 
 		object.onAfterRender( _this, scene, camera, geometry, material, group );
+		currentRenderState = renderStates.get( scene, _currentArrayCamera || camera );
 
 	}
 
@@ -1351,6 +1323,8 @@ function WebGLRenderer( parameters ) {
 
 		} else if ( materialProperties.lightsStateVersion !== lightsStateVersion ) {
 
+			materialProperties.lightsStateVersion = lightsStateVersion;
+
 			programChange = false;
 
 		} else if ( parameters.shaderID !== undefined ) {
@@ -1371,7 +1345,7 @@ function WebGLRenderer( parameters ) {
 
 		if ( programChange ) {
 
-			parameters.uniforms = programCache.getUniforms( material );
+			parameters.uniforms = programCache.getUniforms( material, parameters );
 
 			material.onBeforeCompile( parameters, _this );
 
@@ -1380,6 +1354,40 @@ function WebGLRenderer( parameters ) {
 			materialProperties.program = program;
 			materialProperties.uniforms = parameters.uniforms;
 			materialProperties.outputEncoding = parameters.outputEncoding;
+
+		}
+
+		const programAttributes = program.getAttributes();
+
+		if ( material.morphTargets ) {
+
+			material.numSupportedMorphTargets = 0;
+
+			for ( let i = 0; i < _this.maxMorphTargets; i ++ ) {
+
+				if ( programAttributes[ 'morphTarget' + i ] >= 0 ) {
+
+					material.numSupportedMorphTargets ++;
+
+				}
+
+			}
+
+		}
+
+		if ( material.morphNormals ) {
+
+			material.numSupportedMorphNormals = 0;
+
+			for ( let i = 0; i < _this.maxMorphNormals; i ++ ) {
+
+				if ( programAttributes[ 'morphNormal' + i ] >= 0 ) {
+
+					material.numSupportedMorphNormals ++;
+
+				}
+
+			}
 
 		}
 
@@ -1617,7 +1625,7 @@ function WebGLRenderer( parameters ) {
 
 				if ( capabilities.floatVertexTextures ) {
 
-					if ( skeleton.boneTexture === null ) {
+					if ( skeleton.boneTexture === undefined ) {
 
 						// layout (1 matrix = 4 pixels)
 						//      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
@@ -1777,13 +1785,25 @@ function WebGLRenderer( parameters ) {
 
 	};
 
+	this.getRenderState = function () {
+
+		return currentRenderState;
+
+	};
+
+	this.setRenderState = function ( renderState ) {
+
+		currentRenderState = renderState;
+
+	};
+
 	this.getRenderTarget = function () {
 
 		return _currentRenderTarget;
 
 	};
 
-	this.setRenderTarget = function ( renderTarget, activeCubeFace = 0, activeMipmapLevel = 0 ) {
+	this.setRenderTarget = function ( renderTarget, activeCubeFace, activeMipmapLevel ) {
 
 		_currentRenderTarget = renderTarget;
 		_currentActiveCubeFace = activeCubeFace;
@@ -1804,7 +1824,7 @@ function WebGLRenderer( parameters ) {
 
 			if ( renderTarget.isWebGLCubeRenderTarget ) {
 
-				framebuffer = __webglFramebuffer[ activeCubeFace ];
+				framebuffer = __webglFramebuffer[ activeCubeFace || 0 ];
 				isCube = true;
 
 			} else if ( renderTarget.isWebGLMultisampleRenderTarget ) {
@@ -1843,7 +1863,7 @@ function WebGLRenderer( parameters ) {
 		if ( isCube ) {
 
 			const textureProperties = properties.get( renderTarget.texture );
-			_gl.framebufferTexture2D( _gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + activeCubeFace, textureProperties.__webglTexture, activeMipmapLevel );
+			_gl.framebufferTexture2D( _gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + ( activeCubeFace || 0 ), textureProperties.__webglTexture, activeMipmapLevel || 0 );
 
 		}
 
@@ -1930,7 +1950,9 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	this.copyFramebufferToTexture = function ( position, texture, level = 0 ) {
+	this.copyFramebufferToTexture = function ( position, texture, level ) {
+
+		if ( level === undefined ) level = 0;
 
 		const levelScale = Math.pow( 2, - level );
 		const width = Math.floor( texture.image.width * levelScale );
@@ -1945,7 +1967,9 @@ function WebGLRenderer( parameters ) {
 
 	};
 
-	this.copyTextureToTexture = function ( position, srcTexture, dstTexture, level = 0 ) {
+	this.copyTextureToTexture = function ( position, srcTexture, dstTexture, level ) {
+
+		if ( level === undefined ) level = 0;
 
 		const width = srcTexture.image.width;
 		const height = srcTexture.image.height;
@@ -1990,13 +2014,6 @@ function WebGLRenderer( parameters ) {
 		textures.setTexture2D( texture, 0 );
 
 		state.unbindTexture();
-
-	};
-
-	this.resetState = function () {
-
-		state.reset();
-		bindingStates.reset();
 
 	};
 
