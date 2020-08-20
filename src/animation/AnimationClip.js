@@ -118,10 +118,7 @@ Object.assign( AnimationClip, {
 
 		}
 
-		const clip = new AnimationClip( json.name, json.duration, tracks, json.blendMode );
-		clip.uuid = json.uuid;
-
-		return clip;
+		return new this( json.name, json.duration, tracks, json.blendMode );
 
 	},
 
@@ -188,7 +185,7 @@ Object.assign( AnimationClip, {
 
 		}
 
-		return new AnimationClip( name, - 1, tracks );
+		return new this( name, - 1, tracks );
 
 	},
 
@@ -254,7 +251,7 @@ Object.assign( AnimationClip, {
 
 		for ( const name in animationToMorphTargets ) {
 
-			clips.push( AnimationClip.CreateFromMorphTargetSequence( name, animationToMorphTargets[ name ], fps, noLoop ) );
+			clips.push( this.CreateFromMorphTargetSequence( name, animationToMorphTargets[ name ], fps, noLoop ) );
 
 		}
 
@@ -384,7 +381,7 @@ Object.assign( AnimationClip, {
 
 		}
 
-		const clip = new AnimationClip( clipName, duration, tracks, blendMode );
+		const clip = new this( clipName, duration, tracks, blendMode );
 
 		return clip;
 
@@ -461,7 +458,7 @@ Object.assign( AnimationClip.prototype, {
 
 		}
 
-		return new AnimationClip( this.name, this.duration, tracks, this.blendMode );
+		return new this.constructor( this.name, this.duration, tracks, this.blendMode );
 
 	},
 
