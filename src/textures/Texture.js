@@ -17,77 +17,81 @@ import { ImageUtils } from '../extras/ImageUtils.js';
 
 let textureId = 0;
 
-function Texture( image = Texture.DEFAULT_IMAGE, mapping = Texture.DEFAULT_MAPPING, wrapS = ClampToEdgeWrapping, wrapT = ClampToEdgeWrapping, magFilter = LinearFilter, minFilter = LinearMipmapLinearFilter, format = RGBAFormat, type = UnsignedByteType, anisotropy = 1, encoding = LinearEncoding ) {
+class Texture extends EventDispatcher {
 
-	Object.defineProperty( this, 'id', { value: textureId ++ } );
+	constructor( image = Texture.DEFAULT_IMAGE, mapping = Texture.DEFAULT_MAPPING, wrapS = ClampToEdgeWrapping, wrapT = ClampToEdgeWrapping, magFilter = LinearFilter, minFilter = LinearMipmapLinearFilter, format = RGBAFormat, type = UnsignedByteType, anisotropy = 1, encoding = LinearEncoding ) {
 
-	this.uuid = MathUtils.generateUUID();
+		super();
 
-	this.name = '';
+		Object.defineProperties( this, {
 
-	this.image = image;
-	this.mipmaps = [];
+			id: {
+			  value: textureId ++,
+			},
+			isTexture: {
+			  value: true,
+			}
+		  } );
 
-	this.mapping = mapping;
+		this.uuid = MathUtils.generateUUID();
 
-	this.wrapS = wrapS;
-	this.wrapT = wrapT;
+		this.name = '';
 
-	this.magFilter = magFilter;
-	this.minFilter = minFilter;
+		this.image = image;
+		this.mipmaps = [];
 
-	this.anisotropy = anisotropy;
+		this.mapping = mapping;
 
-	this.format = format;
-	this.internalFormat = null;
-	this.type = type;
+		this.wrapS = wrapS;
+		this.wrapT = wrapT;
 
-	this.offset = new Vector2( 0, 0 );
-	this.repeat = new Vector2( 1, 1 );
-	this.center = new Vector2( 0, 0 );
-	this.rotation = 0;
+		this.magFilter = magFilter;
+		this.minFilter = minFilter;
 
-	this.matrixAutoUpdate = true;
-	this.matrix = new Matrix3();
+		this.anisotropy = anisotropy;
 
-	this.generateMipmaps = true;
-	this.premultiplyAlpha = false;
-	this.flipY = true;
-	this.unpackAlignment = 4;	// valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
+		this.format = format;
+		this.internalFormat = null;
+		this.type = type;
 
-	// Values of encoding !== THREE.LinearEncoding only supported on map, envMap and emissiveMap.
-	//
-	// Also changing the encoding after already used by a Material will not automatically make the Material
-	// update. You need to explicitly call Material.needsUpdate to trigger it to recompile.
-	this.encoding = encoding;
+		this.offset = new Vector2( 0, 0 );
+		this.repeat = new Vector2( 1, 1 );
+		this.center = new Vector2( 0, 0 );
+		this.rotation = 0;
 
-	this.version = 0;
-	this.onUpdate = null;
+		this.matrixAutoUpdate = true;
+		this.matrix = new Matrix3();
 
-}
+		this.generateMipmaps = true;
+		this.premultiplyAlpha = false;
+		this.flipY = true;
+		this.unpackAlignment = 4;	// valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
 
-Texture.DEFAULT_IMAGE = undefined;
-Texture.DEFAULT_MAPPING = UVMapping;
+		// Values of encoding !== THREE.LinearEncoding only supported on map, envMap and emissiveMap.
+		//
+		// Also changing the encoding after already used by a Material will not automatically make the Material
+		// update. You need to explicitly call Material.needsUpdate to trigger it to recompile.
+		this.encoding = encoding;
 
-Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
+		this.version = 0;
+		this.onUpdate = null;
 
-	constructor: Texture,
 
-	isTexture: true,
+	}
 
-	updateMatrix: function () {
+	updateMatrix() {
 
 		this.matrix.setUvTransform( this.offset.x, this.offset.y, this.repeat.x, this.repeat.y, this.rotation, this.center.x, this.center.y );
 
-	},
+	}
 
-	clone: function () {
+	clone() {
 
 		return new this.constructor().copy( this );
 
-	},
+	}
 
-	copy: function ( source ) {
+	copy( source ) {
 
 		this.name = source.name;
 
@@ -124,9 +128,9 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 		return this;
 
-	},
+	}
 
-	toJSON: function ( meta ) {
+	toJSON( meta ) {
 
 		const isRootObject = ( meta === undefined || typeof meta === 'string' );
 
@@ -199,11 +203,11 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 						if ( image[ i ].isDataTexture ) {
 
-							url.push( serializeImage( image[ i ].image ) );
+							url.push( this.serializeImage( image[ i ].image ) );
 
 						} else {
 
-							url.push( serializeImage( image[ i ] ) );
+							url.push( this.serializeImage( image[ i ] ) );
 
 						}
 
@@ -213,7 +217,7 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 					// process single image
 
-					url = serializeImage( image );
+					url = this.serializeImage( image );
 
 				}
 
@@ -236,15 +240,15 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 		return output;
 
-	},
+	}
 
-	dispose: function () {
+	dispose() {
 
 		this.dispatchEvent( { type: 'dispose' } );
 
-	},
+	}
 
-	transformUv: function ( uv ) {
+	transformUv( uv ) {
 
 		if ( this.mapping !== UVMapping ) return uv;
 
@@ -324,50 +328,50 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 	}
 
-} );
 
-Object.defineProperty( Texture.prototype, 'needsUpdate', {
-
-	set: function ( value ) {
+	set needsUpdate( value ) {
 
 		if ( value === true ) this.version ++;
 
 	}
 
-} );
+	serializeImage( image ) {
 
-function serializeImage( image ) {
+		if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
+			( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
+			( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
 
-	if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
-		( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
-		( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
+			// default images
 
-		// default images
-
-		return ImageUtils.getDataURL( image );
-
-	} else {
-
-		if ( image.data ) {
-
-			// images of DataTexture
-
-			return {
-				data: Array.prototype.slice.call( image.data ),
-				width: image.width,
-				height: image.height,
-				type: image.data.constructor.name
-			};
+			return ImageUtils.getDataURL( image );
 
 		} else {
 
-			console.warn( 'THREE.Texture: Unable to serialize Texture.' );
-			return {};
+			if ( image.data ) {
+
+				// images of DataTexture
+
+				return {
+					data: Array.prototype.slice.call( image.data ),
+					width: image.width,
+					height: image.height,
+					type: image.data.constructor.name
+				};
+
+			} else {
+
+				console.warn( 'THREE.Texture: Unable to serialize Texture.' );
+				return {};
+
+			}
 
 		}
 
 	}
 
 }
+
+Texture.DEFAULT_IMAGE = undefined;
+Texture.DEFAULT_MAPPING = UVMapping;
 
 export { Texture };

@@ -1,15 +1,18 @@
 import { Texture } from './Texture.js';
 
-function CanvasTexture( canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+class CanvasTexture extends Texture {
 
-	Texture.call( this, canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
 
-	this.needsUpdate = true;
+	constructor( canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+
+		super( canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
+
+		Object.defineProperty( this, 'isCanvasTexture', { value: true } );
+
+		this.needsUpdate = true;
+
+	}
 
 }
-
-CanvasTexture.prototype = Object.create( Texture.prototype );
-CanvasTexture.prototype.constructor = CanvasTexture;
-CanvasTexture.prototype.isCanvasTexture = true;
 
 export { CanvasTexture };

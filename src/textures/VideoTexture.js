@@ -1,47 +1,47 @@
 import { RGBFormat, LinearFilter } from '../constants.js';
 import { Texture } from './Texture.js';
 
-function VideoTexture( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+class VideoTexture extends Texture {
 
-	Texture.call( this, video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
 
-	this.format = format !== undefined ? format : RGBFormat;
+	constructor( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
 
-	this.minFilter = minFilter !== undefined ? minFilter : LinearFilter;
-	this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
+		super( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
 
-	this.generateMipmaps = false;
+		Object.defineProperty( this, 'isVideoTexture', { value: true } );
 
-	const scope = this;
+		this.format = format !== undefined ? format : RGBFormat;
 
-	function updateVideo() {
+		this.minFilter = minFilter !== undefined ? minFilter : LinearFilter;
+		this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
 
-		scope.needsUpdate = true;
-		video.requestVideoFrameCallback( updateVideo );
+		this.generateMipmaps = false;
+
+		const scope = this;
+
+		function updateVideo() {
+
+			scope.needsUpdate = true;
+			video.requestVideoFrameCallback( updateVideo );
+
+		}
+
+		if ( 'requestVideoFrameCallback' in video ) {
+
+			video.requestVideoFrameCallback( updateVideo );
+
+		}
+
 
 	}
 
-	if ( 'requestVideoFrameCallback' in video ) {
-
-		video.requestVideoFrameCallback( updateVideo );
-
-	}
-
-}
-
-VideoTexture.prototype = Object.assign( Object.create( Texture.prototype ), {
-
-	constructor: VideoTexture,
-
-	clone: function () {
+	clone() {
 
 		return new this.constructor( this.image ).copy( this );
 
-	},
+	}
 
-	isVideoTexture: true,
-
-	update: function () {
+	update() {
 
 		const video = this.image;
 		const hasVideoFrameCallback = 'requestVideoFrameCallback' in video;
@@ -54,7 +54,6 @@ VideoTexture.prototype = Object.assign( Object.create( Texture.prototype ), {
 
 	}
 
-} );
-
+}
 
 export { VideoTexture };
