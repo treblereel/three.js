@@ -3,7 +3,7 @@ import { WrapAroundEnding, ZeroCurvatureEnding, ZeroSlopeEnding, LoopPingPong, L
 
 class AnimationAction {
 
-	constructor( mixer, clip, localRoot = null, blendMode = clip.blendMode ) {
+	constructor( mixer = null, clip = null, localRoot = null, blendMode = clip.blendMode ) {
 
 		this._mixer = mixer;
 		this._clip = clip;
