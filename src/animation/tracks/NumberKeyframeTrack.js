@@ -4,22 +4,24 @@ import { KeyframeTrack } from '../KeyframeTrack.js';
  * A Track of numeric keyframe values.
  */
 
-function NumberKeyframeTrack( name, times, values, interpolation ) {
+class NumberKeyframeTrack extends KeyframeTrack {
 
-	KeyframeTrack.call( this, name, times, values, interpolation );
+	constructor( name, times, values, interpolation ) {
+
+		super( name, times, values, interpolation );
+
+		Object.assign( this, {
+
+			ValueTypeName: 'number'
+
+			// ValueBufferType is inherited
+
+			// DefaultInterpolation is inherited
+
+		} );
+
+	}
 
 }
-
-NumberKeyframeTrack.prototype = Object.assign( Object.create( KeyframeTrack.prototype ), {
-
-	constructor: NumberKeyframeTrack,
-
-	ValueTypeName: 'number'
-
-	// ValueBufferType is inherited
-
-	// DefaultInterpolation is inherited
-
-} );
 
 export { NumberKeyframeTrack };

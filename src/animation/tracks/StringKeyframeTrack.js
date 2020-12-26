@@ -5,25 +5,30 @@ import { KeyframeTrack } from '../KeyframeTrack.js';
  * A Track that interpolates Strings
  */
 
-function StringKeyframeTrack( name, times, values, interpolation ) {
+class StringKeyframeTrack extends KeyframeTrack {
 
-	KeyframeTrack.call( this, name, times, values, interpolation );
+	constructor( name, times, values, interpolation ) {
+
+		super( name, times, values, interpolation );
+
+		Object.assign( this, {
+
+			constructor: StringKeyframeTrack,
+
+			ValueTypeName: 'string',
+
+			ValueBufferType: Array,
+
+			DefaultInterpolation: InterpolateDiscrete,
+
+			InterpolantFactoryMethodLinear: undefined,
+
+			InterpolantFactoryMethodSmooth: undefined
+
+		} );
+
+	}
 
 }
-
-StringKeyframeTrack.prototype = Object.assign( Object.create( KeyframeTrack.prototype ), {
-
-	constructor: StringKeyframeTrack,
-
-	ValueTypeName: 'string',
-	ValueBufferType: Array,
-
-	DefaultInterpolation: InterpolateDiscrete,
-
-	InterpolantFactoryMethodLinear: undefined,
-
-	InterpolantFactoryMethodSmooth: undefined
-
-} );
 
 export { StringKeyframeTrack };
