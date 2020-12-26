@@ -500,6 +500,12 @@ class Vector3 {
 
 	}
 
+
+	/**
+	 * @param {Vector3} v
+	 * @param {object=} w
+	 * @return {Vector3}
+	 */
 	cross( v, w ) {
 
 		if ( w !== undefined ) {

@@ -256,6 +256,12 @@ class Object3D extends EventDispatcher {
 
 	}
 
+
+	/**
+	 * @param {Vector3 | number=} x
+	 * @param {number=} y
+	 * @param {number=} z
+	 */
 	lookAt( x, y, z ) {
 
 		// This method does not support objects having non-uniformly-scaled parent(s)
