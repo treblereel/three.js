@@ -1,24 +1,22 @@
 import { Object3D } from '../core/Object3D.js';
 import { Color } from '../math/Color.js';
 
-function Light( color, intensity = 1 ) {
+class Light extends Object3D {
 
-	Object3D.call( this );
+	constructor( color, intensity = 1 ) {
 
-	this.type = 'Light';
+		super();
 
-	this.color = new Color( color );
-	this.intensity = intensity;
+		Object.defineProperty( this, 'isLight', { value: true } );
 
-}
+		this.type = 'Light';
 
-Light.prototype = Object.assign( Object.create( Object3D.prototype ), {
+		this.color = new Color( color );
+		this.intensity = intensity;
 
-	constructor: Light,
+	}
 
-	isLight: true,
-
-	copy: function ( source ) {
+	copy( source ) {
 
 		Object3D.prototype.copy.call( this, source );
 
@@ -27,9 +25,9 @@ Light.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 		return this;
 
-	},
+	}
 
-	toJSON: function ( meta ) {
+	toJSON( meta ) {
 
 		const data = Object3D.prototype.toJSON.call( this, meta );
 
@@ -49,7 +47,7 @@ Light.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 	}
 
-} );
+}
 
 
 export { Light };

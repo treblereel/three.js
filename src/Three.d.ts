@@ -178,6 +178,5 @@ export * from './renderers/webxr/WebXR';
 export * from './renderers/webxr/WebXRController';
 export * from './renderers/webxr/WebXRManager';
 export * from './constants';
-export * from './Three.Legacy';
 
 export as namespace THREE;

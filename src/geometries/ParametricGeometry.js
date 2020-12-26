@@ -6,25 +6,25 @@
 import { Geometry } from '../core/Geometry.js';
 import { ParametricBufferGeometry } from './ParametricBufferGeometry.js';
 
-function ParametricGeometry( func, slices, stacks ) {
+class ParametricGeometry extends Geometry {
 
-	Geometry.call( this );
+	constructor( func, slices, stacks ) {
 
-	this.type = 'ParametricGeometry';
+		super();
 
-	this.parameters = {
-		func: func,
-		slices: slices,
-		stacks: stacks
-	};
+		this.type = 'ParametricGeometry';
 
-	this.fromBufferGeometry( new ParametricBufferGeometry( func, slices, stacks ) );
-	this.mergeVertices();
+		this.parameters = {
+			func: func,
+			slices: slices,
+			stacks: stacks
+		};
+
+		this.fromBufferGeometry( new ParametricBufferGeometry( func, slices, stacks ) );
+		this.mergeVertices();
+
+	}
 
 }
-
-ParametricGeometry.prototype = Object.create( Geometry.prototype );
-ParametricGeometry.prototype.constructor = ParametricGeometry;
-
 
 export { ParametricGeometry };

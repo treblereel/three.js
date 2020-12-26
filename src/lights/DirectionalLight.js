@@ -2,28 +2,27 @@ import { Light } from './Light.js';
 import { DirectionalLightShadow } from './DirectionalLightShadow.js';
 import { Object3D } from '../core/Object3D.js';
 
-function DirectionalLight( color, intensity ) {
+class DirectionalLight extends Light {
 
-	Light.call( this, color, intensity );
+	constructor( color, intensity ) {
 
-	this.type = 'DirectionalLight';
+		super( color, intensity );
 
-	this.position.copy( Object3D.DefaultUp );
-	this.updateMatrix();
+		Object.defineProperty( this, 'isDirectionalLight', { value: true } );
 
-	this.target = new Object3D();
+		this.type = 'DirectionalLight';
 
-	this.shadow = new DirectionalLightShadow();
+		this.position.copy( Object3D.DefaultUp );
 
-}
+		this.updateMatrix();
 
-DirectionalLight.prototype = Object.assign( Object.create( Light.prototype ), {
+		this.target = new Object3D();
 
-	constructor: DirectionalLight,
+		this.shadow = new DirectionalLightShadow();
 
-	isDirectionalLight: true,
+	}
 
-	copy: function ( source ) {
+	copy( source ) {
 
 		Light.prototype.copy.call( this, source );
 
@@ -35,7 +34,7 @@ DirectionalLight.prototype = Object.assign( Object.create( Light.prototype ), {
 
 	}
 
-} );
+}
 
 
 export { DirectionalLight };
