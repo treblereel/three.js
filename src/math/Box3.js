@@ -2,6 +2,11 @@ import { Vector3 } from './Vector3.js';
 
 class Box3 {
 
+	/**
+	 *
+	 * @param {Vector3=} min
+	 * @param {Vector3=} max
+	 */
 	constructor( min, max ) {
 
 		Object.defineProperty( this, 'isBox3', { value: true } );

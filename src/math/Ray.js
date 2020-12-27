@@ -11,6 +11,11 @@ const _normal = /*@__PURE__*/ new Vector3();
 
 class Ray {
 
+	/**
+	 *
+	 * @param {Vector3=} origin
+	 * @param {Vector3=} direction
+	 */
 	constructor( origin, direction ) {
 
 		this.origin = ( origin !== undefined ) ? origin : new Vector3();

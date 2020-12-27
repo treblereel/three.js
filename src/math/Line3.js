@@ -6,6 +6,12 @@ const _startEnd = /*@__PURE__*/ new Vector3();
 
 class Line3 {
 
+
+	/**
+	 *
+	 * @param {Vector3=} start
+	 * @param {Vector3=} end
+	 */
 	constructor( start, end ) {
 
 		this.start = ( start !== undefined ) ? start : new Vector3();

@@ -103,6 +103,11 @@ class Vector3 {
 
 	}
 
+	/**
+	 * @param {Vector3} v
+	 * @param {object=} w
+	 * @return {Vector3}
+	 */
 	add( v, w ) {
 
 		if ( w !== undefined ) {
@@ -150,6 +155,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} v
+	 * @param {Vector3=} w
+	 * @return {Vector3}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -177,6 +188,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} a
+	 * @param {Vector3} b
+	 * @return {Vector3}
+	 */
 	subVectors( a, b ) {
 
 		this.x = a.x - b.x;
@@ -187,6 +204,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} v
+	 * @param {Vector3=} w
+	 * @return {Vector3}
+	 */
 	multiply( v, w ) {
 
 		if ( w !== undefined ) {
@@ -214,6 +237,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} a
+	 * @param {Vector3=} b
+	 * @return {Vector3}
+	 */
 	multiplyVectors( a, b ) {
 
 		this.x = a.x * b.x;
@@ -693,6 +722,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {BufferAttribute | InterleavedBufferAttribute} attribute
+	 * @param {number} index
+	 * @param {number=} offset
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {

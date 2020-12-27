@@ -108,6 +108,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector2} v
+	 * @param {Vector2=} w
+	 * @return {Vector2}
+	 */
 	add( v, w ) {
 
 		if ( w !== undefined ) {
@@ -151,6 +157,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector2} v
+	 * @param {Vector2=} w
+ 	 * @return {Vector2}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -176,6 +188,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector2} a
+	 * @param {Vector2=} b
+	 * @return {Vector2}
+	 */
 	subVectors( a, b ) {
 
 		this.x = a.x - b.x;
@@ -434,6 +452,13 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {BufferAttribute} attribute
+	 * @param {number} index
+	 * @param {number=} offset
+	 * @returns {Vector2}
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {

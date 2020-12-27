@@ -3,6 +3,17 @@ import { Vector2 } from '../../math/Vector2.js';
 
 class EllipseCurve extends Curve {
 
+	/**
+	 *
+	 * @param {number} aX
+	 * @param {number} aY
+	 * @param {number} xRadius
+	 * @param {number} yRadius
+	 * @param {number} aStartAngle
+	 * @param {number} aEndAngle
+	 * @param {boolean} aClockwise
+	 * @param {number=} aRotation
+	 */
 	constructor( aX, aY, xRadius, yRadius, aStartAngle, aEndAngle, aClockwise, aRotation ) {
 
 		super();

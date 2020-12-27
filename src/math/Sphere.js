@@ -5,6 +5,11 @@ const _box = /*@__PURE__*/ new Box3();
 
 class Sphere {
 
+	/**
+	 *
+	 * @param {Vector3=} center
+	 * @param {number=} radius
+	 */
 	constructor( center, radius ) {
 
 		this.center = ( center !== undefined ) ? center : new Vector3();

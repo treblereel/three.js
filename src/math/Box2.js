@@ -4,6 +4,11 @@ const _vector = /*@__PURE__*/ new Vector2();
 
 class Box2 {
 
+	/**
+	 *
+	 * @param {Vector2=} min
+	 * @param {Vector2=} max
+	 */
 	constructor( min, max ) {
 
 		Object.defineProperty( this, 'isBox2', { value: true } );

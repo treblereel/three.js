@@ -7,6 +7,11 @@ const _normalMatrix = /*@__PURE__*/ new Matrix3();
 
 class Plane {
 
+
+	/**
+	 * @param {Vector3=} normal
+	 * @param {number=} constant
+	 */
 	constructor( normal, constant ) {
 
 		Object.defineProperty( this, 'isPlane', { value: true } );

@@ -7,6 +7,15 @@ const _vector = /*@__PURE__*/ new Vector3();
 
 class Frustum {
 
+	/**
+	 *
+	 * @param {Plane=} p0
+	 * @param {Plane=} p1
+	 * @param {Plane=} p2
+	 * @param {Plane=} p3
+	 * @param {Plane=} p4
+	 * @param {Plane=} p5
+	 */
 	constructor( p0, p1, p2, p3, p4, p5 ) {
 
 		this.planes = [

@@ -9,6 +9,12 @@ const _vector2 = new Vector2();
 
 class BufferAttribute {
 
+	/**
+	 *
+	 * @param {TypedArray|Array<number>} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		if ( Array.isArray( array ) ) {
@@ -406,6 +412,11 @@ class BufferAttribute {
 
 class Int8BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Int8Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Int8Array( array ), itemSize, normalized );
@@ -416,6 +427,11 @@ class Int8BufferAttribute extends BufferAttribute {
 
 class Uint8BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Uint8Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Uint8Array( array ), itemSize, normalized );
@@ -426,6 +442,11 @@ class Uint8BufferAttribute extends BufferAttribute {
 
 class Uint8ClampedBufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Uint8ClampedArray} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Uint8ClampedArray( array ), itemSize, normalized );
@@ -436,6 +457,11 @@ class Uint8ClampedBufferAttribute extends BufferAttribute {
 
 class Int16BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Int16Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Int16Array( array ), itemSize, normalized );
@@ -446,6 +472,11 @@ class Int16BufferAttribute extends BufferAttribute {
 
 class Uint16BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Uint16Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Uint16Array( array ), itemSize, normalized );
@@ -456,6 +487,12 @@ class Uint16BufferAttribute extends BufferAttribute {
 
 class Int32BufferAttribute extends BufferAttribute {
 
+
+	/**
+	 * @param {Array<number>|Float32Array|Int32Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Int32Array( array ), itemSize, normalized );
@@ -466,6 +503,11 @@ class Int32BufferAttribute extends BufferAttribute {
 
 class Uint32BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Uint32Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Uint32Array( array ), itemSize, normalized );
@@ -476,6 +518,11 @@ class Uint32BufferAttribute extends BufferAttribute {
 
 class Float16BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Uint16Array|Float32Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Uint16Array( array ), itemSize, normalized );
@@ -488,6 +535,11 @@ class Float16BufferAttribute extends BufferAttribute {
 
 class Float32BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Float32Array( array ), itemSize, normalized );
@@ -498,6 +550,11 @@ class Float32BufferAttribute extends BufferAttribute {
 
 class Float64BufferAttribute extends BufferAttribute {
 
+	/**
+	 * @param {Array<number>|Float32Array|Float64Array} array
+	 * @param {number} itemSize
+	 * @param {boolean=} normalized
+	 */
 	constructor( array, itemSize, normalized ) {
 
 		super( new Float64Array( array ), itemSize, normalized );

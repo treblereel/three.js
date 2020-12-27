@@ -53,6 +53,13 @@ function LinearToSRGB( c ) {
 
 class Color {
 
+
+	/**
+	 *
+	 * @param {Color | string | number=} r
+	 * @param {number=} g
+	 * @param {number=} b
+	 */
 	constructor( r, g, b ) {
 
 		Object.defineProperty( this, 'isColor', { value: true } );
