@@ -1,5 +1,8 @@
 import { Matrix3 } from '../../math/Matrix3.js';
 import { Plane } from '../../math/Plane.js';
+/* eslint-disable */
+import { Camera } from '../../cameras/Camera.js';
+/* eslint-enable */
 
 function WebGLClipping( properties ) {
 
@@ -116,6 +119,13 @@ function WebGLClipping( properties ) {
 
 	}
 
+	/**
+	 *
+	 * @param {Array<Plane>=} planes
+	 * @param {Camera=} camera
+	 * @param {number=} dstOffset
+	 * @param {boolean=} skipTransform
+	 */
 	function projectPlanes( planes, camera, dstOffset, skipTransform ) {
 
 		const nPlanes = planes !== null ? planes.length : 0;

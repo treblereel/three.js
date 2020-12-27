@@ -4,6 +4,19 @@ import { CubeReflectionMapping, RGBFormat } from '../constants.js';
 class CubeTexture extends Texture {
 
 
+	/**
+	 *
+	 * @param {Array<HTMLImageElement>=} images
+	 * @param {number=} mapping
+	 * @param {number=} wrapS
+	 * @param {number=} wrapT
+	 * @param {number=} magFilter
+	 * @param {number=} minFilter
+	 * @param {number=} format
+	 * @param {number=} type
+	 * @param {number=} anisotropy
+	 * @param {number=} encoding
+	 */
 	constructor( images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding ) {
 
 		images = images !== undefined ? images : [];

@@ -8,7 +8,7 @@ class Camera extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isCamera', { value: true } );
+		Object.defineProperties( this, { isCamera: { value: true } } );
 
 		this.type = 'Camera';
 

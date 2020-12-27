@@ -10,10 +10,10 @@ class Material extends EventDispatcher {
 
 		super();
 
-		Object.defineProperty( this, 'id', { value: materialId ++ } );
-
-		Object.defineProperty( this, 'isMaterial', { value: true } );
-
+		Object.defineProperties( this, {
+			id: { value: materialId ++ },
+			isMaterial: { value: true }
+		} );
 
 		this.uuid = MathUtils.generateUUID();
 

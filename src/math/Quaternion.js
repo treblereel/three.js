@@ -4,7 +4,7 @@ class Quaternion {
 
 	constructor( x = 0, y = 0, z = 0, w = 1 ) {
 
-		Object.defineProperty( this, 'isQuaternion', { value: true } );
+		Object.defineProperties( this, { isQuaternion: { value: true } } );
 
 		this._x = x;
 		this._y = y;
@@ -184,6 +184,11 @@ class Quaternion {
 
 	}
 
+	/**
+	 *
+	 * @param {Euler} euler
+	 * @param {boolean=} update
+	 */
 	setFromEuler( euler, update ) {
 
 		if ( ! ( euler && euler.isEuler ) ) {

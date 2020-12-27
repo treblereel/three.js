@@ -5,7 +5,7 @@ class Vector3 {
 
 	constructor( x = 0, y = 0, z = 0 ) {
 
-		Object.defineProperty( this, 'isVector3', { value: true } );
+		Object.defineProperties( this, { isVector3: { value: true } } );
 
 		this.x = x;
 		this.y = y;
@@ -105,7 +105,7 @@ class Vector3 {
 
 	/**
 	 * @param {Vector3} v
-	 * @param {object=} w
+	 * @param {Object=} w
 	 * @return {Vector3}
 	 */
 	add( v, w ) {
@@ -532,7 +532,7 @@ class Vector3 {
 
 	/**
 	 * @param {Vector3} v
-	 * @param {object=} w
+	 * @param {Object=} w
 	 * @return {Vector3}
 	 */
 	cross( v, w ) {
@@ -724,7 +724,7 @@ class Vector3 {
 
 	/**
 	 *
-	 * @param {BufferAttribute | InterleavedBufferAttribute} attribute
+	 * @param {BufferAttribute} attribute
 	 * @param {number} index
 	 * @param {number=} offset
 	 */

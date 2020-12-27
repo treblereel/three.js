@@ -14,7 +14,7 @@ class Plane {
 	 */
 	constructor( normal, constant ) {
 
-		Object.defineProperty( this, 'isPlane', { value: true } );
+		Object.defineProperties( this, { isPlane: { value: true } } );
 
 		// normal is assumed to be normalized
 

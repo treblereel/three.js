@@ -40,7 +40,7 @@ class MeshBasicMaterial extends Material {
 
 		super();
 
-		Object.defineProperty( this, 'isMeshBasicMaterial', { value: true } );
+		Object.defineProperties( this, { isMeshBasicMaterial: { value: true } } );
 
 		this.type = 'MeshBasicMaterial';
 

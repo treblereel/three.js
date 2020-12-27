@@ -4,7 +4,7 @@ class Matrix4 {
 
 	constructor() {
 
-		Object.defineProperty( this, 'isMatrix4', { value: true } );
+		Object.defineProperties( this, { isMatrix4: { value: true } } );
 
 		this.elements = [
 

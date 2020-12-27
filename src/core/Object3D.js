@@ -31,9 +31,10 @@ class Object3D extends EventDispatcher {
 
 		super();
 
-		Object.defineProperty( this, 'id', { value: _object3DId ++ } );
-		Object.defineProperty( this, 'isObject3D', { value: true } );
-
+		Object.defineProperties( this, {
+			id: { value: _object3DId ++ },
+			isObject3D: { value: true }
+		} );
 
 		this.uuid = MathUtils.generateUUID();
 
