@@ -21,12 +21,11 @@ class Camera extends Object3D {
 
 	copy( source, recursive ) {
 
-		Object3D.prototype.copy.call( this, source, recursive );
+		super.copy( source, recursive );
 
-		this.matrixWorldInverse.copy( source.matrixWorldInverse );
-
-		this.projectionMatrix.copy( source.projectionMatrix );
-		this.projectionMatrixInverse.copy( source.projectionMatrixInverse );
+		this.matrixWorldInverse.copy( ( /** @type {Camera} */ (source)).matrixWorldInverse );
+		this.projectionMatrix.copy(( /** @type {Camera} */ (source)).projectionMatrix );
+		this.projectionMatrixInverse.copy( ( /** @type {Camera} */ (source)).projectionMatrixInverse );
 
 		return this;
 

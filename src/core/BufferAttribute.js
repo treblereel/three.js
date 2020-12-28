@@ -519,7 +519,7 @@ class Uint32BufferAttribute extends BufferAttribute {
 class Float16BufferAttribute extends BufferAttribute {
 
 	/**
-	 * @param {Array<number>|Uint16Array|Float32Array} array
+	 * @param {Array<number>|Uint16Array|Float32Array|number} array
 	 * @param {number} itemSize
 	 * @param {boolean=} normalized
 	 */
@@ -536,7 +536,7 @@ class Float16BufferAttribute extends BufferAttribute {
 class Float32BufferAttribute extends BufferAttribute {
 
 	/**
-	 * @param {Array<number>|Float32Array} array
+	 * @param {Array<number>|Float32Array|number} array
 	 * @param {number} itemSize
 	 * @param {boolean=} normalized
 	 */
@@ -551,7 +551,7 @@ class Float32BufferAttribute extends BufferAttribute {
 class Float64BufferAttribute extends BufferAttribute {
 
 	/**
-	 * @param {Array<number>|Float32Array|Float64Array} array
+	 * @param {Array<number>|Float32Array|Float64Array|number} array
 	 * @param {number} itemSize
 	 * @param {boolean=} normalized
 	 */

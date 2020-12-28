@@ -4,6 +4,10 @@
 
 class EventDispatcher {
 
+	constructor() {
+		this._listeners = undefined;
+	}
+
 	addEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) this._listeners = {};

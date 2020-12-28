@@ -6,7 +6,9 @@ class Scene extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isScene', { value: true } );
+		Object.defineProperties( this, {
+			isScene : { value: true },
+		 });
 
 		this.type = 'Scene';
 
@@ -26,6 +28,12 @@ class Scene extends Object3D {
 
 	}
 
+
+	/**
+	 * @param {Object3D} source 
+	 * @param {boolean=} recursive 
+	 * @return {Scene}
+	 */
 	copy( source, recursive ) {
 
 		super.copy( source, recursive );
@@ -36,7 +44,7 @@ class Scene extends Object3D {
 
 		if ( source.overrideMaterial !== null ) this.overrideMaterial = source.overrideMaterial.clone();
 
-		this.autoUpdate = source.autoUpdate;
+		this.autoUpdate = (/** @type {Scene} */(source).autoUpdate);
 		this.matrixAutoUpdate = source.matrixAutoUpdate;
 
 		return this;

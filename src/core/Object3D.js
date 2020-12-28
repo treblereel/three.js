@@ -31,11 +31,6 @@ class Object3D extends EventDispatcher {
 
 		super();
 
-		Object.defineProperties( this, {
-			id: { value: _object3DId ++ },
-			isObject3D: { value: true }
-		} );
-
 		this.uuid = MathUtils.generateUUID();
 
 		this.name = '';
@@ -46,10 +41,14 @@ class Object3D extends EventDispatcher {
 
 		this.up = Object3D.DefaultUp.clone();
 
+		/** @const */
 		var position = new Vector3();
+		/** @const */
 		var rotation = new Euler();
+		/** @const */
 		var quaternion = new Quaternion();
-		var scale = new Vector3( 1, 1, 1 );
+
+		this.scale = new Vector3( 1, 1, 1 );
 
 		function onRotationChange() {
 
@@ -67,7 +66,9 @@ class Object3D extends EventDispatcher {
 		quaternion._onChange( onQuaternionChange );
 
 		Object.defineProperties( this, {
-			position: {
+			id: { value: _object3DId ++ },
+			isObject3D: { value: true },
+ 			position: {
 				configurable: true,
 				enumerable: true,
 				value: position
@@ -85,7 +86,7 @@ class Object3D extends EventDispatcher {
 			scale: {
 				configurable: true,
 				enumerable: true,
-				value: scale
+				value: new Vector3( 1, 1, 1 )
 			},
 			modelViewMatrix: {
 				value: new Matrix4()
@@ -115,6 +116,18 @@ class Object3D extends EventDispatcher {
 
 		this.userData = {};
 
+
+	}
+
+	onRotationChange() {
+
+		this.quaternion.setFromEuler( rotation, false );
+
+	}
+
+	onQuaternionChange() {
+
+		this.rotation.setFromQuaternion( this.quaternion, undefined, false );
 
 	}
 
@@ -576,6 +589,9 @@ class Object3D extends EventDispatcher {
 
 	}
 
+	/**
+	 * @param {boolean=} force
+	 */
 	updateMatrixWorld( force ) {
 
 		if ( this.matrixAutoUpdate ) this.updateMatrix();
@@ -770,7 +786,7 @@ class Object3D extends EventDispatcher {
 
 		if ( this.material !== undefined ) {
 
-			if ( Array.isArray( this.materia ) ) {
+			if ( Array.isArray( this.material ) ) {
 
 				const uuids = [ ];
 
@@ -870,6 +886,12 @@ class Object3D extends EventDispatcher {
 
 	}
 
+	/**
+     * @param {Object3D} source
+     * @param {boolean=} recursive
+     * @this {Object3D}
+     * @return {Object3D}
+     */
 	copy( source, recursive = true ) {
 
 		this.name = source.name;
