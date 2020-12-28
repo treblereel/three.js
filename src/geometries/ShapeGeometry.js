@@ -28,7 +28,7 @@ class ShapeGeometry extends Geometry {
 
 	toJSON() {
 
-		const data = Geometry.prototype.toJSON.call( this );
+		const data = super.toJSON();
 
 		const shapes = this.parameters.shapes;
 

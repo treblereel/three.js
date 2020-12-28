@@ -162,7 +162,7 @@ class Path extends CurvePath {
 
 	copy( source ) {
 
-		CurvePath.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.currentPoint.copy( source.currentPoint );
 

@@ -7,7 +7,7 @@ class Light extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isLight', { value: true } );
+		Object.defineProperties( this, { isLight: { value: true } } );
 
 		this.type = 'Light';
 
@@ -18,7 +18,7 @@ class Light extends Object3D {
 
 	copy( source ) {
 
-		Object3D.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.color.copy( source.color );
 		this.intensity = source.intensity;
@@ -29,7 +29,7 @@ class Light extends Object3D {
 
 	toJSON( meta ) {
 
-		const data = Object3D.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		data.object.color = this.color.getHex();
 		data.object.intensity = this.intensity;

@@ -8,7 +8,7 @@ class DirectionalLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperty( this, 'isDirectionalLight', { value: true } );
+		Object.defineProperties( this, { isDirectionalLight: { value: true } } );
 
 		this.type = 'DirectionalLight';
 
@@ -24,7 +24,7 @@ class DirectionalLight extends Light {
 
 	copy( source ) {
 
-		Light.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.target = source.target.clone();
 

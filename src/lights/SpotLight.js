@@ -8,7 +8,7 @@ class SpotLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperty( this, 'isSpotLight', { value: true } );
+		Object.defineProperties( this, { isSpotLight: { value: true } } );
 
 		this.type = 'SpotLight';
 
@@ -44,7 +44,7 @@ class SpotLight extends Light {
 
 	copy( source ) {
 
-		Light.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.distance = source.distance;
 		this.angle = source.angle;

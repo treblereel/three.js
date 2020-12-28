@@ -47,8 +47,8 @@ class Object3D extends EventDispatcher {
 		var rotation = new Euler();
 		/** @const */
 		var quaternion = new Quaternion();
-
-		this.scale = new Vector3( 1, 1, 1 );
+		/** @const */
+		var scale = new Vector3( 1, 1, 1 );
 
 		function onRotationChange() {
 
@@ -86,7 +86,7 @@ class Object3D extends EventDispatcher {
 			scale: {
 				configurable: true,
 				enumerable: true,
-				value: new Vector3( 1, 1, 1 )
+				value: scale
 			},
 			modelViewMatrix: {
 				value: new Matrix4()
@@ -121,7 +121,7 @@ class Object3D extends EventDispatcher {
 
 	onRotationChange() {
 
-		this.quaternion.setFromEuler( rotation, false );
+		this.quaternion.setFromEuler( this.rotation, false );
 
 	}
 

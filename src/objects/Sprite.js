@@ -140,7 +140,7 @@ class Sprite extends Object3D {
 
 	copy( source ) {
 
-		Object3D.prototype.copy.call( this, source );
+		super.copy( source );
 
 		if ( source.center !== undefined ) this.center.copy( source.center );
 

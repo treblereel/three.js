@@ -6,7 +6,7 @@ class RectAreaLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperty( this, 'isRectAreaLight', { value: true } );
+		Object.defineProperties( this, { isRectAreaLight: { value: true } } );
 
 		this.type = 'RectAreaLight';
 
@@ -17,7 +17,7 @@ class RectAreaLight extends Light {
 
 	copy( source ) {
 
-		Light.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.width = source.width;
 		this.height = source.height;
@@ -28,7 +28,7 @@ class RectAreaLight extends Light {
 
 	toJSON( meta ) {
 
-		const data = Light.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		data.object.width = this.width;
 		data.object.height = this.height;

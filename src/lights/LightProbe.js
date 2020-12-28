@@ -7,7 +7,7 @@ class LightProbe extends Light {
 
 		super( undefined, intensity );
 
-		Object.defineProperty( this, 'isLightProbe', { value: true } );
+		Object.defineProperties( this, { isLightProbe: { value: true } } );
 
 		this.type = 'LightProbe';
 
@@ -17,7 +17,7 @@ class LightProbe extends Light {
 
 	copy( source ) {
 
-		Light.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.sh.copy( source.sh );
 
@@ -36,7 +36,7 @@ class LightProbe extends Light {
 
 	toJSON( meta ) {
 
-		const data = Light.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		data.object.sh = this.sh.toArray();
 

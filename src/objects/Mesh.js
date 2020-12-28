@@ -39,7 +39,7 @@ class Mesh extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isMesh', { value: true } );
+		Object.defineProperties( this, {isMesh: { value: true } } );
 
 		this.type = 'Mesh';
 
@@ -52,7 +52,7 @@ class Mesh extends Object3D {
 
 	copy( source ) {
 
-		Object3D.prototype.copy.call( this, source );
+		super.copy( source );
 
 		if ( source.morphTargetInfluences !== undefined ) {
 

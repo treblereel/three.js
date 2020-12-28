@@ -50,7 +50,7 @@ class Camera extends Object3D {
 
 	updateMatrixWorld( force ) {
 
-		Object3D.prototype.updateMatrixWorld.call( this, force );
+		super.updateMatrixWorld( force );
 
 		this.matrixWorldInverse.copy( this.matrixWorld ).invert();
 
@@ -58,7 +58,7 @@ class Camera extends Object3D {
 
 	updateWorldMatrix( updateParents, updateChildren ) {
 
-		Object3D.prototype.updateWorldMatrix.call( this, updateParents, updateChildren );
+		super.updateWorldMatrix( updateParents, updateChildren );
 
 		this.matrixWorldInverse.copy( this.matrixWorld ).invert();
 

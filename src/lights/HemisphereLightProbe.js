@@ -2,42 +2,40 @@ import { Color } from '../math/Color.js';
 import { Vector3 } from '../math/Vector3.js';
 import { LightProbe } from './LightProbe.js';
 
-function HemisphereLightProbe( skyColor, groundColor, intensity ) {
+class HemisphereLightProbe extends LightProbe {
 
-	LightProbe.call( this, undefined, intensity );
+	constructor( skyColor, groundColor, intensity ) {
 
-	const color1 = new Color().set( skyColor );
-	const color2 = new Color().set( groundColor );
+		super( undefined, intensity );
 
-	const sky = new Vector3( color1.r, color1.g, color1.b );
-	const ground = new Vector3( color2.r, color2.g, color2.b );
+		Object.defineProperties(this, { isHemisphereLightProbe: { value : true } } );
 
-	// without extra factor of PI in the shader, should = 1 / Math.sqrt( Math.PI );
-	const c0 = Math.sqrt( Math.PI );
-	const c1 = c0 * Math.sqrt( 0.75 );
+		const color1 = new Color().set( skyColor );
+		const color2 = new Color().set( groundColor );
 
-	this.sh.coefficients[ 0 ].copy( sky ).add( ground ).multiplyScalar( c0 );
-	this.sh.coefficients[ 1 ].copy( sky ).sub( ground ).multiplyScalar( c1 );
+		const sky = new Vector3( color1.r, color1.g, color1.b );
+		const ground = new Vector3( color2.r, color2.g, color2.b );
 
-}
+		// without extra factor of PI in the shader, should = 1 / Math.sqrt( Math.PI );
+		const c0 = Math.sqrt( Math.PI );
+		const c1 = c0 * Math.sqrt( 0.75 );
 
-HemisphereLightProbe.prototype = Object.assign( Object.create( LightProbe.prototype ), {
+		this.sh.coefficients[ 0 ].copy( sky ).add( ground ).multiplyScalar( c0 );
+		this.sh.coefficients[ 1 ].copy( sky ).sub( ground ).multiplyScalar( c1 );
 
-	constructor: HemisphereLightProbe,
+	}
 
-	isHemisphereLightProbe: true,
+	copy( source ) { // modifying colors not currently supported
 
-	copy: function ( source ) { // modifying colors not currently supported
-
-		LightProbe.prototype.copy.call( this, source );
+		super.copy( source );
 
 		return this;
 
-	},
+	}
 
-	toJSON: function ( meta ) {
+	toJSON( meta ) {
 
-		const data = LightProbe.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		// data.sh = this.sh.toArray(); // todo
 
@@ -45,6 +43,6 @@ HemisphereLightProbe.prototype = Object.assign( Object.create( LightProbe.protot
 
 	}
 
-} );
+}
 
 export { HemisphereLightProbe };

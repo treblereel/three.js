@@ -36,7 +36,7 @@ class SkinnedMesh extends Mesh {
 
 	copy( source ) {
 
-		Mesh.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.bindMode = source.bindMode;
 		this.bindMatrix.copy( source.bindMatrix );
@@ -106,7 +106,7 @@ class SkinnedMesh extends Mesh {
 
 	updateMatrixWorld( force ) {
 
-		Mesh.prototype.updateMatrixWorld.call( this, force );
+		super.updateMatrixWorld( force );
 
 		if ( this.bindMode === 'attached' ) {
 

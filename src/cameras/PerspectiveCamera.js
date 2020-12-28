@@ -31,7 +31,7 @@ class PerspectiveCamera extends Camera {
 
 	copy( source, recursive ) {
 
-		Camera.prototype.copy.call( this, source, recursive );
+		super.copy( source, recursive );
 
 		this.fov = source.fov;
 		this.zoom = source.zoom;
@@ -209,7 +209,7 @@ class PerspectiveCamera extends Camera {
 
 	toJSON( meta ) {
 
-		const data = Object3D.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		data.object.fov = this.fov;
 		data.object.zoom = this.zoom;

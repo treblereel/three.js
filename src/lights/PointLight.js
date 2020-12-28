@@ -7,7 +7,7 @@ class PointLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperty( this, 'isPointLight', { value: true } );
+		Object.defineProperties( this, { isPointLight: { value: true } } );
 
 
 		this.type = 'PointLight';
@@ -37,7 +37,7 @@ class PointLight extends Light {
 
 	copy( source ) {
 
-		Light.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.distance = source.distance;
 		this.decay = source.decay;

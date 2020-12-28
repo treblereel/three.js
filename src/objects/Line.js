@@ -19,7 +19,7 @@ class Line extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isLine', { value: true } );
+		Object.defineProperties( this, { isLine: { value: true } } );
 
 		this.type = 'Line';
 
@@ -32,7 +32,7 @@ class Line extends Object3D {
 
 	copy( source ) {
 
-		Object3D.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.material = source.material;
 		this.geometry = source.geometry;

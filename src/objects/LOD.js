@@ -31,7 +31,7 @@ class LOD extends Object3D {
 
 	copy( source ) {
 
-		Object3D.prototype.copy.call( this, source, false );
+		super.copy( source, false );
 
 		const levels = source.levels;
 
@@ -167,7 +167,7 @@ class LOD extends Object3D {
 
 	toJSON( meta ) {
 
-		const data = Object3D.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		if ( this.autoUpdate === false ) data.object.autoUpdate = false;
 

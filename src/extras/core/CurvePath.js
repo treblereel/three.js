@@ -192,7 +192,7 @@ class CurvePath extends Curve {
 
 	copy( source ) {
 
-		Curve.prototype.copy.call( this, source );
+		super.copy( source );
 
 		this.curves = [];
 
@@ -212,7 +212,7 @@ class CurvePath extends Curve {
 
 	toJSON() {
 
-		const data = Curve.prototype.toJSON.call( this );
+		const data = super.toJSON();
 
 		data.autoClose = this.autoClose;
 		data.curves = [];
@@ -230,7 +230,7 @@ class CurvePath extends Curve {
 
 	fromJSON( json ) {
 
-		Curve.prototype.fromJSON.call( this, json );
+		super.fromJSON( json );
 
 		this.autoClose = json.autoClose;
 		this.curves = [];

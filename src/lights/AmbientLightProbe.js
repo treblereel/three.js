@@ -18,7 +18,7 @@ class AmbientLightProbe extends LightProbe {
 
 	copy( source ) { // modifying color not currently supported
 
-		LightProbe.prototype.copy.call( this, source );
+		super.copy( source );
 
 		return this;
 
@@ -26,7 +26,7 @@ class AmbientLightProbe extends LightProbe {
 
 	toJSON( meta ) {
 
-		const data = LightProbe.prototype.toJSON.call( this, meta );
+		const data = super.toJSON( meta );
 
 		// data.sh = this.sh.toArray(); // todo
 
