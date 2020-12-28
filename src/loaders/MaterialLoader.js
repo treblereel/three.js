@@ -8,19 +8,18 @@ import { FileLoader } from './FileLoader.js';
 import { Loader } from './Loader.js';
 import * as Materials from '../materials/Materials.js';
 
-function MaterialLoader( manager ) {
 
-	Loader.call( this, manager );
+class MaterialLoader extends Loader {
 
-	this.textures = {};
+	constructor( manager ) {
 
-}
+		super( manager );
 
-MaterialLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
+		this.textures = {};
 
-	constructor: MaterialLoader,
+	}
 
-	load: function ( url, onLoad, onProgress, onError ) {
+	load( url, onLoad, onProgress, onError ) {
 
 		const scope = this;
 
@@ -52,9 +51,9 @@ MaterialLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
 		}, onProgress, onError );
 
-	},
+	}
 
-	parse: function ( json ) {
+	parse( json ) {
 
 		const textures = this.textures;
 
@@ -283,16 +282,16 @@ MaterialLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
 		return material;
 
-	},
+	}
 
-	setTextures: function ( value ) {
+	setTextures( value ) {
 
 		this.textures = value;
 		return this;
 
 	}
 
-} );
+}
 
 
 export { MaterialLoader };
