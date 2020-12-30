@@ -6,7 +6,11 @@ class OrthographicCamera extends Camera {
 
 		super();
 
-		Object.defineProperty( this, 'isOrthographicCamera', { value: true } );
+		//Object.defineProperty( this, 'isOrthographicCamera', { value: true } );
+
+		/** @const */
+		var isOrthographicCamera = true;
+		this.isOrthographicCamera = isOrthographicCamera;
 
 		this.type = 'OrthographicCamera';
 

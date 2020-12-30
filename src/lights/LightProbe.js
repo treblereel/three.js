@@ -7,7 +7,11 @@ class LightProbe extends Light {
 
 		super( undefined, intensity );
 
-		Object.defineProperties( this, { isLightProbe: { value: true } } );
+		//Object.defineProperties( this, { isLightProbe: { value: true } } );
+
+		/** @const */
+		var isLightProbe = true;
+		this.isLightProbe = isLightProbe;
 
 		this.type = 'LightProbe';
 

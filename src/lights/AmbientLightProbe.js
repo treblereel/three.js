@@ -7,7 +7,11 @@ class AmbientLightProbe extends LightProbe {
 
 		super( undefined, intensity );
 
-		Object.defineProperties( this, { isAmbientLightProbe: { value: true } } );
+		//Object.defineProperties( this, { isAmbientLightProbe: { value: true } } );
+
+		/** @const */
+		var isAmbientLightProbe = true;
+		this.isAmbientLightProbe = isAmbientLightProbe;
 
 		const color1 = new Color().set( color );
 

@@ -26,9 +26,17 @@ class BufferGeometry extends EventDispatcher {
 		super();
 
 		Object.defineProperties( this, {
-			isBufferGeometry: { value: true },
-			id: { value: _bufferGeometryId += 2 }
+			//isBufferGeometry: { value: true },
+			//id: { value: _bufferGeometryId += 2 }
 		} );
+
+		/** @const */
+		var id = _bufferGeometryId += 2;;
+		this.id = id;
+
+		/** @const */
+		var isBufferGeometry = true;
+		this.isBufferGeometry = isBufferGeometry;
 
 		this.uuid = MathUtils.generateUUID();
 

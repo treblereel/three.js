@@ -8,7 +8,11 @@ class SpotLightShadow extends LightShadow {
 
 		super( new PerspectiveCamera( 50, 1, 0.5, 500 ) );
 
-		Object.defineProperties( this, { isSpotLightShadow: { value: true } } );
+		//Object.defineProperties( this, { isSpotLightShadow: { value: true } } );
+
+		/** @const */
+		var isSpotLightShadow = true;
+		this.isSpotLightShadow = isSpotLightShadow;
 
 		this.focus = 1;
 

@@ -2,7 +2,11 @@ class Vector4 {
 
 	constructor( x = 0, y = 0, z = 0, w = 1 ) {
 
-		Object.defineProperties( this, { isVector4: { value: true } } );
+		//Object.defineProperties( this, { isVector4: { value: true } } );
+
+		/** @const */
+		var isVector4 = true;
+		this.isVector4 = isVector4;
 
 		this.x = x;
 		this.y = y;

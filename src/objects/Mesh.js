@@ -39,35 +39,44 @@ class Mesh extends Object3D {
 
 		super();
 
-		Object.defineProperties( this, {isMesh: { value: true } } );
+		//Object.defineProperties( this, { isMesh: { value: true } } );
+
+		/** @const */
+		var isMesh = true;
+		this.isMesh = isMesh;
 
 		this.type = 'Mesh';
 
 		this.geometry = geometry;
 		this.material = material;
+		this.morphTargetInfluences = undefined;
+		this.morphTargetDictionary = undefined;
 
 		this.updateMorphTargets();
 
 	}
 
+	/**
+	 * @return {!Mesh}
+	 */
 	copy( source ) {
 
 		super.copy( source );
 
-		if ( source.morphTargetInfluences !== undefined ) {
+		if ( (/** @type {Mesh} */ (source)).morphTargetInfluences !== undefined ) {
 
-			this.morphTargetInfluences = source.morphTargetInfluences.slice();
-
-		}
-
-		if ( source.morphTargetDictionary !== undefined ) {
-
-			this.morphTargetDictionary = Object.assign( {}, source.morphTargetDictionary );
+			(/** @type {Mesh} */ (this)).morphTargetInfluences = (/** @type {Mesh} */ (source)).morphTargetInfluences.slice();
 
 		}
 
-		this.material = source.material;
-		this.geometry = source.geometry;
+		if ( (/** @type {Mesh} */ (source)).morphTargetDictionary !== undefined ) {
+
+			(/** @type {Mesh} */ (this)).morphTargetDictionary = Object.assign( {}, (/** @type {Mesh} */ (source)).morphTargetDictionary );
+
+		}
+
+		this.material = (/** @type {Mesh} */ (source)).material;
+		this.geometry = (/** @type {Mesh} */ (source)).geometry;
 
 		return this;
 

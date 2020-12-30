@@ -8,6 +8,10 @@ class Bone extends Object3D {
 
 		Object.defineProperty( this, 'isBone', { value: true } );
 
+		/** @const */
+		var isBone =  true;
+		this.isBone = isBone;
+
 		this.type = 'Bone';
 
 	}

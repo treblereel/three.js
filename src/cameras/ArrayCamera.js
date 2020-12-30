@@ -6,7 +6,11 @@ class ArrayCamera extends PerspectiveCamera {
 
 		super();
 
-		Object.defineProperty( this, 'isArrayCamera', { value: true } );
+		//Object.defineProperty( this, 'isArrayCamera', { value: true } );
+
+		/** @const */
+		var isArrayCamera = true;
+		this.isArrayCamera = isArrayCamera;
 
 		this.cameras = array;
 

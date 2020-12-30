@@ -2,7 +2,11 @@ class Matrix3 {
 
 	constructor() {
 
-		Object.defineProperties( this, { isMatrix3: { value: true } } );
+		//Object.defineProperties( this, { isMatrix3: { value: true } } );
+
+		/** @const */
+		var isMatrix3 = true;
+		this.isMatrix3 = isMatrix3;
 
 		this.elements = [
 

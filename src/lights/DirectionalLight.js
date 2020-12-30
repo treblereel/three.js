@@ -8,7 +8,11 @@ class DirectionalLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperties( this, { isDirectionalLight: { value: true } } );
+		//Object.defineProperties( this, { isDirectionalLight: { value: true } } );
+
+		/** @const */
+		var isDirectionalLight = true;
+		this.isDirectionalLight = isDirectionalLight;
 
 		this.type = 'DirectionalLight';
 

@@ -5,7 +5,11 @@ class Vector3 {
 
 	constructor( x = 0, y = 0, z = 0 ) {
 
-		Object.defineProperties( this, { isVector3: { value: true } } );
+		//Object.defineProperties( this, { isVector3: { value: true } } );
+
+		/** @const */
+		var isVector3 = true;
+		this.isVector3 = isVector3;
 
 		this.x = x;
 		this.y = y;

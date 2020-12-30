@@ -7,7 +7,11 @@ class Light extends Object3D {
 
 		super();
 
-		Object.defineProperties( this, { isLight: { value: true } } );
+		//Object.defineProperties( this, { isLight: { value: true } } );
+
+		/** @const */
+		var isLight = true;
+		this.isLight = isLight;
 
 		this.type = 'Light';
 

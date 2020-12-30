@@ -17,7 +17,11 @@ class Points extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isPoints', { value: true } );
+		//Object.defineProperty( this, 'isPoints', { value: true } );
+
+		/** @const */
+		var isPoints = true;
+		this.isPoints = isPoints;
 
 		this.type = 'Points';
 

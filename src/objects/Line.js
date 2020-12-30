@@ -19,7 +19,11 @@ class Line extends Object3D {
 
 		super();
 
-		Object.defineProperties( this, { isLine: { value: true } } );
+		//Object.defineProperties( this, { isLine: { value: true } } );
+
+		/** @const */
+		var isLine = true;
+		this.isLine = isLine;
 
 		this.type = 'Line';
 

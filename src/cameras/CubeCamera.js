@@ -10,11 +10,11 @@ class CubeCamera extends Object3D {
 
 		super( );
 
-		Object.defineProperty( this, 'isCubeCamera', { value: true } );
+		//Object.defineProperties( this, { isCubeCamera: { value: true } } );
 
 		this.type = 'CubeCamera';
 
-		if ( renderTarget.isWebGLCubeRenderTarget !== true ) {
+		if ( (/** @type { {isWebGLCubeRenderTarget:boolean} }*/ (renderTarget)).isWebGLCubeRenderTarget !== true ) {
 
 			console.error( 'THREE.CubeCamera: The constructor now expects an instance of WebGLCubeRenderTarget as third parameter.' );
 			return;

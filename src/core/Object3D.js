@@ -6,6 +6,12 @@ import { Euler } from '../math/Euler.js';
 import { Layers } from './Layers.js';
 import { Matrix3 } from '../math/Matrix3.js';
 import { MathUtils } from '../math/MathUtils.js';
+import { Camera } from '../cameras/Camera.js';
+
+/* import { Mesh } from '../objects/Mesh.js';
+import { InstancedMesh } from '../objects/InstancedMesh.js';
+import { Points } from '../objects/Points.js';
+import { Line } from '../objects/Line.js'; */
 
 let _object3DId = 0;
 
@@ -41,16 +47,20 @@ class Object3D extends EventDispatcher {
 
 		this.up = Object3D.DefaultUp.clone();
 
-		/** @const */
+		this.position = new Vector3();
+		this.rotation = new Euler();
+
 		var position = new Vector3();
-		/** @const */
 		var rotation = new Euler();
-		/** @const */
 		var quaternion = new Quaternion();
-		/** @const */
 		var scale = new Vector3( 1, 1, 1 );
 
-		function onRotationChange() {
+		this.position = position;
+		this.rotation = rotation;
+		this.quaternion = quaternion;
+		this.scale = scale;
+
+		this.onRotationChange = function() {
 
 			quaternion.setFromEuler( rotation, false );
 
@@ -58,17 +68,17 @@ class Object3D extends EventDispatcher {
 
 		function onQuaternionChange() {
 
-			rotation.setFromQuaternion( quaternion, undefined, false );
+			this.rotation.setFromQuaternion( quaternion, undefined, false );
 
 		}
 
-		rotation._onChange( onRotationChange );
+		rotation._onChange( this.onRotationChange );
 		quaternion._onChange( onQuaternionChange );
 
 		Object.defineProperties( this, {
 			id: { value: _object3DId ++ },
 			isObject3D: { value: true },
- 			position: {
+/*  			position: {
 				configurable: true,
 				enumerable: true,
 				value: position
@@ -87,7 +97,7 @@ class Object3D extends EventDispatcher {
 				configurable: true,
 				enumerable: true,
 				value: scale
-			},
+			}, */
 			modelViewMatrix: {
 				value: new Matrix4()
 			},
@@ -116,18 +126,6 @@ class Object3D extends EventDispatcher {
 
 		this.userData = {};
 
-
-	}
-
-	onRotationChange() {
-
-		this.quaternion.setFromEuler( this.rotation, false );
-
-	}
-
-	onQuaternionChange() {
-
-		this.rotation.setFromQuaternion( this.quaternion, undefined, false );
 
 	}
 
@@ -280,7 +278,7 @@ class Object3D extends EventDispatcher {
 
 		// This method does not support objects having non-uniformly-scaled parent(s)
 
-		if ( x.isVector3 ) {
+		if ((/** @type { {isVector3:boolean} }*/ (x)).isVector3 ) {
 
 			_target.copy( x );
 
@@ -296,7 +294,7 @@ class Object3D extends EventDispatcher {
 
 		_position.setFromMatrixPosition( this.matrixWorld );
 
-		if ( this.isCamera || this.isLight ) {
+		if ( (/** @type { {isCamera:boolean} }*/ (this)).isCamera || (/** @type { {isLight:boolean} }*/ (this)).isLight ) {
 
 			_m1.lookAt( _position, _target, this.up );
 
@@ -717,11 +715,11 @@ class Object3D extends EventDispatcher {
 
 		// object specific properties
 
-		if ( this.isInstancedMesh ) {
+		if ( (/** @type { {isInstancedMesh:boolean} }*/ (this)).isInstancedMesh ) {
 
 			object.type = 'InstancedMesh';
-			object.count = this.count;
-			object.instanceMatrix = this.instanceMatrix.toJSON();
+			object.count = (/** @type { {count:number} }*/ (this)).count;
+			object.instanceMatrix = (/** @type { {toJSON:string} }*/ (this)).instanceMatrix.toJSON();
 
 		}
 
@@ -739,7 +737,7 @@ class Object3D extends EventDispatcher {
 
 		}
 
-		if ( this.isMesh || this.isLine || this.isPoints ) {
+		if ( (/** @type { {isMesh:boolean} }*/ (this)).isMesh || (/** @type { {isLine:boolean} }*/ (this)).isLine || (/** @type { {isPoints:boolean} }*/ (this)).isPoints ) {
 
 			object.geometry = serialize( meta.geometries, this.geometry );
 
@@ -769,7 +767,7 @@ class Object3D extends EventDispatcher {
 
 		}
 
-		if ( this.isSkinnedMesh ) {
+		if ( (/** @type { {isSkinnedMesh:boolean} }*/ (this)).isSkinnedMesh ) {
 
 			object.bindMode = this.bindMode;
 			object.bindMatrix = this.bindMatrix.toArray();
@@ -889,7 +887,6 @@ class Object3D extends EventDispatcher {
 	/**
      * @param {Object3D} source
      * @param {boolean=} recursive
-     * @this {Object3D}
      * @return {Object3D}
      */
 	copy( source, recursive = true ) {

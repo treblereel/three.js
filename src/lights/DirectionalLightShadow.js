@@ -7,7 +7,11 @@ class DirectionalLightShadow extends LightShadow {
 
 		super( new OrthographicCamera( - 5, 5, 5, - 5, 0.5, 500 ) );
 
-		Object.defineProperties( this, { isDirectionalLightShadow: { value: true } } );
+		//Object.defineProperties( this, { isDirectionalLightShadow: { value: true } } );
+
+		/** @const */
+		var isDirectionalLightShadow = true;
+		this.isDirectionalLightShadow = isDirectionalLightShadow;
 
 	}
 

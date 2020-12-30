@@ -11,7 +11,11 @@ class Box2 {
 	 */
 	constructor( min, max ) {
 
-		Object.defineProperties( this, { isBox2: { value: true } } );
+		//Object.defineProperties( this, { isBox2: { value: true } } );
+
+		/** @const */
+		var isBox2 = true;
+		this.isBox2 = isBox2;
 
 		this.min = ( min !== undefined ) ? min : new Vector2( + Infinity, + Infinity );
 		this.max = ( max !== undefined ) ? max : new Vector2( - Infinity, - Infinity );

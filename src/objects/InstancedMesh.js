@@ -15,8 +15,11 @@ class InstancedMesh extends Mesh {
 
 		super( geometry, material );
 
-		Object.defineProperty( this, 'isInstancedMesh', { value: true } );
+		//Object.defineProperty( this, 'isInstancedMesh', { value: true } );
 
+		/** @const */
+		var isInstancedMesh = true;
+		this.isInstancedMesh = isInstancedMesh;
 
 		this.instanceMatrix = new BufferAttribute( new Float32Array( count * 16 ), 16 );
 		this.instanceColor = null;

@@ -11,9 +11,17 @@ class Material extends EventDispatcher {
 		super();
 
 		Object.defineProperties( this, {
-			id: { value: materialId ++ },
-			isMaterial: { value: true }
+			//id: { value: materialId ++ },
+			//isMaterial: { value: true }
 		} );
+
+		/** @const */
+		var id =  materialId ++;
+		this.id = id;
+		
+		/** @const */
+		var isMaterial =  true;
+		this.isMaterial = isMaterial;
 
 		this.uuid = MathUtils.generateUUID();
 
@@ -283,7 +291,7 @@ class Material extends EventDispatcher {
 		// rotation (SpriteMaterial)
 		if ( this.rotation && this.rotation !== 0 ) data.rotation = this.rotation;
 
-		if ( this.polygonOffset === true ) data.polygonOffset = true;
+		if ( (/** @type { {polygonOffset:boolean} }*/ (this)).polygonOffset === true ) data.polygonOffset = true;
 		if ( this.polygonOffsetFactor !== 0 ) data.polygonOffsetFactor = this.polygonOffsetFactor;
 		if ( this.polygonOffsetUnits !== 0 ) data.polygonOffsetUnits = this.polygonOffsetUnits;
 
@@ -292,23 +300,23 @@ class Material extends EventDispatcher {
 		if ( this.gapSize !== undefined ) data.gapSize = this.gapSize;
 		if ( this.scale !== undefined ) data.scale = this.scale;
 
-		if ( this.dithering === true ) data.dithering = true;
+		if ( (/** @type { {dithering:boolean} }*/ (this)).dithering === true ) data.dithering = true;
 
-		if ( this.alphaTest > 0 ) data.alphaTest = this.alphaTest;
-		if ( this.premultipliedAlpha === true ) data.premultipliedAlpha = this.premultipliedAlpha;
+		if ( (/** @type { {alphaTest:number} }*/ (this)).alphaTest > 0 ) data.alphaTest = this.alphaTest;
+		if ( (/** @type { {premultipliedAlpha:boolean} }*/ (this)).premultipliedAlpha === true ) data.premultipliedAlpha = this.premultipliedAlpha;
 
-		if ( this.wireframe === true ) data.wireframe = this.wireframe;
-		if ( this.wireframeLinewidth > 1 ) data.wireframeLinewidth = this.wireframeLinewidth;
+		if ( (/** @type { {wireframe:boolean} }*/ (this)).wireframe === true ) data.wireframe = this.wireframe;
+		if ( (/** @type { {wireframeLinewidth:number} }*/ (this)).wireframeLinewidth > 1 ) data.wireframeLinewidth = this.wireframeLinewidth;
 		if ( this.wireframeLinecap !== 'round' ) data.wireframeLinecap = this.wireframeLinecap;
 		if ( this.wireframeLinejoin !== 'round' ) data.wireframeLinejoin = this.wireframeLinejoin;
 
-		if ( this.morphTargets === true ) data.morphTargets = true;
-		if ( this.morphNormals === true ) data.morphNormals = true;
-		if ( this.skinning === true ) data.skinning = true;
+		if ( (/** @type { {morphTargets:boolean} }*/ (this)).morphTargets === true ) data.morphTargets = true;
+		if ( (/** @type { {morphNormals:boolean} }*/ (this)).morphNormals === true ) data.morphNormals = true;
+		if ( (/** @type { {skinning:boolean} }*/ (this)).skinning === true ) data.skinning = true;
 
-		if ( this.visible === false ) data.visible = false;
+		if ( (/** @type { {visible:boolean} }*/ (this)).visible === false ) data.visible = false;
 
-		if ( this.toneMapped === false ) data.toneMapped = false;
+		if ( (/** @type { {toneMapped:boolean} }*/ (this)).toneMapped === false ) data.toneMapped = false;
 
 		if ( JSON.stringify( this.userData ) !== '{}' ) data.userData = this.userData;
 

@@ -8,7 +8,11 @@ class HemisphereLightProbe extends LightProbe {
 
 		super( undefined, intensity );
 
-		Object.defineProperties(this, { isHemisphereLightProbe: { value : true } } );
+		//Object.defineProperties(this, { isHemisphereLightProbe: { value : true } } );
+
+		/** @const */
+		var isHemisphereLightProbe = true;
+		this.isHemisphereLightProbe = isHemisphereLightProbe;
 
 		const color1 = new Color().set( skyColor );
 		const color2 = new Color().set( groundColor );

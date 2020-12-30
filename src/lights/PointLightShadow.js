@@ -10,7 +10,11 @@ class PointLightShadow extends LightShadow {
 
 		super( new PerspectiveCamera( 90, 1, 0.5, 500 ) );
 
-		Object.defineProperties( this, { isPointLightShadow:{ value: true } } );
+		//Object.defineProperties( this, { isPointLightShadow:{ value: true } } );
+
+		/** @const */
+		var isPointLightShadow = true;
+		this.isPointLightShadow = isPointLightShadow;
 
 		this._frameExtents = new Vector2( 4, 2 );
 

@@ -23,7 +23,11 @@ class BufferAttribute {
 
 		}
 
-		Object.defineProperty( this, 'isBufferAttribute', { value: true } );
+		//Object.defineProperty( this, 'isBufferAttribute', { value: true } );
+
+		/** @const */
+		var isBufferAttribute = true;
+		this.isBufferAttribute = isBufferAttribute;
 
 		this.name = '';
 

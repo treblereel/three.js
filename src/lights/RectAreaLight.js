@@ -6,7 +6,11 @@ class RectAreaLight extends Light {
 
 		super( color, intensity );
 
-		Object.defineProperties( this, { isRectAreaLight: { value: true } } );
+		//Object.defineProperties( this, { isRectAreaLight: { value: true } } );
+
+		/** @const */
+		var isRectAreaLight = true;
+		this.isRectAreaLight = isRectAreaLight;
 
 		this.type = 'RectAreaLight';
 

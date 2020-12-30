@@ -16,10 +16,12 @@ class InstancedBufferAttribute extends BufferAttribute {
 
 		super( array, itemSize, normalized );
 
-		Object.defineProperty( this, 'isInstancedBufferAttribute', { value: true } );
+		//Object.defineProperty( this, 'isInstancedBufferAttribute', { value: true } );
 
-		this.meshPerAttribute = meshPerAttribute || 1;
-
+		/** @const */
+		var isInstancedBufferAttribute = true;
+		this.isInstancedBufferAttribute = isInstancedBufferAttribute;
+		
 	}
 
 	copy( source ) {

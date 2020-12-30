@@ -14,7 +14,11 @@ class SphericalHarmonics3 {
 
 	constructor() {
 
-		Object.defineProperty( this, 'isSphericalHarmonics3', { value: true } );
+		//Object.defineProperty( this, 'isSphericalHarmonics3', { value: true } );
+
+		/** @const */
+		var isSphericalHarmonics3 = true;
+		this.isSphericalHarmonics3 = isSphericalHarmonics3;
 
 		this.coefficients = [];
 

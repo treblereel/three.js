@@ -9,7 +9,11 @@ class Box3 {
 	 */
 	constructor( min, max ) {
 
-		Object.defineProperties( this, { isBox3: { value: true } } );
+		//Object.defineProperties( this, { isBox3: { value: true } } );
+		
+		/** @const */
+		var isBox3 = true;
+		this.isBox3 = isBox3;
 
 		this.min = ( min !== undefined ) ? min : new Vector3( + Infinity, + Infinity, + Infinity );
 		this.max = ( max !== undefined ) ? max : new Vector3( - Infinity, - Infinity, - Infinity );

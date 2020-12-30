@@ -4,7 +4,11 @@ class Matrix4 {
 
 	constructor() {
 
-		Object.defineProperties( this, { isMatrix4: { value: true } } );
+		//Object.defineProperties( this, { isMatrix4: { value: true } } );
+
+		/** @const */
+		var isMatrix4 = true;
+		this.isMatrix4 = isMatrix4;
 
 		this.elements = [
 
@@ -322,6 +326,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Matrix4} m 
+	 * @param {Matrix4=} n
+	 * @return {Matrix4} 
+	 */
 	multiply( m, n ) {
 
 		if ( n !== undefined ) {

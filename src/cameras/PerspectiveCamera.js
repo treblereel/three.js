@@ -8,7 +8,11 @@ class PerspectiveCamera extends Camera {
 
 		super();
 
-		Object.defineProperty( this, 'isPerspectiveCamera', { value: true } );
+		//Object.defineProperty( this, 'isPerspectiveCamera', { value: true } );
+
+		/** @const */
+		var isPerspectiveCamera = true;
+		this.isPerspectiveCamera = isPerspectiveCamera;
 
 		this.type = 'PerspectiveCamera';
 

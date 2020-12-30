@@ -1,10 +1,11 @@
 import { DefaultLoadingManager } from './LoadingManager.js';
+import { LoadingManager } from './LoadingManager.js';
 
 class Loader {
 
 	/**
 	 * 
-	 * @param {DefaultLoadingManager} manager 
+	 * @param {LoadingManager=} manager 
 	 */
 	constructor( manager ) {
 

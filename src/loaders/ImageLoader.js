@@ -9,6 +9,14 @@ class ImageLoader extends Loader {
 
 	}
 
+	/**
+	 * 
+	 * @param {string} url 
+	 * @param {function(HTMLImageElement)=} onLoad 
+	 * @param {function=} onProgress 
+	 * @param {function=} onError 
+	 * @return {HTMLImageElement}
+	 */
 	load( url, onLoad, onProgress, onError ) {
 
 		if ( this.path !== undefined ) url = this.path + url;

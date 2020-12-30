@@ -4,7 +4,11 @@ class Quaternion {
 
 	constructor( x = 0, y = 0, z = 0, w = 1 ) {
 
-		Object.defineProperties( this, { isQuaternion: { value: true } } );
+		//Object.defineProperties( this, { isQuaternion: { value: true } } );
+
+		/** @const */
+		var isQuaternion = true;
+		this.isQuaternion = isQuaternion;
 
 		this._x = x;
 		this._y = y;
@@ -481,6 +485,12 @@ class Quaternion {
 
 	}
 
+	/**
+	 * 
+	 * @param {Quaternion} q 
+	 * @param {Quaternion=} p 
+	 * @return {Quaternion}
+	 */
 	multiply( q, p ) {
 
 		if ( p !== undefined ) {
@@ -500,6 +510,12 @@ class Quaternion {
 
 	}
 
+	/**
+	 * 
+	 * @param {Quaternion} a
+	 * @param {Quaternion} b 
+	 * @return {Quaternion}
+	 */
 	multiplyQuaternions( a, b ) {
 
 		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm

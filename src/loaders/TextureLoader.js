@@ -2,15 +2,27 @@ import { RGBAFormat, RGBFormat } from '../constants.js';
 import { ImageLoader } from './ImageLoader.js';
 import { Texture } from '../textures/Texture.js';
 import { Loader } from './Loader.js';
+import { LoadingManager } from './LoadingManager.js';
 
 class TextureLoader extends Loader {
 
+	/**
+	 * @param {LoadingManager=} manager 
+	 */
 	constructor( manager ) {
 
 		super( manager );
 
 	}
 
+	/**
+	 * 
+	 * @param {string} url 
+	 * @param {function(Texture)=} onLoad 
+	 * @param {function(Texture)=} onProgress 
+	 * @param {function(Texture)=} onError 
+	 * @return {Texture}
+	 */
 	load( url, onLoad, onProgress, onError ) {
 
 		const texture = new Texture();

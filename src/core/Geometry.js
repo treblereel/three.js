@@ -21,9 +21,18 @@ class Geometry extends EventDispatcher {
 
 		super();
 
-		Object.defineProperty( this, 'isGeometry', { value: true } );
+		//Object.defineProperty( this, 'isGeometry', { value: true } );
 
-		Object.defineProperty( this, 'id', { value: _geometryId += 2 } );
+		//Object.defineProperty( this, 'id', { value: _geometryId += 2 } );
+
+
+		/** @const */
+		var isGeometry = true;
+		this.isGeometry = isGeometry;
+		
+		/** @const */
+		var id =  _geometryId += 2;
+		this.id = id;
 
 		this.uuid = MathUtils.generateUUID();
 

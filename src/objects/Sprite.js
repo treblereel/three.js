@@ -32,7 +32,11 @@ class Sprite extends Object3D {
 
 		super();
 
-		Object.defineProperty( this, 'isSprite', { value: true } );
+		//Object.defineProperty( this, 'isSprite', { value: true } );
+
+		/** @const */
+		var isSprite =  true;
+		this.isSprite = isSprite;
 
 
 		this.type = 'Sprite';
