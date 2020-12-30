@@ -48,7 +48,7 @@ function createCanvasElement() {
 
 }
 
-function WebGLRenderer(/** @type {{antialias:boolean}} */ parameters ) {
+function WebGLRenderer( parameters ) {
 
 	parameters = parameters || {};
 
