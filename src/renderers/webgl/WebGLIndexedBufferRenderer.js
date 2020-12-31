@@ -1,46 +1,56 @@
-function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
+class WebGLIndexedBufferRenderer {
 
-	const isWebGL2 = capabilities.isWebGL2;
+	constructor( gl, extensions, info, capabilities ) {
 
-	let mode;
+		this.gl = gl;
+		this.extensions = extensions;
+		this.info = info;
+		this.capabilities = capabilities;
 
-	function setMode( value ) {
+		this.isWebGL2 = capabilities.isWebGL2;
 
-		mode = value;
+		this.mode = null;
 
-	}
-
-	let type, bytesPerElement;
-
-	function setIndex( value ) {
-
-		type = value.type;
-		bytesPerElement = value.bytesPerElement;
+		this.type = null;
+		this.bytesPerElement = null;
 
 	}
 
-	function render( start, count ) {
+	setMode( value ) {
 
-		gl.drawElements( mode, count, type, start * bytesPerElement );
-
-		info.update( count, mode, 1 );
+		this.mode = value;
 
 	}
 
-	function renderInstances( start, count, primcount ) {
+	setIndex( value ) {
+
+		this.type = value.type;
+		this.bytesPerElement = value.bytesPerElement;
+
+	}
+
+	 render( start, count ) {
+
+		this.gl.drawElements( this.mode, count, this.type, start * this.bytesPerElement );
+
+		this.info.update( count, this.mode, 1 );
+
+	}
+
+	renderInstances( start, count, primcount ) {
 
 		if ( primcount === 0 ) return;
 
 		let extension, methodName;
 
-		if ( isWebGL2 ) {
+		if ( this.isWebGL2 ) {
 
-			extension = gl;
+			extension = this.gl;
 			methodName = 'drawElementsInstanced';
 
 		} else {
 
-			extension = extensions.get( 'ANGLE_instanced_arrays' );
+			extension = this.extensions.get( 'ANGLE_instanced_arrays' );
 			methodName = 'drawElementsInstancedANGLE';
 
 			if ( extension === null ) {
@@ -52,18 +62,11 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 
 		}
 
-		extension[ methodName ]( mode, count, type, start * bytesPerElement, primcount );
+		extension[ methodName ]( this.mode, count, this.type, start * this.bytesPerElement, primcount );
 
-		info.update( count, mode, primcount );
+		this.info.update( count, this.mode, primcount );
 
 	}
-
-	//
-
-	this.setMode = setMode;
-	this.setIndex = setIndex;
-	this.render = render;
-	this.renderInstances = renderInstances;
 
 }
 
