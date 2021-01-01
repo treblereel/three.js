@@ -1,17 +1,26 @@
-function WebGLObjects( gl, geometries, attributes, info ) {
+class WebGLObjects {
 
-	let updateMap = new WeakMap();
 
-	function update( object ) {
+	constructor( gl, geometries, attributes, info ) {
 
-		const frame = info.render.frame;
+		this.gl = gl;
+		this.geometries = geometries;
+		this.attributes = attributes;
+		this.info = info;
+
+		this.updateMap = new WeakMap();
+	}
+
+	update( object ) {
+
+		const frame = this.info.render.frame;
 
 		const geometry = object.geometry;
-		const buffergeometry = geometries.get( object, geometry );
+		const buffergeometry = this.geometries.get( object, geometry );
 
 		// Update once per frame
 
-		if ( updateMap.get( buffergeometry ) !== frame ) {
+		if ( this.updateMap.get( buffergeometry ) !== frame ) {
 
 			if ( geometry.isGeometry ) {
 
@@ -19,25 +28,25 @@ function WebGLObjects( gl, geometries, attributes, info ) {
 
 			}
 
-			geometries.update( buffergeometry );
+			this.geometries.update( buffergeometry );
 
-			updateMap.set( buffergeometry, frame );
+			this.updateMap.set( buffergeometry, frame );
 
 		}
 
 		if ( object.isInstancedMesh ) {
 
-			if ( object.hasEventListener( 'dispose', onInstancedMeshDispose ) === false ) {
+			if ( object.hasEventListener( 'dispose', this._onInstancedMeshDispose ) === false ) {
 
-				object.addEventListener( 'dispose', onInstancedMeshDispose );
+				object.addEventListener( 'dispose', this._onInstancedMeshDispose );
 
 			}
 
-			attributes.update( object.instanceMatrix, gl.ARRAY_BUFFER );
+			this.attributes.update( object.instanceMatrix, this.gl.ARRAY_BUFFER );
 
 			if ( object.instanceColor !== null ) {
 
-				attributes.update( object.instanceColor, gl.ARRAY_BUFFER );
+				this.attributes.update( object.instanceColor, this.gl.ARRAY_BUFFER );
 
 			}
 
@@ -47,30 +56,23 @@ function WebGLObjects( gl, geometries, attributes, info ) {
 
 	}
 
-	function dispose() {
+	dispose() {
 
-		updateMap = new WeakMap();
+		this.updateMap = new WeakMap();
 
 	}
 
-	function onInstancedMeshDispose( event ) {
+	_onInstancedMeshDispose( event ) {
 
 		const instancedMesh = event.target;
 
-		instancedMesh.removeEventListener( 'dispose', onInstancedMeshDispose );
+		instancedMesh.removeEventListener( 'dispose', this.onInstancedMeshDispose );
 
-		attributes.remove( instancedMesh.instanceMatrix );
+		this.attributes.remove( instancedMesh.instanceMatrix );
 
-		if ( instancedMesh.instanceColor !== null ) attributes.remove( instancedMesh.instanceColor );
+		if ( instancedMesh.instanceColor !== null ) this.attributes.remove( instancedMesh.instanceColor );
 
 	}
-
-	return {
-
-		update: update,
-		dispose: dispose
-
-	};
 
 }
 

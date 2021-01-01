@@ -1,37 +1,47 @@
-function WebGLBufferRenderer( gl, extensions, info, capabilities ) {
+class WebGLBufferRenderer {
 
-	const isWebGL2 = capabilities.isWebGL2;
+	constructor( gl, extensions, info, capabilities ) {
 
-	let mode;
+		this.gl = gl;
+		this.extensions = extensions;
+		this.info = info;
+		this.capabilities = capabilities;
 
-	function setMode( value ) {
+		const isWebGL2 = capabilities.isWebGL2;
+		this.isWebGL2 = isWebGL2;
 
-		mode = value;
-
-	}
-
-	function render( start, count ) {
-
-		gl.drawArrays( mode, start, count );
-
-		info.update( count, mode, 1 );
+		this.mode = undefined;
 
 	}
 
-	function renderInstances( start, count, primcount ) {
+	setMode( value ) {
+
+		this.mode = value;
+
+	}
+
+	render( start, count ) {
+
+		this.gl.drawArrays( this.mode, start, count );
+
+		this.info.update( count, this.mode, 1 );
+
+	}
+
+	renderInstances( start, count, primcount ) {
 
 		if ( primcount === 0 ) return;
 
 		let extension, methodName;
 
-		if ( isWebGL2 ) {
+		if ( this.isWebGL2 ) {
 
-			extension = gl;
+			extension = this.gl;
 			methodName = 'drawArraysInstanced';
 
 		} else {
 
-			extension = extensions.get( 'ANGLE_instanced_arrays' );
+			extension = this.extensions.get( 'ANGLE_instanced_arrays' );
 			methodName = 'drawArraysInstancedANGLE';
 
 			if ( extension === null ) {
@@ -43,17 +53,11 @@ function WebGLBufferRenderer( gl, extensions, info, capabilities ) {
 
 		}
 
-		extension[ methodName ]( mode, start, count, primcount );
+		extension[ methodName ]( this.mode, start, count, primcount );
 
-		info.update( count, mode, primcount );
+		this.info.update( count, this.mode, primcount );
 
 	}
-
-	//
-
-	this.setMode = setMode;
-	this.render = render;
-	this.renderInstances = renderInstances;
 
 }
 
