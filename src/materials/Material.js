@@ -1,91 +1,154 @@
 import { EventDispatcher } from '../core/EventDispatcher.js';
 import { FrontSide, FlatShading, NormalBlending, LessEqualDepth, AddEquation, OneMinusSrcAlphaFactor, SrcAlphaFactor, AlwaysStencilFunc, KeepStencilOp } from '../constants.js';
 import { MathUtils } from '../math/MathUtils.js';
+import { Vector2 } from '../math/Vector2.js';
 
 let materialId = 0;
 
-function Material() {
+class Material extends EventDispatcher {
 
-	Object.defineProperty( this, 'id', { value: materialId ++ } );
+	constructor() {
 
-	this.uuid = MathUtils.generateUUID();
+		super();
 
-	this.name = '';
-	this.type = 'Material';
+	//Object.defineProperty( this, 'id', { value: materialId ++ } );
 
-	this.fog = true;
+		this.id =  materialId ++;
 
-	this.blending = NormalBlending;
-	this.side = FrontSide;
-	this.vertexColors = false;
+		this.uuid = MathUtils.generateUUID();
 
-	this.opacity = 1;
-	this.transparent = false;
+		this.name = '';
+		this.type = 'Material';
 
-	this.blendSrc = SrcAlphaFactor;
-	this.blendDst = OneMinusSrcAlphaFactor;
-	this.blendEquation = AddEquation;
-	this.blendSrcAlpha = null;
-	this.blendDstAlpha = null;
-	this.blendEquationAlpha = null;
+		this.fog = true;
 
-	this.depthFunc = LessEqualDepth;
-	this.depthTest = true;
-	this.depthWrite = true;
+		this.blending = NormalBlending;
+		this.side = FrontSide;
+		this.vertexColors = false;
 
-	this.stencilWriteMask = 0xff;
-	this.stencilFunc = AlwaysStencilFunc;
-	this.stencilRef = 0;
-	this.stencilFuncMask = 0xff;
-	this.stencilFail = KeepStencilOp;
-	this.stencilZFail = KeepStencilOp;
-	this.stencilZPass = KeepStencilOp;
-	this.stencilWrite = false;
+		this.opacity = 1;
+		this.transparent = false;
 
-	this.clippingPlanes = null;
-	this.clipIntersection = false;
-	this.clipShadows = false;
+		this.blendSrc = SrcAlphaFactor;
+		this.blendDst = OneMinusSrcAlphaFactor;
+		this.blendEquation = AddEquation;
+		this.blendSrcAlpha = null;
+		this.blendDstAlpha = null;
+		this.blendEquationAlpha = null;
 
-	this.shadowSide = null;
+		this.depthFunc = LessEqualDepth;
+		this.depthTest = true;
+		this.depthWrite = true;
 
-	this.colorWrite = true;
+		this.stencilWriteMask = 0xff;
+		this.stencilFunc = AlwaysStencilFunc;
+		this.stencilRef = 0;
+		this.stencilFuncMask = 0xff;
+		this.stencilFail = KeepStencilOp;
+		this.stencilZFail = KeepStencilOp;
+		this.stencilZPass = KeepStencilOp;
+		this.stencilWrite = false;
 
-	this.precision = null; // override the renderer's default precision for this material
+		this.clippingPlanes = null;
+		this.clipIntersection = false;
+		this.clipShadows = false;
 
-	this.polygonOffset = false;
-	this.polygonOffsetFactor = 0;
-	this.polygonOffsetUnits = 0;
+		this.shadowSide = null;
 
-	this.dithering = false;
+		this.colorWrite = true;
 
-	this.alphaTest = 0;
-	this.premultipliedAlpha = false;
+		this.precision = null; // override the renderer's default precision for this material
 
-	this.visible = true;
+		this.polygonOffset = false;
+		this.polygonOffsetFactor = 0;
+		this.polygonOffsetUnits = 0;
 
-	this.toneMapped = true;
+		this.dithering = false;
 
-	this.userData = {};
+		this.alphaTest = 0;
+		this.premultipliedAlpha = false;
 
-	this.version = 0;
+		this.visible = true;
 
-}
+		this.toneMapped = true;
 
-Material.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
+		this.userData = {};
 
-	constructor: Material,
+		this.version = 0;
 
-	isMaterial: true,
+		this.isMaterial = true;
 
-	onBeforeCompile: function ( /* shaderobject, renderer */ ) {},
 
-	customProgramCacheKey: function () {
+		//needed by closure
+		this.flatShading = undefined;
+		this.color = undefined;
+		this.roughness = undefined;
+		this.metalness = undefined;
+		this.sheen = undefined;
+		this.emissive = undefined;
+		this.emissiveIntensity = undefined;
+		this.specular = undefined;
+		this.shininess = undefined;
+		this.clearcoat = undefined;
+		this.clearcoatRoughness = undefined;
+		this.clearcoatMap = undefined;
+		this.clearcoatRoughnessMap = undefined;
+		this.clearcoatNormalMap = undefined;
+		this.clearcoatNormalMap = undefined;
+		/** @type {Vector2} */
+		this.clearcoatNormalScale;
+		this.map = undefined;
+		this.matcap = undefined;
+		this.alphaMap = undefined;
+		this.lightMap = undefined;
+		this.lightMapIntensity = undefined;
+		this.aoMap = undefined;
+		this.aoMapIntensity = undefined;
+		this.bumpMap = undefined;
+		this.bumpScale = undefined;
+		this.normalMap = undefined;
+		this.normalMapType = undefined;
+		/** @type {Vector2} */
+		this.normalScale;
+		this.displacementMap = undefined;
+		this.displacementScale = undefined;
+		this.displacementBias = undefined;
+		this.roughnessMap = undefined;
+		this.metalnessMap = undefined;
+		this.emissiveMap = undefined;
+		this.envMap = undefined;
+		this.reflectivity = undefined;
+		this.refractionRatio = undefined;
+		this.combine = undefined;
+		this.envMapIntensity = undefined;
+		this.gradientMap = undefined;
+		this.size = undefined;
+		this.sizeAttenuation = undefined;
+		this.rotation = undefined;
+		this.linewidth = undefined;
+		this.dashSize = undefined;
+		this.gapSize = undefined;
+		this.scale = undefined;
+		this.wireframe = undefined;
+		/** @type {number} */ this.wireframeLinewidth;
+		this.wireframeLinecap = undefined;
+		this.wireframeLinejoin = undefined;
+		this.morphTargets = undefined;
+		this.morphNormals = undefined;
+		this.skinning = undefined;
+		this.specularMap = undefined;
+
+	}
+
+	onBeforeCompile( /* shaderobject, renderer */ ) {}
+
+	customProgramCacheKey() {
 
 		return this.onBeforeCompile.toString();
 
-	},
+	}
 
-	setValues: function ( values ) {
+	setValues( values ) {
 
 		if ( values === undefined ) return;
 
@@ -134,9 +197,13 @@ Material.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 
 		}
 
-	},
+	}
 
-	toJSON: function ( meta ) {
+	/**
+	* @param {Object=} meta
+	* @suppress{checkTypes}
+	*/
+	toJSON( meta ) {
 
 		const isRoot = ( meta === undefined || typeof meta === 'string' );
 
@@ -347,15 +414,15 @@ Material.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 
 		return data;
 
-	},
+	}
 
-	clone: function () {
+	clone() {
 
 		return new this.constructor().copy( this );
 
-	},
+	}
 
-	copy: function ( source ) {
+	copy( source ) {
 
 		this.name = source.name;
 
@@ -431,19 +498,19 @@ Material.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 
 		return this;
 
-	},
+	}
 
-	dispose: function () {
+	dispose() {
 
 		this.dispatchEvent( { type: 'dispose' } );
 
 	}
 
-} );
+}
 
 Object.defineProperty( Material.prototype, 'needsUpdate', {
 
-	set: function ( value ) {
+	set( value ) {
 
 		if ( value === true ) this.version ++;
 

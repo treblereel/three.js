@@ -1,42 +1,54 @@
-function WebGLInfo( gl ) {
+class WebGLInfo {
 
-	const memory = {
-		geometries: 0,
-		textures: 0
-	};
+	constructor( gl ) {
 
-	const render = {
-		frame: 0,
-		calls: 0,
-		triangles: 0,
-		points: 0,
-		lines: 0
-	};
+		this.gl = gl;
 
-	function update( count, mode, instanceCount ) {
+		const memory = {
+			geometries: 0,
+			textures: 0
+		};
 
-		render.calls ++;
+		const render = {
+			frame: 0,
+			calls: 0,
+			triangles: 0,
+			points: 0,
+			lines: 0
+		};
+
+		this.memory = memory;
+		this.render = render;
+
+		this.programs = null;
+		this.autoReset = true;
+
+	}
+
+	update( count, mode, instanceCount ) {
+
+		this.render.calls ++;
 
 		switch ( mode ) {
 
-			case gl.TRIANGLES:
-				render.triangles += instanceCount * ( count / 3 );
+			case this.gl.TRIANGLES:
+				this.render.triangles += instanceCount * ( count / 3 );
 				break;
 
-			case gl.LINES:
-				render.lines += instanceCount * ( count / 2 );
+			case this.gl.LINES:
+				this.render.lines += instanceCount * ( count / 2 );
 				break;
 
-			case gl.LINE_STRIP:
-				render.lines += instanceCount * ( count - 1 );
+			case this.gl.LINE_STRIP:
+				this.render.lines += instanceCount * ( count - 1 );
 				break;
 
-			case gl.LINE_LOOP:
-				render.lines += instanceCount * count;
+			case this.gl.LINE_LOOP:
+				this.render.lines += instanceCount * count;
 				break;
 
-			case gl.POINTS:
-				render.points += instanceCount * count;
+			case this.gl.POINTS:
+				this.render.points += instanceCount * count;
 				break;
 
 			default:
@@ -47,24 +59,15 @@ function WebGLInfo( gl ) {
 
 	}
 
-	function reset() {
+	reset() {
 
-		render.frame ++;
-		render.calls = 0;
-		render.triangles = 0;
-		render.points = 0;
-		render.lines = 0;
+		this.render.frame ++;
+		this.render.calls = 0;
+		this.render.triangles = 0;
+		this.render.points = 0;
+		this.render.lines = 0;
 
 	}
-
-	return {
-		memory: memory,
-		render: render,
-		programs: null,
-		autoReset: true,
-		reset: reset,
-		update: update
-	};
 
 }
 

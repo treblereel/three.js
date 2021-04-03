@@ -149,6 +149,12 @@ class Vector2 {
 
 	}
 
+		/**
+	 *
+	 * @param {Vector2} v
+	 * @param {Vector2=} w
+ 	 * @return {Vector2}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -432,6 +438,13 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {Object} attribute
+	 * @param {number} index
+	 * @param {number=} offset
+	 * @returns {Vector2}
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {
@@ -440,8 +453,8 @@ class Vector2 {
 
 		}
 
-		this.x = attribute.getX( index );
-		this.y = attribute.getY( index );
+		this.x = ( /** @type {{ getX : function(number): number}} */ (attribute)).getX( index );
+		this.y = ( /** @type {{ getY : function(number): number}} */ (attribute)).getY( index );
 
 		return this;
 

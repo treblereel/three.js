@@ -23,7 +23,9 @@ class Texture extends EventDispatcher {
 
 		super();
 
-		Object.defineProperty( this, 'id', { value: textureId ++ } );
+		//Object.defineProperty( this, 'id', { value: textureId ++ } );
+
+		this.id = textureId ++;
 
 		this.uuid = MathUtils.generateUUID();
 
@@ -121,7 +123,13 @@ class Texture extends EventDispatcher {
 
 	}
 
+	/**
+	 * @param {Object= } meta 
+   	 * @suppress{checkTypes}
+	 */
 	toJSON( meta ) {
+
+		//console.log('Texture toJSON' + meta);
 
 		const isRootObject = ( meta === undefined || typeof meta === 'string' );
 

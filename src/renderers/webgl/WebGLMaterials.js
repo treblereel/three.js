@@ -1,8 +1,13 @@
 import { BackSide } from '../../constants.js';
 
-function WebGLMaterials( properties ) {
+class WebGLMaterials {
 
-	function refreshFogUniforms( uniforms, fog ) {
+
+	constructor( properties ) {
+		this.properties = properties;
+	}
+
+	refreshFogUniforms( uniforms, fog ) {
 
 		uniforms.fogColor.value.copy( fog.color );
 
@@ -19,78 +24,78 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshMaterialUniforms( uniforms, material, pixelRatio, height ) {
+	refreshMaterialUniforms( uniforms, material, pixelRatio, height ) {
 
 		if ( material.isMeshBasicMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
 
 		} else if ( material.isMeshLambertMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsLambert( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsLambert( uniforms, material );
 
 		} else if ( material.isMeshToonMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsToon( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsToon( uniforms, material );
 
 		} else if ( material.isMeshPhongMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsPhong( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsPhong( uniforms, material );
 
 		} else if ( material.isMeshStandardMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
 
 			if ( material.isMeshPhysicalMaterial ) {
 
-				refreshUniformsPhysical( uniforms, material );
+				this.refreshUniformsPhysical( uniforms, material );
 
 			} else {
 
-				refreshUniformsStandard( uniforms, material );
+				this.refreshUniformsStandard( uniforms, material );
 
 			}
 
 		} else if ( material.isMeshMatcapMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsMatcap( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsMatcap( uniforms, material );
 
 		} else if ( material.isMeshDepthMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsDepth( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsDepth( uniforms, material );
 
 		} else if ( material.isMeshDistanceMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsDistance( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsDistance( uniforms, material );
 
 		} else if ( material.isMeshNormalMaterial ) {
 
-			refreshUniformsCommon( uniforms, material );
-			refreshUniformsNormal( uniforms, material );
+			this.refreshUniformsCommon( uniforms, material );
+			this.refreshUniformsNormal( uniforms, material );
 
 		} else if ( material.isLineBasicMaterial ) {
 
-			refreshUniformsLine( uniforms, material );
+			this.refreshUniformsLine( uniforms, material );
 
 			if ( material.isLineDashedMaterial ) {
 
-				refreshUniformsDash( uniforms, material );
+				this.refreshUniformsDash( uniforms, material );
 
 			}
 
 		} else if ( material.isPointsMaterial ) {
 
-			refreshUniformsPoints( uniforms, material, pixelRatio, height );
+			this.refreshUniformsPoints( uniforms, material, pixelRatio, height );
 
 		} else if ( material.isSpriteMaterial ) {
 
-			refreshUniformsSprites( uniforms, material );
+			this.refreshUniformsSprites( uniforms, material );
 
 		} else if ( material.isShadowMaterial ) {
 
@@ -105,7 +110,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsCommon( uniforms, material ) {
+	refreshUniformsCommon( uniforms, material ) {
 
 		uniforms.opacity.value = material.opacity;
 
@@ -139,7 +144,7 @@ function WebGLMaterials( properties ) {
 
 		}
 
-		const envMap = properties.get( material ).envMap;
+		const envMap = this.properties.get( material ).envMap;
 
 		if ( envMap ) {
 
@@ -150,7 +155,7 @@ function WebGLMaterials( properties ) {
 			uniforms.reflectivity.value = material.reflectivity;
 			uniforms.refractionRatio.value = material.refractionRatio;
 
-			const maxMipLevel = properties.get( envMap ).__maxMipLevel;
+			const maxMipLevel = this.properties.get( envMap ).__maxMipLevel;
 
 			if ( maxMipLevel !== undefined ) {
 
@@ -296,14 +301,14 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsLine( uniforms, material ) {
+	refreshUniformsLine( uniforms, material ) {
 
 		uniforms.diffuse.value.copy( material.color );
 		uniforms.opacity.value = material.opacity;
 
 	}
 
-	function refreshUniformsDash( uniforms, material ) {
+	refreshUniformsDash( uniforms, material ) {
 
 		uniforms.dashSize.value = material.dashSize;
 		uniforms.totalSize.value = material.dashSize + material.gapSize;
@@ -311,7 +316,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsPoints( uniforms, material, pixelRatio, height ) {
+	refreshUniformsPoints( uniforms, material, pixelRatio, height ) {
 
 		uniforms.diffuse.value.copy( material.color );
 		uniforms.opacity.value = material.opacity;
@@ -360,7 +365,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsSprites( uniforms, material ) {
+	refreshUniformsSprites( uniforms, material ) {
 
 		uniforms.diffuse.value.copy( material.color );
 		uniforms.opacity.value = material.opacity;
@@ -408,7 +413,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsLambert( uniforms, material ) {
+	refreshUniformsLambert( uniforms, material ) {
 
 		if ( material.emissiveMap ) {
 
@@ -418,7 +423,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsPhong( uniforms, material ) {
+	refreshUniformsPhong( uniforms, material ) {
 
 		uniforms.specular.value.copy( material.specular );
 		uniforms.shininess.value = Math.max( material.shininess, 1e-4 ); // to prevent pow( 0.0, 0.0 )
@@ -455,7 +460,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsToon( uniforms, material ) {
+	refreshUniformsToon( uniforms, material ) {
 
 		if ( material.gradientMap ) {
 
@@ -495,7 +500,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsStandard( uniforms, material ) {
+	refreshUniformsStandard( uniforms, material ) {
 
 		uniforms.roughness.value = material.roughness;
 		uniforms.metalness.value = material.metalness;
@@ -542,7 +547,7 @@ function WebGLMaterials( properties ) {
 
 		}
 
-		const envMap = properties.get( material ).envMap;
+		const envMap = this.properties.get( material ).envMap;
 
 		if ( envMap ) {
 
@@ -553,9 +558,9 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsPhysical( uniforms, material ) {
+	refreshUniformsPhysical( uniforms, material ) {
 
-		refreshUniformsStandard( uniforms, material );
+		this.refreshUniformsStandard( uniforms, material );
 
 		uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
 
@@ -598,7 +603,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsMatcap( uniforms, material ) {
+	refreshUniformsMatcap( uniforms, material ) {
 
 		if ( material.matcap ) {
 
@@ -632,7 +637,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsDepth( uniforms, material ) {
+	refreshUniformsDepth( uniforms, material ) {
 
 		if ( material.displacementMap ) {
 
@@ -644,7 +649,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsDistance( uniforms, material ) {
+	refreshUniformsDistance( uniforms, material ) {
 
 		if ( material.displacementMap ) {
 
@@ -660,7 +665,7 @@ function WebGLMaterials( properties ) {
 
 	}
 
-	function refreshUniformsNormal( uniforms, material ) {
+	refreshUniformsNormal( uniforms, material ) {
 
 		if ( material.bumpMap ) {
 
@@ -687,11 +692,6 @@ function WebGLMaterials( properties ) {
 		}
 
 	}
-
-	return {
-		refreshFogUniforms: refreshFogUniforms,
-		refreshMaterialUniforms: refreshMaterialUniforms
-	};
 
 }
 

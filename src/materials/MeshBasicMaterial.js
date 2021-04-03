@@ -36,6 +36,10 @@ import { Color } from '../math/Color.js';
 
 class MeshBasicMaterial extends Material {
 
+	/**
+	 * 
+	 * @param {Object=} parameters 
+	 */
 	constructor( parameters ) {
 
 		super();

@@ -24,6 +24,10 @@ import { Vector3 } from '../math/Vector3.js';
 
 class MeshDistanceMaterial extends Material {
 
+		/**
+	 * 
+	 * @param {Object=} parameters 
+	 */
 	constructor( parameters ) {
 
 		super();

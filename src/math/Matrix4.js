@@ -337,6 +337,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Matrix4} m 
+	 * @param {Matrix4=} n 
+	 * @return {Matrix4}
+	 */
 	multiply( m, n ) {
 
 		if ( n !== undefined ) {

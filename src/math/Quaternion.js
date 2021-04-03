@@ -202,6 +202,11 @@ class Quaternion {
 
 	}
 
+	/**
+	 *
+	 * @param {Object} euler
+	 * @param {boolean=} update
+	 */
 	setFromEuler( euler, update ) {
 
 		if ( ! ( euler && euler.isEuler ) ) {
@@ -494,6 +499,13 @@ class Quaternion {
 
 	}
 
+
+		/**
+	 * 
+	 * @param {Quaternion} q 
+	 * @param {Quaternion=} p 
+	 * @return {Quaternion}
+	 */
 	multiply( q, p ) {
 
 		if ( p !== undefined ) {
@@ -513,6 +525,12 @@ class Quaternion {
 
 	}
 
+		/**
+	 * 
+	 * @param {Quaternion} a
+	 * @param {Quaternion} b 
+	 * @return {Quaternion}
+	 */
 	multiplyQuaternions( a, b ) {
 
 		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm

@@ -101,6 +101,13 @@ class Euler {
 
 	}
 
+		/**
+	*
+	* @param {Matrix4} m
+	* @param {string=} order
+	* @param {boolean=} update
+	* @return {Euler}
+	*/
 	setFromRotationMatrix( m, order, update ) {
 
 		const clamp = MathUtils.clamp;
@@ -238,6 +245,13 @@ class Euler {
 
 	}
 
+		/**
+	 *
+	 * @param {Quaternion} q
+	 * @param {string=} order
+	 * @param {boolean=} update
+	 * @return {Euler}
+	 */
 	setFromQuaternion( q, order, update ) {
 
 		_matrix.makeRotationFromQuaternion( q );

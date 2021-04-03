@@ -9,15 +9,20 @@ import { CubeTexture } from '../textures/CubeTexture.js';
 
 class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
-	constructor( size, options, dummy ) {
+	/**
+	 * 
+	 * @param {number} size 
+	 * @param {Object=} options 
+	 */
+	constructor( size, options ) {
 
-		if ( Number.isInteger( options ) ) {
+/* 		if ( Number.isInteger( options ) ) {
 
 			console.warn( 'THREE.WebGLCubeRenderTarget: constructor signature is now WebGLCubeRenderTarget( size, options )' );
 
 			options = dummy;
 
-		}
+		} */
 
 		super( size, size, options );
 

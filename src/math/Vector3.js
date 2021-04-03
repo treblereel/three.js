@@ -3,6 +3,12 @@ import { Quaternion } from './Quaternion.js';
 
 class Vector3 {
 
+	/**
+	 * 
+	 * @param {number=} x 
+	 * @param {number=} y 
+	 * @param {number=} z 
+	 */
 	constructor( x = 0, y = 0, z = 0 ) {
 
 		this.x = x;
@@ -101,6 +107,11 @@ class Vector3 {
 
 	}
 
+	/**
+	 * @param {Vector3} v
+	 * @param {Object=} w
+	 * @return {Vector3}
+	 */
 	add( v, w ) {
 
 		if ( w !== undefined ) {
@@ -148,6 +159,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} v
+	 * @param {Vector3=} w
+	 * @return {Vector3}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -175,6 +192,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} a
+	 * @param {Vector3} b
+	 * @return {Vector3}
+	 */
 	subVectors( a, b ) {
 
 		this.x = a.x - b.x;
@@ -185,6 +208,12 @@ class Vector3 {
 
 	}
 
+	/**
+	 *
+	 * @param {Vector3} v
+	 * @param {Vector3=} w
+	 * @return {Vector3}
+	 */
 	multiply( v, w ) {
 
 		if ( w !== undefined ) {
@@ -212,6 +241,12 @@ class Vector3 {
 
 	}
 
+		/**
+	 *
+	 * @param {Vector3} a
+	 * @param {Vector3=} b
+	 * @return {Vector3}
+	 */
 	multiplyVectors( a, b ) {
 
 		this.x = a.x * b.x;
@@ -498,6 +533,12 @@ class Vector3 {
 
 	}
 
+
+		/**
+	 * @param {Vector3} v
+	 * @param {Object=} w
+	 * @return {Vector3}
+	 */
 	cross( v, w ) {
 
 		if ( w !== undefined ) {
@@ -685,6 +726,12 @@ class Vector3 {
 
 	}
 
+		/**
+	 *
+	 * @param {Object} attribute
+	 * @param {number} index
+	 * @param {number=} offset
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {
@@ -693,9 +740,9 @@ class Vector3 {
 
 		}
 
-		this.x = attribute.getX( index );
-		this.y = attribute.getY( index );
-		this.z = attribute.getZ( index );
+		this.x = ( /** @type {{ getX : function(number): number}} */ (attribute)).getX( index );
+		this.y = ( /** @type {{ getY : function(number): number}} */ (attribute)).getY( index );
+		this.z = ( /** @type {{ getZ : function(number): number}} */ (attribute)).getZ( index );
 
 		return this;
 

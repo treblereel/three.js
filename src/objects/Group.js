@@ -8,10 +8,16 @@ class Group extends Object3D {
 
 		this.type = 'Group';
 
+		this.isGroup = true;
+
+		/** @type {Object} */
+		this.joints;
+
+		/** @type {Object} */
+		this.inputState;
+
 	}
 
 }
-
-Group.prototype.isGroup = true;
 
 export { Group };

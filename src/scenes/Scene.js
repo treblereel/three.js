@@ -16,6 +16,9 @@ class Scene extends Object3D {
 
 		this.autoUpdate = true; // checked by the renderer
 
+		/** @type boolean */
+		this.matrixAutoUpdate;
+
 		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
 			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef

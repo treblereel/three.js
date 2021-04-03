@@ -21,6 +21,10 @@ import { BasicDepthPacking } from '../constants.js';
 
 class MeshDepthMaterial extends Material {
 
+		/**
+	 * 
+	 * @param {Object=} parameters 
+	 */
 	constructor( parameters ) {
 
 		super();
