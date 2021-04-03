@@ -3,9 +3,18 @@ import { Float32BufferAttribute } from '../core/BufferAttribute.js';
 
 class PlaneGeometry extends BufferGeometry {
 
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 * @param {number} widthSegments 
+	 * @param {number} heightSegments 
+	 */
 	constructor( width = 1, height = 1, widthSegments = 1, heightSegments = 1 ) {
 
 		super();
+
+		/** @type {string} */
 		this.type = 'PlaneGeometry';
 
 		this.parameters = {
@@ -15,16 +24,24 @@ class PlaneGeometry extends BufferGeometry {
 			heightSegments: heightSegments
 		};
 
+		/** @type {number} */
 		const width_half = width / 2;
+		/** @type {number} */
 		const height_half = height / 2;
 
+		/** @type {number} */
 		const gridX = Math.floor( widthSegments );
+		/** @type {number} */
 		const gridY = Math.floor( heightSegments );
 
+		/** @type {number} */
 		const gridX1 = gridX + 1;
+		/** @type {number} */
 		const gridY1 = gridY + 1;
 
+		/** @type {number} */
 		const segment_width = width / gridX;
+		/** @type {number} */
 		const segment_height = height / gridY;
 
 		//

@@ -4,10 +4,20 @@ import { Vector3 } from '../math/Vector3.js';
 
 class BoxGeometry extends BufferGeometry {
 
+	/**
+	 * 
+	 * @param {number=} width 
+	 * @param {number=} height 
+	 * @param {number=} depth 
+	 * @param {number=} widthSegments 
+	 * @param {number=} heightSegments 
+	 * @param {number=} depthSegments 
+	 */
 	constructor( width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1 ) {
 
 		super();
 
+		/** @type {string} */
 		this.type = 'BoxGeometry';
 
 		this.parameters = {
@@ -36,7 +46,9 @@ class BoxGeometry extends BufferGeometry {
 
 		// helper variables
 
+		/** @type {number} */
 		let numberOfVertices = 0;
+		/** @type {number} */
 		let groupStart = 0;
 
 		// build each side of the box geometry
@@ -55,6 +67,20 @@ class BoxGeometry extends BufferGeometry {
 		this.setAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
 
+		/**
+		 * 
+		 * @param {string} u 
+		 * @param {string} v 
+		 * @param {string} w 
+		 * @param {number} udir 
+		 * @param {number} vdir 
+		 * @param {number} width 
+		 * @param {number} height 
+		 * @param {number} depth 
+		 * @param {number} gridX 
+		 * @param {number} gridY 
+		 * @param {number} materialIndex 
+		 */
 		function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
 
 			const segmentWidth = width / gridX;
@@ -125,9 +151,13 @@ class BoxGeometry extends BufferGeometry {
 
 				for ( let ix = 0; ix < gridX; ix ++ ) {
 
+					/** @type {number} */
 					const a = numberOfVertices + ix + gridX1 * iy;
+					/** @type {number} */
 					const b = numberOfVertices + ix + gridX1 * ( iy + 1 );
+					/** @type {number} */
 					const c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
+					/** @type {number} */
 					const d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
 
 					// faces

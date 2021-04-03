@@ -1,20 +1,20 @@
 import { PerspectiveCamera } from './PerspectiveCamera.js';
 
-function ArrayCamera( array = [] ) {
+class ArrayCamera extends PerspectiveCamera {
 
-	PerspectiveCamera.call( this );
+	/**
+	 * @param {Array<PerspectiveCamera>=} array 
+	 */
+	constructor(array = [] ) {
 
-	this.cameras = array;
+		super();
+		/** @type {Array<PerspectiveCamera>} */
+		this.cameras = array;
+		/** @type {boolean} */
+		this.isArrayCamera = true;
 
-}
+	}
 
-ArrayCamera.prototype = Object.assign( Object.create( PerspectiveCamera.prototype ), {
-
-	constructor: ArrayCamera,
-
-	isArrayCamera: true
-
-} );
-
+}	
 
 export { ArrayCamera };

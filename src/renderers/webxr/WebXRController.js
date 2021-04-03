@@ -1,18 +1,37 @@
 import { Group } from '../../objects/Group.js';
 
-function WebXRController() {
+//closure compiler
+import { Event } from '../../core/EventDispatcher.js';
 
-	this._targetRay = null;
-	this._grip = null;
-	this._hand = null;
+/**
+ * @extends {Event}
+ * @record
+ */
+var WebXRControllerEvent = function() {};
+/** @type {XRInputSource} */
+WebXRControllerEvent.prototype.target;
 
-}
+/**
+ * @suppress {checkTypes, reportUnknownTypes} TODO 
+ */
+class WebXRController {
 
-Object.assign( WebXRController.prototype, {
+	constructor() {
 
-	constructor: WebXRController,
+        /** @type {Group} */
+		this._targetRay = null;
+		/** @type {Group} */
+		this._grip = null;
+		/** @type {Group} */
+		this._hand = null;
 
-	getHandSpace: function () {
+	}
+
+
+	/**
+	 * @return {Group}
+	 */
+	getHandSpace() {
 
 		if ( this._hand === null ) {
 
@@ -27,9 +46,12 @@ Object.assign( WebXRController.prototype, {
 
 		return this._hand;
 
-	},
+	}
 
-	getTargetRaySpace: function () {
+	/**
+	 * @return {Group}
+	 */
+	getTargetRaySpace() {
 
 		if ( this._targetRay === null ) {
 
@@ -41,9 +63,12 @@ Object.assign( WebXRController.prototype, {
 
 		return this._targetRay;
 
-	},
+	}
 
-	getGripSpace: function () {
+	/**
+	 * @return {Group}
+	 */
+	getGripSpace() {
 
 		if ( this._grip === null ) {
 
@@ -55,9 +80,13 @@ Object.assign( WebXRController.prototype, {
 
 		return this._grip;
 
-	},
+	}
 
-	dispatchEvent: function ( event ) {
+	/**
+	 * @param {WebXRControllerEvent} event 
+	 * @return {WebXRController}
+	 */
+	dispatchEvent( event ) {
 
 		if ( this._targetRay !== null ) {
 
@@ -79,9 +108,14 @@ Object.assign( WebXRController.prototype, {
 
 		return this;
 
-	},
+	}
 
-	disconnect: function ( inputSource ) {
+	/**
+	 * 
+	 * @param {XRInputSource=} inputSource
+	 * @return {WebXRController}
+	 */
+	disconnect( inputSource ) {
 
 		this.dispatchEvent( { type: 'disconnected', data: inputSource } );
 
@@ -105,9 +139,16 @@ Object.assign( WebXRController.prototype, {
 
 		return this;
 
-	},
+	}
 
-	update: function ( inputSource, frame, referenceSpace ) {
+	/**
+	 * @suppress {checkTypes}  TODO
+	 * @param {XRInputSource} inputSource 
+	 * @param {XRFrame} frame 
+	 * @param {XRReferenceSpace} referenceSpace 
+ 	 * @return {WebXRController}
+	 */
+	update( inputSource, frame, referenceSpace ) {
 
 		let inputPose = null;
 		let gripPose = null;
@@ -238,7 +279,7 @@ Object.assign( WebXRController.prototype, {
 
 	}
 
-} );
+}
 
 
 export { WebXRController };

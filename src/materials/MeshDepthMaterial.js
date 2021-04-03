@@ -1,6 +1,9 @@
 import { Material } from './Material.js';
 import { BasicDepthPacking } from '../constants.js';
 
+import { MeshDepthMaterialParameters } from '../closure/material/MeshDepthMaterialParameters.js';
+import { Texture } from './../textures/Texture.js';
+
 /**
  * parameters = {
  *
@@ -21,34 +24,47 @@ import { BasicDepthPacking } from '../constants.js';
 
 class MeshDepthMaterial extends Material {
 
+	/**
+	 * @param {MeshDepthMaterialParameters|Object|null=} parameters 
+	 */
 	constructor( parameters ) {
 
 		super();
 
+		/** @type {string} */
 		this.type = 'MeshDepthMaterial';
-
+		/** @type {number} */
 		this.depthPacking = BasicDepthPacking;
-
+		/** @type {boolean} */
 		this.skinning = false;
+		/** @type {boolean} */
 		this.morphTargets = false;
-
+		/** @type {Texture|null} */
 		this.map = null;
-
+		/** @type {Texture|null} */
 		this.alphaMap = null;
-
+		/** @type {Texture|null} */
 		this.displacementMap = null;
+		/** @type {number} */
 		this.displacementScale = 1;
+		/** @type {number} */
 		this.displacementBias = 0;
-
+		/** @type {boolean} */
 		this.wireframe = false;
+		/** @type {number} */
 		this.wireframeLinewidth = 1;
-
+		/** @type {boolean} */
 		this.fog = false;
 
 		this.setValues( parameters );
 
 	}
 
+	/**
+	 * @suppress {checkTypes} 
+	 * @param {MeshDepthMaterial} source 
+	 * @return {MeshDepthMaterial}
+	 */
 	copy( source ) {
 
 		super.copy( source );

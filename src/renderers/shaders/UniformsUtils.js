@@ -4,6 +4,7 @@
 
 export function cloneUniforms( src ) {
 
+
 	const dst = {};
 
 	for ( const u in src ) {
@@ -12,6 +13,7 @@ export function cloneUniforms( src ) {
 
 		for ( const p in src[ u ] ) {
 
+			/** @type { { isColor: boolean, isMatrix3: boolean, isMatrix4: boolean, isVector2: boolean, isVector3: boolean, isVector4: boolean, isTexture: boolean, isQuaternion: boolean, clone : function() : Array } } */
 			const property = src[ u ][ p ];
 
 			if ( property && ( property.isColor ||

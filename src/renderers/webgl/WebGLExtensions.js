@@ -1,93 +1,114 @@
-function WebGLExtensions( gl ) {
+class WebGLExtensions {
 
-	const extensions = {};
+	/**
+	 * @param {WebGLRenderingContext|WebGL2RenderingContext} gl 
+	 */
+	constructor(gl) {
 
-	function getExtension( name ) {
+		this.gl = gl;
+		this.extensions = {};
 
-		if ( extensions[ name ] !== undefined ) {
+	}
 
-			return extensions[ name ];
+	/**
+	* @param {string} name
+	* @return {*} 
+	*/
+	getExtension(name) {
+
+		if (this.extensions[name] !== undefined) {
+
+			return this.extensions[name];
 
 		}
 
 		let extension;
 
-		switch ( name ) {
+		switch (name) {
 
 			case 'WEBGL_depth_texture':
-				extension = gl.getExtension( 'WEBGL_depth_texture' ) || gl.getExtension( 'MOZ_WEBGL_depth_texture' ) || gl.getExtension( 'WEBKIT_WEBGL_depth_texture' );
+				extension = this.gl.getExtension('WEBGL_depth_texture') || this.gl.getExtension('MOZ_WEBGL_depth_texture') || this.gl.getExtension('WEBKIT_WEBGL_depth_texture');
 				break;
 
 			case 'EXT_texture_filter_anisotropic':
-				extension = gl.getExtension( 'EXT_texture_filter_anisotropic' ) || gl.getExtension( 'MOZ_EXT_texture_filter_anisotropic' ) || gl.getExtension( 'WEBKIT_EXT_texture_filter_anisotropic' );
+				extension = this.gl.getExtension('EXT_texture_filter_anisotropic') || this.gl.getExtension('MOZ_EXT_texture_filter_anisotropic') || this.gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
 				break;
 
 			case 'WEBGL_compressed_texture_s3tc':
-				extension = gl.getExtension( 'WEBGL_compressed_texture_s3tc' ) || gl.getExtension( 'MOZ_WEBGL_compressed_texture_s3tc' ) || gl.getExtension( 'WEBKIT_WEBGL_compressed_texture_s3tc' );
+				extension = this.gl.getExtension('WEBGL_compressed_texture_s3tc') || this.gl.getExtension('MOZ_WEBGL_compressed_texture_s3tc') || this.gl.getExtension('WEBKIT_WEBGL_compressed_texture_s3tc');
 				break;
 
 			case 'WEBGL_compressed_texture_pvrtc':
-				extension = gl.getExtension( 'WEBGL_compressed_texture_pvrtc' ) || gl.getExtension( 'WEBKIT_WEBGL_compressed_texture_pvrtc' );
+				extension = this.gl.getExtension('WEBGL_compressed_texture_pvrtc') || this.gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
 				break;
 
 			default:
-				extension = gl.getExtension( name );
+				extension = this.gl.getExtension(name);
 
 		}
 
-		extensions[ name ] = extension;
+		this.extensions[name] = extension;
 
 		return extension;
 
 	}
 
-	return {
+	/**
+	 * @param {string} name
+	 * @return {boolean} 
+	 */
+	has(name) {
 
-		has: function ( name ) {
+		return this.getExtension(name) !== null;
 
-			return getExtension( name ) !== null;
+	}
 
-		},
+	/**
+	 * 
+	 * @param {{isWebGL2:boolean}} capabilities 
+	 */
+	init(capabilities) {
 
-		init: function ( capabilities ) {
+		if (capabilities.isWebGL2) {
 
-			if ( capabilities.isWebGL2 ) {
+			this.getExtension('EXT_color_buffer_float');
 
-				getExtension( 'EXT_color_buffer_float' );
+		} else {
 
-			} else {
-
-				getExtension( 'WEBGL_depth_texture' );
-				getExtension( 'OES_texture_float' );
-				getExtension( 'OES_texture_half_float' );
-				getExtension( 'OES_texture_half_float_linear' );
-				getExtension( 'OES_standard_derivatives' );
-				getExtension( 'OES_element_index_uint' );
-				getExtension( 'OES_vertex_array_object' );
-				getExtension( 'ANGLE_instanced_arrays' );
-
-			}
-
-			getExtension( 'OES_texture_float_linear' );
-			getExtension( 'EXT_color_buffer_half_float' );
-
-		},
-
-		get: function ( name ) {
-
-			const extension = getExtension( name );
-
-			if ( extension === null ) {
-
-				console.warn( 'THREE.WebGLRenderer: ' + name + ' extension not supported.' );
-
-			}
-
-			return extension;
+			this.getExtension('WEBGL_depth_texture');
+			this.getExtension('OES_texture_float');
+			this.getExtension('OES_texture_half_float');
+			this.getExtension('OES_texture_half_float_linear');
+			this.getExtension('OES_standard_derivatives');
+			this.getExtension('OES_element_index_uint');
+			this.getExtension('OES_vertex_array_object');
+			this.getExtension('ANGLE_instanced_arrays');
 
 		}
 
-	};
+		this.getExtension('OES_texture_float_linear');
+		this.getExtension('EXT_color_buffer_half_float');
+
+	}
+
+	/**
+	 * @param {string} name
+	 * @return {*} 
+	 */
+	get(name) {
+
+		const extension = this.getExtension(name);
+
+		if (extension === null) {
+
+			console.warn('THREE.WebGLRenderer: ' + name + ' extension not supported.');
+
+		}
+
+		return extension;
+
+	}
+
 
 }
 

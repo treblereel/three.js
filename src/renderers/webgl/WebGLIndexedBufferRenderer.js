@@ -1,46 +1,67 @@
-function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
+import { WebGLExtensions } from './WebGLExtensions.js';
+import { WebGLInfo } from './WebGLInfo.js';
+import { WebGLCapabilities } from './WebGLCapabilities.js';
 
-	const isWebGL2 = capabilities.isWebGL2;
+class WebGLIndexedBufferRenderer {
 
-	let mode;
+	/**
+	 * 
+	 * @param {WebGLRenderingContext|WebGL2RenderingContext} gl
+	 * @param {WebGLExtensions} extensions 
+	 * @param {WebGLInfo} info 
+	 * @param {WebGLCapabilities} capabilities 
+	 */
+	constructor( gl, extensions, info, capabilities ) {
 
-	function setMode( value ) {
+		this.gl = gl;
+		this.extensions = extensions;
+		this.info = info;
+		this.capabilities = capabilities;
 
-		mode = value;
+		this.isWebGL2 = capabilities.isWebGL2;
+
+		this.mode = null;
+		this.type = null;
+		this.bytesPerElement = null;
+
+	}
+	
+
+	setMode( value ) {
+
+		this.mode = value;
 
 	}
 
-	let type, bytesPerElement;
+	setIndex( value ) {
 
-	function setIndex( value ) {
-
-		type = value.type;
-		bytesPerElement = value.bytesPerElement;
+		this.type = value.type;
+		this.bytesPerElement = value.bytesPerElement;
 
 	}
 
-	function render( start, count ) {
+	render( start, count ) {
 
-		gl.drawElements( mode, count, type, start * bytesPerElement );
+		this.gl.drawElements( this.mode, count, this.type, start * this.bytesPerElement );
 
-		info.update( count, mode, 1 );
+		this.info.update( count, this.mode, 1 );
 
 	}
 
-	function renderInstances( start, count, primcount ) {
+	renderInstances( start, count, primcount ) {
 
 		if ( primcount === 0 ) return;
 
 		let extension, methodName;
 
-		if ( isWebGL2 ) {
+		if ( this.isWebGL2 ) {
 
-			extension = gl;
+			extension = this.gl;
 			methodName = 'drawElementsInstanced';
 
 		} else {
 
-			extension = extensions.get( 'ANGLE_instanced_arrays' );
+			extension = this.extensions.get( 'ANGLE_instanced_arrays' );
 			methodName = 'drawElementsInstancedANGLE';
 
 			if ( extension === null ) {
@@ -52,18 +73,12 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 
 		}
 
-		extension[ methodName ]( mode, count, type, start * bytesPerElement, primcount );
+		//TODO
+		extension[ methodName ]( this.mode, count, this.type, start * this.bytesPerElement, primcount );
 
-		info.update( count, mode, primcount );
+		this.info.update( count, this.mode, primcount );
 
 	}
-
-	//
-
-	this.setMode = setMode;
-	this.setIndex = setIndex;
-	this.render = render;
-	this.renderInstances = renderInstances;
 
 }
 

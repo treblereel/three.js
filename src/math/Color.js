@@ -1,5 +1,8 @@
 import { MathUtils } from './MathUtils.js';
 
+/**
+ * @type {Object<string, number>}
+ */
 const _colorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0x00FFFF, 'aquamarine': 0x7FFFD4, 'azure': 0xF0FFFF,
 	'beige': 0xF5F5DC, 'bisque': 0xFFE4C4, 'black': 0x000000, 'blanchedalmond': 0xFFEBCD, 'blue': 0x0000FF, 'blueviolet': 0x8A2BE2,
 	'brown': 0xA52A2A, 'burlywood': 0xDEB887, 'cadetblue': 0x5F9EA0, 'chartreuse': 0x7FFF00, 'chocolate': 0xD2691E, 'coral': 0xFF7F50,
@@ -28,6 +31,12 @@ const _colorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua'
 const _hslA = { h: 0, s: 0, l: 0 };
 const _hslB = { h: 0, s: 0, l: 0 };
 
+/**
+ * @param {number} p 
+ * @param {number} q 
+ * @param {number} t
+ * @return {number}
+ */
 function hue2rgb( p, q, t ) {
 
 	if ( t < 0 ) t += 1;
@@ -39,12 +48,20 @@ function hue2rgb( p, q, t ) {
 
 }
 
+/**
+ * @param {number} c
+ * @return {number}
+ */
 function SRGBToLinear( c ) {
 
 	return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
 
 }
 
+/**
+ * @param {number} c
+ * @return {number}
+ */
 function LinearToSRGB( c ) {
 
 	return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
@@ -53,32 +70,51 @@ function LinearToSRGB( c ) {
 
 class Color {
 
+
+	/**
+	 * @suppress {checkTypes} 
+	 * @param {Color | string | number=} r
+	 * @param {number=} g
+	 * @param {number=} b
+	 */
 	constructor( r, g, b ) {
 
 		if ( g === undefined && b === undefined ) {
 
 			// r is THREE.Color, hex or string
-			return this.set( r );
+			return this.set( /** @type {Color} */ (r) );
 
 		}
 
-		return this.setRGB( r, g, b );
+		/** @type {number} */
+		this.r;
+		/** @type {number} */
+		this.g;
+		/** @type {number} */
+		this.b;
+
+		return this.setRGB( /** @type {number} */(r), /** @type {number} */(g), /** @type {number} */(b) );
 
 	}
 
+	/**
+	 * 
+	 * @param {Color|string|number=} value
+	 * @return {Color} 
+	 */
 	set( value ) {
 
 		if ( value && value.isColor ) {
 
-			this.copy( value );
+			this.copy( /** @type {Color} */ (value) );
 
 		} else if ( typeof value === 'number' ) {
 
-			this.setHex( value );
+			this.setHex( /** @type {number} */ (value) );
 
 		} else if ( typeof value === 'string' ) {
 
-			this.setStyle( value );
+			this.setStyle( /** @type {string} */ (value) );
 
 		}
 
@@ -86,6 +122,11 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} scalar 
+	 * @return {Color}
+	 */
 	setScalar( scalar ) {
 
 		this.r = scalar;
@@ -96,6 +137,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {number} hex 
+	 * @return {Color}
+	 */
 	setHex( hex ) {
 
 		hex = Math.floor( hex );
@@ -108,6 +153,13 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} r 
+	 * @param {number} g 
+	 * @param {number} b 
+	 * @return {Color}
+	 */
 	setRGB( r, g, b ) {
 
 		this.r = r;
@@ -118,6 +170,13 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} h 
+	 * @param {number} s 
+	 * @param {number} l 
+	 * @return {Color}
+	 */
 	setHSL( h, s, l ) {
 
 		// h,s,l ranges are in 0.0 - 1.0
@@ -144,8 +203,15 @@ class Color {
 
 	}
 
+	/**
+	 * @param {string} style
+	 * @return {Color} 
+	 */
 	setStyle( style ) {
 
+		/**
+		 *  @param {string} string
+		 */
 		function handleAlpha( string ) {
 
 			if ( string === undefined ) return;
@@ -261,6 +327,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {string} style
+	 * @return {Color} 
+	 */
 	setColorName( style ) {
 
 		// color keywords
@@ -282,12 +352,19 @@ class Color {
 
 	}
 
+	/**
+	 * @return {Color}
+	 */
 	clone() {
 
 		return new this.constructor( this.r, this.g, this.b );
 
 	}
 
+	/**
+	 * @param {Color} color
+	 * @return {Color}
+	*/
 	copy( color ) {
 
 		this.r = color.r;
@@ -298,6 +375,12 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {Color} color 
+	 * @param {number} gammaFactor
+ 	 * @return {Color}
+	 */
 	copyGammaToLinear( color, gammaFactor = 2.0 ) {
 
 		this.r = Math.pow( color.r, gammaFactor );
@@ -308,6 +391,12 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {Color} color 
+	 * @param {number} gammaFactor
+ 	 * @return {Color}
+	 */
 	copyLinearToGamma( color, gammaFactor = 2.0 ) {
 
 		const safeInverse = ( gammaFactor > 0 ) ? ( 1.0 / gammaFactor ) : 1.0;
@@ -320,6 +409,11 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} gammaFactor
+ 	 * @return {Color}
+	 */
 	convertGammaToLinear( gammaFactor ) {
 
 		this.copyGammaToLinear( this, gammaFactor );
@@ -328,6 +422,11 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} gammaFactor
+ 	 * @return {Color}
+	 */
 	convertLinearToGamma( gammaFactor ) {
 
 		this.copyLinearToGamma( this, gammaFactor );
@@ -336,6 +435,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color
+ 	 * @return {Color}
+	 */
 	copySRGBToLinear( color ) {
 
 		this.r = SRGBToLinear( color.r );
@@ -346,6 +449,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color
+ 	 * @return {Color}
+	 */
 	copyLinearToSRGB( color ) {
 
 		this.r = LinearToSRGB( color.r );
@@ -356,6 +463,9 @@ class Color {
 
 	}
 
+	/**
+	 * @return {Color}
+	 */
 	convertSRGBToLinear() {
 
 		this.copySRGBToLinear( this );
@@ -364,6 +474,9 @@ class Color {
 
 	}
 
+	/**
+	 * @return {Color}
+	 */
 	convertLinearToSRGB() {
 
 		this.copyLinearToSRGB( this );
@@ -372,18 +485,28 @@ class Color {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	getHex() {
 
 		return ( this.r * 255 ) << 16 ^ ( this.g * 255 ) << 8 ^ ( this.b * 255 ) << 0;
 
 	}
 
+	/**
+	 * @return {string}
+	 */
 	getHexString() {
 
 		return ( '000000' + this.getHex().toString( 16 ) ).slice( - 6 );
 
 	}
 
+	/**
+	 * @param {{ h: number, s: number, l: number}} target
+	 * @return {{ h: number, s: number, l: number}}
+	 */
 	getHSL( target ) {
 
 		// h,s,l ranges are in 0.0 - 1.0
@@ -434,12 +557,22 @@ class Color {
 
 	}
 
+	/**
+	 * @return {string}
+	 */
 	getStyle() {
 
 		return 'rgb(' + ( ( this.r * 255 ) | 0 ) + ',' + ( ( this.g * 255 ) | 0 ) + ',' + ( ( this.b * 255 ) | 0 ) + ')';
 
 	}
 
+	/**
+	 * 
+	 * @param {number} h 
+	 * @param {number} s 
+	 * @param {number} l
+	 * @return {Color} 
+	 */
 	offsetHSL( h, s, l ) {
 
 		this.getHSL( _hslA );
@@ -452,6 +585,11 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {Color} color
+	 * @return {Color} 
+	 */
 	add( color ) {
 
 		this.r += color.r;
@@ -462,6 +600,12 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {Color} color1 
+	 * @param {Color} color2 
+ 	 * @return {Color} 
+	 */
 	addColors( color1, color2 ) {
 
 		this.r = color1.r + color2.r;
@@ -472,6 +616,11 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} s 
+  	 * @return {Color} 
+	 */
 	addScalar( s ) {
 
 		this.r += s;
@@ -482,6 +631,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color 
+   	 * @return {Color} 
+	 */
 	sub( color ) {
 
 		this.r = Math.max( 0, this.r - color.r );
@@ -492,6 +645,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color 
+   	 * @return {Color} 
+	 */
 	multiply( color ) {
 
 		this.r *= color.r;
@@ -502,6 +659,10 @@ class Color {
 
 	}
 
+	/**
+	 * @param {number} s 
+   	 * @return {Color} 
+	 */
 	multiplyScalar( s ) {
 
 		this.r *= s;
@@ -512,6 +673,11 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color 
+	 * @param {number} alpha
+   	 * @return {Color} 
+	 */
 	lerp( color, alpha ) {
 
 		this.r += ( color.r - this.r ) * alpha;
@@ -522,6 +688,12 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color1 
+	 * @param {Color} color2 
+	 * @param {number} alpha 
+   	 * @return {Color} 
+	 */
 	lerpColors( color1, color2, alpha ) {
 
 		this.r = color1.r + ( color2.r - color1.r ) * alpha;
@@ -532,6 +704,11 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} color 
+	 * @param {number} alpha 
+   	 * @return {Color} 
+	 */
 	lerpHSL( color, alpha ) {
 
 		this.getHSL( _hslA );
@@ -547,12 +724,21 @@ class Color {
 
 	}
 
+	/**
+	 * @param {Color} c 
+	 * @return {boolean}
+	 */
 	equals( c ) {
 
 		return ( c.r === this.r ) && ( c.g === this.g ) && ( c.b === this.b );
 
 	}
 
+	/**
+	 * @param {Array<number>} array 
+	 * @param {number=} offset
+   	 * @return {Color} 
+	 */
 	fromArray( array, offset = 0 ) {
 
 		this.r = array[ offset ];
@@ -563,6 +749,12 @@ class Color {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>=} array 
+	 * @param {number=} offset 
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		array[ offset ] = this.r;
@@ -573,6 +765,11 @@ class Color {
 
 	}
 
+	/**
+	 * @param {{ normalized: boolean, getX : function(number): number, getY : function(number): number, getZ : function(number): number }} attribute 
+	 * @param {number} index 
+	 * @return {Color}
+	 */
 	fromBufferAttribute( attribute, index ) {
 
 		this.r = attribute.getX( index );

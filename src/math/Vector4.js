@@ -1,38 +1,71 @@
+//closure compiler
+import { QuaternionInterface } from '../closure/math/QuaternionInterface.js';
+import { MatrixInterface } from '../closure/math/MatrixInterface.js';
+
 class Vector4 {
 
+	/**
+	 * 
+	 * @param {number=} x 
+	 * @param {number=} y 
+	 * @param {number=} z 
+	 * @param {number=} w 
+	 */
 	constructor( x = 0, y = 0, z = 0, w = 1 ) {
-
+		/** @type {number}	 */
 		this.x = x;
+		/** @type {number}	 */
 		this.y = y;
+		/** @type {number}	 */
 		this.z = z;
+		/** @type {number}	 */
 		this.w = w;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get width() {
 
 		return this.z;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set width( value ) {
 
 		this.z = value;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get height() {
 
 		return this.w;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set height( value ) {
 
 		this.w = value;
 
 	}
 
+	/**
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} z
+	 * @param {number} w
+ 	 * @return {Vector4}
+	 */
 	set( x, y, z, w ) {
 
 		this.x = x;
@@ -44,6 +77,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} scalar
+	 * @return {Vector4}
+	 */
 	setScalar( scalar ) {
 
 		this.x = scalar;
@@ -55,6 +92,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} x
+	 * @return {Vector4}
+	 */
 	setX( x ) {
 
 		this.x = x;
@@ -63,6 +104,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} y
+	 * @return {Vector4}
+	 */
 	setY( y ) {
 
 		this.y = y;
@@ -71,6 +116,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} z
+	 * @return {Vector4}
+	 */
 	setZ( z ) {
 
 		this.z = z;
@@ -79,6 +128,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} w
+	 * @return {Vector4}
+	 */
 	setW( w ) {
 
 		this.w = w;
@@ -87,6 +140,12 @@ class Vector4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} index 
+	 * @param {number} value 
+ 	 * @return {Vector4}
+	 */
 	setComponent( index, value ) {
 
 		switch ( index ) {
@@ -103,6 +162,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} index 
+ 	 * @return {number}
+	 */
 	getComponent( index ) {
 
 		switch ( index ) {
@@ -117,12 +180,20 @@ class Vector4 {
 
 	}
 
+	/**
+ 	 * @return {Vector4}
+	 */
 	clone() {
 
 		return new this.constructor( this.x, this.y, this.z, this.w );
 
 	}
 
+
+	/**
+	 * @param {Vector4} v
+ 	 * @return {Vector4}
+	 */
 	copy( v ) {
 
 		this.x = v.x;
@@ -134,6 +205,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @param {Vector4=} w
+ 	 * @return {Vector4}
+	 */
 	add( v, w ) {
 
 		if ( w !== undefined ) {
@@ -152,6 +228,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} s
+ 	 * @return {Vector4}
+	 */
 	addScalar( s ) {
 
 		this.x += s;
@@ -163,6 +243,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} a
+	 * @param {Vector4} b
+ 	 * @return {Vector4}
+	 */
 	addVectors( a, b ) {
 
 		this.x = a.x + b.x;
@@ -174,6 +259,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @param {number} s
+ 	 * @return {Vector4}
+	 */
 	addScaledVector( v, s ) {
 
 		this.x += v.x * s;
@@ -185,6 +275,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @param {Vector4=} w
+ 	 * @return {Vector4}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -203,6 +298,11 @@ class Vector4 {
 
 	}
 
+
+	/**
+	 * @param {number} s
+ 	 * @return {Vector4}
+	 */
 	subScalar( s ) {
 
 		this.x -= s;
@@ -214,6 +314,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} a
+	 * @param {Vector4} b
+ 	 * @return {Vector4}
+	 */
 	subVectors( a, b ) {
 
 		this.x = a.x - b.x;
@@ -225,6 +330,11 @@ class Vector4 {
 
 	}
 
+
+	/**
+	 * @param {Vector4} v
+ 	 * @return {Vector4}
+	 */
 	multiply( v ) {
 
 		this.x *= v.x;
@@ -236,6 +346,11 @@ class Vector4 {
 
 	}
 
+
+	/**
+	 * @param {number} scalar
+ 	 * @return {Vector4}
+	 */
 	multiplyScalar( scalar ) {
 
 		this.x *= scalar;
@@ -247,6 +362,11 @@ class Vector4 {
 
 	}
 
+
+	/**
+	 * @param {MatrixInterface} m
+ 	 * @return {Vector4}
+	 */
 	applyMatrix4( m ) {
 
 		const x = this.x, y = this.y, z = this.z, w = this.w;
@@ -261,12 +381,21 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} scalar 
+  	 * @return {Vector4}
+	 */
 	divideScalar( scalar ) {
 
 		return this.multiplyScalar( 1 / scalar );
 
 	}
 
+	/**
+	 * 
+	 * @param { QuaternionInterface } q
+	 * @return {Vector4} 
+	 */
 	setAxisAngleFromQuaternion( q ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/index.htm
@@ -294,7 +423,12 @@ class Vector4 {
 		return this;
 
 	}
-
+ 
+	/**
+	 * 
+	 * @param {MatrixInterface} m 
+	 * @return {Vector4}
+	 */
 	setAxisAngleFromRotationMatrix( m ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/index.htm
@@ -425,6 +559,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @return {Vector4} 
+	 */
 	min( v ) {
 
 		this.x = Math.min( this.x, v.x );
@@ -436,6 +574,10 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @return {Vector4} 
+	 */
 	max( v ) {
 
 		this.x = Math.max( this.x, v.x );
@@ -447,6 +589,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} min
+	 * @param {Vector4} max
+	 * @return {Vector4} 
+	 */
 	clamp( min, max ) {
 
 		// assumes min < max, componentwise
@@ -460,6 +607,12 @@ class Vector4 {
 
 	}
 
+
+	/**
+	 * @param {number} minVal
+	 * @param {number} maxVal
+	 * @return {Vector4} 
+	 */
 	clampScalar( minVal, maxVal ) {
 
 		this.x = Math.max( minVal, Math.min( maxVal, this.x ) );
@@ -471,6 +624,11 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {number} min
+	 * @param {number} max
+	 * @return {Vector4} 
+	 */
 	clampLength( min, max ) {
 
 		const length = this.length();
@@ -479,6 +637,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	floor() {
 
 		this.x = Math.floor( this.x );
@@ -490,6 +651,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	ceil() {
 
 		this.x = Math.ceil( this.x );
@@ -501,6 +665,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	round() {
 
 		this.x = Math.round( this.x );
@@ -512,6 +679,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	roundToZero() {
 
 		this.x = ( this.x < 0 ) ? Math.ceil( this.x ) : Math.floor( this.x );
@@ -523,6 +693,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	negate() {
 
 		this.x = - this.x;
@@ -534,42 +707,67 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @return {number} 
+	 */
 	dot( v ) {
 
 		return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
 
 	}
 
+	/**
+	 * @return {number} 
+	 */
 	lengthSq() {
 
 		return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
 
 	}
 
+	/**
+	 * @return {number} 
+	 */
 	length() {
 
 		return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w );
 
 	}
 
+	/**
+	 * @return {number} 
+	 */
 	manhattanLength() {
 
 		return Math.abs( this.x ) + Math.abs( this.y ) + Math.abs( this.z ) + Math.abs( this.w );
 
 	}
 
+	/**
+	 * @return {Vector4} 
+	 */
 	normalize() {
 
 		return this.divideScalar( this.length() || 1 );
 
 	}
 
+	/**
+	 * @param {number} length
+	 * @return {Vector4} 
+	 */
 	setLength( length ) {
 
 		return this.normalize().multiplyScalar( length );
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @param {number} alpha
+	 * @return {Vector4} 
+	 */
 	lerp( v, alpha ) {
 
 		this.x += ( v.x - this.x ) * alpha;
@@ -581,6 +779,12 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v1
+	 * @param {Vector4} v2
+	 * @param {number} alpha
+	 * @return {Vector4} 
+	 */
 	lerpVectors( v1, v2, alpha ) {
 
 		this.x = v1.x + ( v2.x - v1.x ) * alpha;
@@ -592,12 +796,21 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {Vector4} v
+	 * @return {boolean} 
+	 */
 	equals( v ) {
 
 		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) && ( v.w === this.w ) );
 
 	}
 
+	/**
+	 * @param {Array<number>} array
+	 * @param {number=} offset
+	 * @return {Vector4} 
+	 */
 	fromArray( array, offset = 0 ) {
 
 		this.x = array[ offset ];
@@ -609,6 +822,12 @@ class Vector4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>=} array 
+	 * @param {number=} offset
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		array[ offset ] = this.x;
@@ -620,6 +839,12 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @param {{count : number, getX : function(number): number, getY : function(number): number, getZ : function(number): number , getW : function(number): number }} attribute 
+	 * @param {number} index 
+	 * @param {number} offset 
+	 * @return {Vector4}
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {
@@ -637,6 +862,9 @@ class Vector4 {
 
 	}
 
+	/**
+	 * @return {Vector4}
+	 */
 	random() {
 
 		this.x = Math.random();

@@ -1,17 +1,37 @@
 import { Box3 } from './Box3.js';
 import { Vector3 } from './Vector3.js';
 
+//closure shim
+import { PlaneInterface } from '../closure/math/PlaneInterface.js';
+import { SphereInterface } from '../closure/math/SphereInterface.js';
+import { MatrixInterface } from '../closure/math/MatrixInterface.js';
+
 const _box = /*@__PURE__*/ new Box3();
 
+/**
+ * @implements { SphereInterface }
+ */
 class Sphere {
 
+	/**
+	 * @param {Vector3=} center 
+	 * @param {number} radius 
+	 */
 	constructor( center = new Vector3(), radius = - 1 ) {
 
+		/** @type {Vector3} */
 		this.center = center;
+		/** @type {number} */
 		this.radius = radius;
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} center 
+	 * @param {number} radius 
+	 * @return {Sphere}
+	 */
 	set( center, radius ) {
 
 		this.center.copy( center );
@@ -21,6 +41,12 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<Vector3>} points 
+	 * @param {Vector3} optionalCenter
+	 * @return {Sphere} 
+	 */
 	setFromPoints( points, optionalCenter ) {
 
 		const center = this.center;
@@ -49,6 +75,11 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param {Sphere} sphere
+	 * @return {Sphere} 
+	 */
 	copy( sphere ) {
 
 		this.center.copy( sphere.center );
@@ -58,12 +89,18 @@ class Sphere {
 
 	}
 
+	/**
+	 * @return {boolean}
+	 */
 	isEmpty() {
 
 		return ( this.radius < 0 );
 
 	}
 
+	/**
+	 * @return {Sphere}
+	 */
 	makeEmpty() {
 
 		this.center.set( 0, 0, 0 );
@@ -73,18 +110,33 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {boolean}
+	 */
 	containsPoint( point ) {
 
 		return ( point.distanceToSquared( this.center ) <= ( this.radius * this.radius ) );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {number}
+	 */
 	distanceToPoint( point ) {
 
 		return ( point.distanceTo( this.center ) - this.radius );
 
 	}
 
+	/**
+	 * 
+	 * @param {Sphere} sphere 
+	 * @return {boolean}
+	 */
 	intersectsSphere( sphere ) {
 
 		const radiusSum = this.radius + sphere.radius;
@@ -93,18 +145,34 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} box 
+	 * @return {boolean}
+	 */
 	intersectsBox( box ) {
 
 		return box.intersectsSphere( this );
 
 	}
 
+	/**
+	 * 
+	 * @param { PlaneInterface } plane 
+	 * @return {boolean}
+	 */
 	intersectsPlane( plane ) {
 
 		return Math.abs( plane.distanceToPoint( this.center ) ) <= this.radius;
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} target
+	 * @return {Vector3} 
+	 */
 	clampPoint( point, target ) {
 
 		const deltaLengthSq = this.center.distanceToSquared( point );
@@ -129,6 +197,11 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} target 
+	 * @return {Box3}
+	 */
 	getBoundingBox( target ) {
 
 		if ( target === undefined ) {
@@ -153,6 +226,11 @@ class Sphere {
 
 	}
 
+	/**
+	 * 
+	 * @param  { MatrixInterface } matrix
+	 * @return {Sphere}
+	 */
 	applyMatrix4( matrix ) {
 
 		this.center.applyMatrix4( matrix );
@@ -162,6 +240,10 @@ class Sphere {
 
 	}
 
+	/**
+	 * @param {Vector3} offset
+	 * @return {Sphere}
+	 */
 	translate( offset ) {
 
 		this.center.add( offset );
@@ -170,12 +252,19 @@ class Sphere {
 
 	}
 
+	/**
+	 * @param {Sphere} sphere
+	 * @return {boolean}
+	 */
 	equals( sphere ) {
 
 		return sphere.center.equals( this.center ) && ( sphere.radius === this.radius );
 
 	}
 
+	/**
+	 * @return {Sphere}
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );

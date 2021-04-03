@@ -1,7 +1,14 @@
+import { Vector3 } from "./Vector3.js";
+import { MatrixInterface } from "../closure/math/MatrixInterface.js";
+
+/**
+ * @implements {MatrixInterface}
+ */
 class Matrix3 {
 
 	constructor() {
 
+		/** @type {Array<number>} */
 		this.elements = [
 
 			1, 0, 0,
@@ -18,6 +25,18 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} n11 
+	 * @param {number} n12 
+	 * @param {number} n13 
+	 * @param {number} n21 
+	 * @param {number} n22 
+	 * @param {number} n23 
+	 * @param {number} n31 
+	 * @param {number} n32 
+	 * @param {number} n33 
+	 * @return {Matrix3}
+	 */
 	set( n11, n12, n13, n21, n22, n23, n31, n32, n33 ) {
 
 		const te = this.elements;
@@ -30,6 +49,9 @@ class Matrix3 {
 
 	}
 
+	/**
+ 	 * @return {Matrix3}
+	 */
 	identity() {
 
 		this.set(
@@ -44,6 +66,10 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Matrix3} m
+	 * @return {Matrix3} 
+	 */
 	copy( m ) {
 
 		const te = this.elements;
@@ -57,6 +83,12 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Vector3} xAxis 
+	 * @param {Vector3} yAxis 
+	 * @param {Vector3} zAxis
+	 * @return {Matrix3} 
+	 */
 	extractBasis( xAxis, yAxis, zAxis ) {
 
 		xAxis.setFromMatrix3Column( this, 0 );
@@ -67,6 +99,10 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param { MatrixInterface } m
+	 * @return {Matrix3}
+	 */
 	setFromMatrix4( m ) {
 
 		const me = m.elements;
@@ -83,18 +119,31 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Matrix3} m 
+	 * @return {Matrix3}
+	 */
 	multiply( m ) {
 
 		return this.multiplyMatrices( this, m );
 
 	}
 
+	/**
+	 * @param {Matrix3} m 
+	 * @return {Matrix3}
+	 */
 	premultiply( m ) {
 
 		return this.multiplyMatrices( m, this );
 
 	}
 
+	/**
+	 * @param {Matrix3} a 
+	 * @param {Matrix3} b 
+	 * @return {Matrix3}
+	 */
 	multiplyMatrices( a, b ) {
 
 		const ae = a.elements;
@@ -125,6 +174,10 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} s
+	 * @return {Matrix3} 
+	 */
 	multiplyScalar( s ) {
 
 		const te = this.elements;
@@ -137,6 +190,9 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	determinant() {
 
 		const te = this.elements;
@@ -149,6 +205,9 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @return {Matrix3}
+	 */
 	invert() {
 
 		const te = this.elements,
@@ -183,6 +242,9 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @return {Matrix3}
+	 */
 	transpose() {
 
 		let tmp;
@@ -196,12 +258,20 @@ class Matrix3 {
 
 	}
 
+	/**
+ 	 * @param {MatrixInterface} matrix4
+	 * @return {Matrix3}
+	 */
 	getNormalMatrix( matrix4 ) {
 
 		return this.setFromMatrix4( matrix4 ).invert().transpose();
 
 	}
 
+	/**
+	 * @param {Array<number>} r
+	 * @return {Matrix3} 
+	 */
 	transposeIntoArray( r ) {
 
 		const m = this.elements;
@@ -220,6 +290,16 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} tx 
+	 * @param {number} ty 
+	 * @param {number} sx 
+	 * @param {number} sy 
+	 * @param {number} rotation 
+	 * @param {number} cx 
+	 * @param {number} cy 
+ 	 * @return {Matrix3} 
+	 */
 	setUvTransform( tx, ty, sx, sy, rotation, cx, cy ) {
 
 		const c = Math.cos( rotation );
@@ -235,6 +315,11 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} sx 
+	 * @param {number} sy 
+ 	 * @return {Matrix3} 
+	 */
 	scale( sx, sy ) {
 
 		const te = this.elements;
@@ -246,6 +331,10 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} theta 
+ 	 * @return {Matrix3} 
+	 */
 	rotate( theta ) {
 
 		const c = Math.cos( theta );
@@ -268,6 +357,11 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {number} tx 
+	 * @param {number} ty 
+ 	 * @return {Matrix3} 
+	 */
 	translate( tx, ty ) {
 
 		const te = this.elements;
@@ -279,6 +373,10 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Matrix3} matrix 
+	 * @return {boolean}
+	 */
 	equals( matrix ) {
 
 		const te = this.elements;
@@ -294,6 +392,11 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Array<number>} array 
+	 * @param {number=} offset
+ 	 * @return {Matrix3} 
+	 */
 	fromArray( array, offset = 0 ) {
 
 		for ( let i = 0; i < 9; i ++ ) {
@@ -306,6 +409,11 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @param {Array<number>=} array 
+	 * @param {number=} offset
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		const te = this.elements;
@@ -326,6 +434,9 @@ class Matrix3 {
 
 	}
 
+	/**
+	 * @return {Matrix3}
+	 */
 	clone() {
 
 		return new this.constructor().fromArray( this.elements );

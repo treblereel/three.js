@@ -1,14 +1,38 @@
 import { Vector3 } from './Vector3.js';
 
+import { Matrix4 } from './Matrix4.js';
+
+//closure shim
+import { BufferAttributeInterface } from '../closure/core/BufferAttributeInterface.js';
+import { TriangleInterface } from '../closure/math/TriangleInterface.js';
+import { Box3Interface } from '../closure/math/Box3Interface.js';
+import { Object3DInterface } from '../closure/core/Object3DInterface.js';
+
+/**
+ * @implements {Box3Interface}
+ */
 class Box3 {
 
+	/**
+	 * 
+	 * @param {Vector3} min 
+	 * @param {Vector3} max 
+	 */
 	constructor( min = new Vector3( + Infinity, + Infinity, + Infinity ), max = new Vector3( - Infinity, - Infinity, - Infinity ) ) {
 
+		/** @type {Vector3} */
 		this.min = min;
+		/** @type {Vector3} */
 		this.max = max;
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} min 
+	 * @param {Vector3} max 
+	 * @return {Box3}
+	 */
 	set( min, max ) {
 
 		this.min.copy( min );
@@ -18,6 +42,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>} array 
+	 * @return {Box3}
+	 */
 	setFromArray( array ) {
 
 		let minX = + Infinity;
@@ -51,6 +80,9 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {BufferAttributeInterface} attribute 
+	 */
 	setFromBufferAttribute( attribute ) {
 
 		let minX = + Infinity;
@@ -84,6 +116,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Array<Vector3>} points 
+	 * @return {Box3}
+	 */
 	setFromPoints( points ) {
 
 		this.makeEmpty();
@@ -98,6 +134,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Vector3} center 
+	 * @param {Vector3} size 
+	 * @return {Box3}
+	 */
 	setFromCenterAndSize( center, size ) {
 
 		const halfSize = _vector.copy( size ).multiplyScalar( 0.5 );
@@ -109,6 +150,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Object3DInterface} object 
+	 * @return {Box3}
+	 */
 	setFromObject( object ) {
 
 		this.makeEmpty();
@@ -117,12 +162,19 @@ class Box3 {
 
 	}
 
+	/**
+	 * @return {Box3}
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );
 
 	}
 
+	/**
+	 * @param {Box3} box 
+	 * @return {Box3}
+	 */
 	copy( box ) {
 
 		this.min.copy( box.min );
@@ -132,6 +184,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @return {Box3}
+	 */
 	makeEmpty() {
 
 		this.min.x = this.min.y = this.min.z = + Infinity;
@@ -141,6 +197,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @return {boolean}
+	 */
 	isEmpty() {
 
 		// this is a more robust check for empty than ( volume <= 0 ) because volume can get positive with two negative axes
@@ -149,6 +209,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	getCenter( target ) {
 
 		if ( target === undefined ) {
@@ -162,6 +227,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	getSize( target ) {
 
 		if ( target === undefined ) {
@@ -175,6 +245,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {Box3}
+	 */
 	expandByPoint( point ) {
 
 		this.min.min( point );
@@ -184,6 +259,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} vector 
+	 * @return {Box3}
+	 */
 	expandByVector( vector ) {
 
 		this.min.sub( vector );
@@ -193,6 +273,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} scalar 
+	 * @return {Box3}
+	 */
 	expandByScalar( scalar ) {
 
 		this.min.addScalar( - scalar );
@@ -202,6 +287,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Object3DInterface} object
+ 	 * @return {Box3}
+	 */
 	expandByObject( object ) {
 
 		// Computes the world-axis-aligned bounding box of an object (including its children),
@@ -238,6 +327,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {boolean}
+	 */
 	containsPoint( point ) {
 
 		return point.x < this.min.x || point.x > this.max.x ||
@@ -246,6 +340,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} box 
+	 * @return {boolean}
+	 */
 	containsBox( box ) {
 
 		return this.min.x <= box.min.x && box.max.x <= this.max.x &&
@@ -254,6 +353,12 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	getParameter( point, target ) {
 
 		// This can potentially have a divide by zero if the box
@@ -274,6 +379,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} box 
+	 * @return {boolean}
+	 */
 	intersectsBox( box ) {
 
 		// using 6 splitting planes to rule out intersections.
@@ -283,6 +393,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {{ center: Vector3, radius : number}} sphere 
+	 * @return {boolean} 
+	 */
 	intersectsSphere( sphere ) {
 
 		// Find the point on the AABB closest to the sphere center.
@@ -293,6 +407,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param { {normal : Vector3, constant: number}} plane 
+	 * @return {boolean}
+	 */
 	intersectsPlane( plane ) {
 
 		// We compute the minimum and maximum dot product values. If those values
@@ -340,6 +459,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {TriangleInterface} triangle 
+	 * @return {boolean}
+	 */
 	intersectsTriangle( triangle ) {
 
 		if ( this.isEmpty() ) {
@@ -393,6 +516,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Vector3} point 
+	 * @param {Vector3=} target
+	 * @return {Vector3} 
+	 */
 	clampPoint( point, target ) {
 
 		if ( target === undefined ) {
@@ -406,6 +534,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Vector3} point 
+	 * @return {number} 
+	 */
 	distanceToPoint( point ) {
 
 		const clampedPoint = _vector.copy( point ).clamp( this.min, this.max );
@@ -414,6 +546,9 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {{ center: Vector3, radius : number}=} target 
+	 */
 	getBoundingSphere( target ) {
 
 		if ( target === undefined ) {
@@ -431,6 +566,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} box
+	 * @return {Box3} 
+	 */
 	intersect( box ) {
 
 		this.min.max( box.min );
@@ -443,6 +583,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Box3} box
+	 * @return {Box3} 
+	 */
 	union( box ) {
 
 		this.min.min( box.min );
@@ -452,6 +597,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * @suppress {checkTypes} 
+	 * @param {Matrix4} matrix 
+	 * @return {Box3}
+	 */
 	applyMatrix4( matrix ) {
 
 		// transform of empty box is an empty box.
@@ -473,6 +623,11 @@ class Box3 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} offset 
+	 * @return {Box3}
+	 */
 	translate( offset ) {
 
 		this.min.add( offset );
@@ -482,6 +637,10 @@ class Box3 {
 
 	}
 
+	/**
+	 * @param {Box3} box
+	 * @return {boolean} 
+	 */
 	equals( box ) {
 
 		return box.min.equals( this.min ) && box.max.equals( this.max );
@@ -492,6 +651,7 @@ class Box3 {
 
 Box3.prototype.isBox3 = true;
 
+/** @type {Array<Vector3>} */
 const _points = [
 	/*@__PURE__*/ new Vector3(),
 	/*@__PURE__*/ new Vector3(),
@@ -524,6 +684,14 @@ const _extents = /*@__PURE__*/ new Vector3();
 const _triangleNormal = /*@__PURE__*/ new Vector3();
 const _testAxis = /*@__PURE__*/ new Vector3();
 
+/**
+ * @param {Array<number>} axes 
+ * @param {Vector3} v0 
+ * @param {Vector3} v1 
+ * @param {Vector3} v2 
+ * @param {Vector3} extents 
+ * @return {boolean}
+ */
 function satForAxes( axes, v0, v1, v2, extents ) {
 
 	for ( let i = 0, j = axes.length - 3; i <= j; i += 3 ) {

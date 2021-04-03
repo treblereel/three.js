@@ -1,7 +1,12 @@
+/** @type {HTMLCanvasElement} */
 let _canvas;
 
 const ImageUtils = {
 
+	/**
+	 * @param {HTMLCanvasElement|HTMLImageElement| ImageBitmap|undefined} image
+	 * @return {string}
+	 */
 	getDataURL: function ( image ) {
 
 		if ( /^data:/i.test( image.src ) ) {
@@ -16,6 +21,7 @@ const ImageUtils = {
 
 		}
 
+		/** @type {HTMLCanvasElement} */
 		let canvas;
 
 		if ( image instanceof HTMLCanvasElement ) {
@@ -24,12 +30,12 @@ const ImageUtils = {
 
 		} else {
 
-			if ( _canvas === undefined ) _canvas = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
+			if ( _canvas === undefined ) _canvas =  /** @type {HTMLCanvasElement} */ (document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ) );
 
 			_canvas.width = image.width;
 			_canvas.height = image.height;
 
-			const context = _canvas.getContext( '2d' );
+			const context = /** @type {CanvasRenderingContext2D} */ (_canvas.getContext( '2d' ));
 
 			if ( image instanceof ImageData ) {
 

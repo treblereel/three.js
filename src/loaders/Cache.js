@@ -1,42 +1,66 @@
-const Cache = {
+/** @type {Object<string, Object>} */
+const files = {};
 
-	enabled: false,
+class _Cache {
 
-	files: {},
+	constructor() {
 
-	add: function ( key, file ) {
+		this.enabled = false;
+
+		/** @type {Object<string, Object>} */
+		this.files;
+
+	}
+
+	/**
+	 * 
+	 * @param {string} key 
+	 * @param {Object} file 
+	 */
+	add( key, file ) {
 
 		if ( this.enabled === false ) return;
 
-		// console.log( 'THREE.Cache', 'Adding key:', key );
+		files[ key ] = file;
 
-		this.files[ key ] = file;
+	}
 
-	},
-
-	get: function ( key ) {
+	/**
+	 * 
+	 * @param {string} key 
+	 * @return {Object|undefined} 
+	 */
+	get( key ) {
 
 		if ( this.enabled === false ) return;
 
-		// console.log( 'THREE.Cache', 'Checking key:', key );
+		return files[ key ];
 
-		return this.files[ key ];
+	}
 
-	},
+	/**
+	 * 
+	 * @param {string} key 
+	 */
+	remove( key ) {
 
-	remove: function ( key ) {
+		delete files[ key ];
 
-		delete this.files[ key ];
+	}
 
-	},
-
-	clear: function () {
+	clear() {
 
 		this.files = {};
 
 	}
 
-};
+}
+
+
+
+
+
+const Cache = new _Cache();
 
 
 export { Cache };

@@ -1,121 +1,129 @@
-function LoadingManager( onLoad, onProgress, onError ) {
+class LoadingManager {
 
-	const scope = this;
+		/**
+	 * 
+	 * @param {function()=} onLoad 
+	 * @param {function(string, number, number)=} onProgress 
+	 * @param {function(string)=} onError 
+	 */
+	constructor( onLoad, onProgress, onError ) {
 
-	let isLoading = false;
-	let itemsLoaded = 0;
-	let itemsTotal = 0;
-	let urlModifier = undefined;
-	const handlers = [];
+		this.isLoading = false;
+		this.itemsLoaded = 0;
+		this.itemsTotal = 0;
+		this.urlModifier = undefined;
+		this.handlers = [];
 
-	// Refer to #5689 for the reason why we don't set .onStart
-	// in the constructor
+		// Refer to #5689 for the reason why we don't set .onStart
+		// in the constructor
 
-	this.onStart = undefined;
-	this.onLoad = onLoad;
-	this.onProgress = onProgress;
-	this.onError = onError;
+		this.onStart = undefined;
+		this.onLoad = onLoad;
+		this.onProgress = onProgress;
+		this.onError = onError;
 
-	this.itemStart = function ( url ) {
+	}
 
-		itemsTotal ++;
+	itemStart( url ) {
 
-		if ( isLoading === false ) {
+		this.itemsTotal ++;
 
-			if ( scope.onStart !== undefined ) {
+		if ( this.isLoading === false ) {
 
-				scope.onStart( url, itemsLoaded, itemsTotal );
-
-			}
-
-		}
-
-		isLoading = true;
-
-	};
-
-	this.itemEnd = function ( url ) {
-
-		itemsLoaded ++;
-
-		if ( scope.onProgress !== undefined ) {
-
-			scope.onProgress( url, itemsLoaded, itemsTotal );
-
-		}
-
-		if ( itemsLoaded === itemsTotal ) {
-
-			isLoading = false;
-
-			if ( scope.onLoad !== undefined ) {
-
-				scope.onLoad();
+			if ( this.onStart !== undefined ) {
+	
+				this.onStart( url, this.itemsLoaded, this.itemsTotal );
 
 			}
 
 		}
 
-	};
+		this.isLoading = true;
 
-	this.itemError = function ( url ) {
+	}
 
-		if ( scope.onError !== undefined ) {
+	itemEnd( url ) {
 
-			scope.onError( url );
+		this.itemsLoaded ++;
+
+		if ( this.onProgress !== undefined ) {
+
+			this.onProgress( url, this.itemsLoaded, this.itemsTotal );
 
 		}
 
-	};
+		if ( this.itemsLoaded === this.itemsTotal ) {
 
-	this.resolveURL = function ( url ) {
+			this.isLoading = false;
 
-		if ( urlModifier ) {
+			if ( this.onLoad !== undefined ) {
+	
+				this.onLoad();
 
-			return urlModifier( url );
+			}
+
+		}
+
+	}
+
+	itemError( url ) {
+
+		if ( this.onError !== undefined ) {
+
+			this.onError( url );
+
+		}
+
+	}
+
+	resolveURL( url ) {
+
+		if ( this.urlModifier ) {
+
+			return this.urlModifier( url );
 
 		}
 
 		return url;
 
-	};
+	}
 
-	this.setURLModifier = function ( transform ) {
+	setURLModifier( transform ) {
 
-		urlModifier = transform;
-
-		return this;
-
-	};
-
-	this.addHandler = function ( regex, loader ) {
-
-		handlers.push( regex, loader );
+		this.urlModifier = transform;
 
 		return this;
 
-	};
+	}
 
-	this.removeHandler = function ( regex ) {
+	addHandler( regex, loader ) {
 
-		const index = handlers.indexOf( regex );
+		this.handlers.push( regex, loader );
+
+		return this;
+
+	}
+
+	removeHandler( regex ) {
+
+		const index = this.handlers.indexOf( regex );
 
 		if ( index !== - 1 ) {
 
-			handlers.splice( index, 2 );
+			this.handlers.splice( index, 2 );
 
 		}
 
 		return this;
 
-	};
+	}
 
-	this.getHandler = function ( file ) {
+	getHandler( file ) {
 
-		for ( let i = 0, l = handlers.length; i < l; i += 2 ) {
+		for ( let i = 0, l = this.handlers.length; i < l; i += 2 ) {
 
-			const regex = handlers[ i ];
-			const loader = handlers[ i + 1 ];
+			const regex = this.handlers[ i ];
+			const loader = this.handlers[ i + 1 ];
 
 			if ( regex.global ) regex.lastIndex = 0; // see #17920
 
@@ -129,7 +137,7 @@ function LoadingManager( onLoad, onProgress, onError ) {
 
 		return null;
 
-	};
+	}
 
 }
 

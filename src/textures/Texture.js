@@ -15,56 +15,87 @@ import { Vector2 } from '../math/Vector2.js';
 import { Matrix3 } from '../math/Matrix3.js';
 import { ImageUtils } from '../extras/ImageUtils.js';
 
+/** @type {number} */
 let textureId = 0;
 
 class Texture extends EventDispatcher {
 
+	/**
+	* @param {Image=} image
+	* @param {number=} mapping
+	* @param {number=} wrapS
+	* @param {number=} wrapT
+	* @param {number=} magFilter
+	* @param {number=} minFilter
+	* @param {number=} format
+	* @param {number=} type
+	* @param {number=} anisotropy
+	* @param {number=} encoding
+	*/
 	constructor( image = Texture.DEFAULT_IMAGE, mapping = Texture.DEFAULT_MAPPING, wrapS = ClampToEdgeWrapping, wrapT = ClampToEdgeWrapping, magFilter = LinearFilter, minFilter = LinearMipmapLinearFilter, format = RGBAFormat, type = UnsignedByteType, anisotropy = 1, encoding = LinearEncoding ) {
 
 		super();
 
-		Object.defineProperty( this, 'id', { value: textureId ++ } );
+		//Object.defineProperty( this, 'id', { value: textureId ++ } );
+		/** @type {number} */
+		this.id = textureId ++;
 
+		/** @type {string} */
 		this.uuid = MathUtils.generateUUID();
 
 		this.name = '';
 
+		/** @type {Image|HTMLImageElement|{width: number, height: number, depth: number}|undefined} */
 		this.image = image;
 		this.mipmaps = [];
-
+		/** @type {number} */
 		this.mapping = mapping;
-
+		/** @type {number} */
 		this.wrapS = wrapS;
+		/** @type {number} */
 		this.wrapT = wrapT;
-
+		/** @type {number} */
 		this.magFilter = magFilter;
+		/** @type {number} */
 		this.minFilter = minFilter;
-
+		/** @type {number} */
 		this.anisotropy = anisotropy;
-
+		/** @type {number} */
 		this.format = format;
 		this.internalFormat = null;
+		/** @type {number} */
 		this.type = type;
 
+		/** @type {Vector2} */
 		this.offset = new Vector2( 0, 0 );
+		/** @type {Vector2} */
 		this.repeat = new Vector2( 1, 1 );
+		/** @type {Vector2} */
 		this.center = new Vector2( 0, 0 );
+		/** @type {number} */
 		this.rotation = 0;
 
+		/** @type {boolean} */
 		this.matrixAutoUpdate = true;
+		/** @type {Matrix3} */
 		this.matrix = new Matrix3();
 
+		/** @type {boolean} */
 		this.generateMipmaps = true;
+		/** @type {boolean} */
 		this.premultiplyAlpha = false;
+		/** @type {boolean} */
 		this.flipY = true;
+		/** @type {number} */
 		this.unpackAlignment = 4;	// valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
 
 		// Values of encoding !== THREE.LinearEncoding only supported on map, envMap and emissiveMap.
 		//
 		// Also changing the encoding after already used by a Material will not automatically make the Material
 		// update. You need to explicitly call Material.needsUpdate to trigger it to recompile.
+		/** @type {number} */
 		this.encoding = encoding;
-
+		/** @type {number} */
 		this.version = 0;
 		this.onUpdate = null;
 
@@ -76,12 +107,20 @@ class Texture extends EventDispatcher {
 
 	}
 
+	/**
+	 * @return {Texture}
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );
 
 	}
 
+	/**
+	 * 
+	 * @param {Texture} source 
+	 * @return {Texture}
+	 */
 	copy( source ) {
 
 		this.name = source.name;
@@ -121,12 +160,15 @@ class Texture extends EventDispatcher {
 
 	}
 
+	/**
+	 * @param {Object= } meta 
+   	 * @suppress{checkTypes}
+	 */
 	toJSON( meta ) {
 
 		const isRootObject = ( meta === undefined || typeof meta === 'string' );
 
 		if ( ! isRootObject && meta.textures[ this.uuid ] !== undefined ) {
-
 			return meta.textures[ this.uuid ];
 
 		}
@@ -239,6 +281,11 @@ class Texture extends EventDispatcher {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} uv 
+	 * @return {Vector2} 
+	 */
 	transformUv( uv ) {
 
 		if ( this.mapping !== UVMapping ) return uv;
@@ -332,6 +379,11 @@ Texture.DEFAULT_MAPPING = UVMapping;
 
 Texture.prototype.isTexture = true;
 
+/**
+ * 
+ * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap} image 
+ * @return {string|{data :(*|undefined), width: (number|undefined), height : (number|undefined), type : (string|undefined)}}
+ */
 function serializeImage( image ) {
 
 	if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||

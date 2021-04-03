@@ -1,12 +1,27 @@
 /**
  * https://github.com/mrdoob/eventdispatcher.js/
  */
+/**
+ * @record
+ */
+var Event = function() {};
+/** @type {string} */
+Event.prototype.type;
+/** @type {*|undefined} */
+Event.prototype.target;
 
-function EventDispatcher() {}
+class EventDispatcher {
 
-Object.assign( EventDispatcher.prototype, {
+	constructor() {
+		/** @type {Object<string, Array<function(Event)>>|undefined} */
+		this._listeners = undefined;
+	}
 
-	addEventListener: function ( type, listener ) {
+	/**
+	 * @param {string} type 
+	 * @param {function(Event)} listener 
+	 */
+	addEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) this._listeners = {};
 
@@ -24,19 +39,27 @@ Object.assign( EventDispatcher.prototype, {
 
 		}
 
-	},
+	}
 
-	hasEventListener: function ( type, listener ) {
+	/**
+	 * @param {string} type 
+	 * @param {function(Event)} listener 
+	 * @return {boolean}
+	 */
+	hasEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) return false;
 
 		const listeners = this._listeners;
-
 		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
 
-	},
+	}
 
-	removeEventListener: function ( type, listener ) {
+	/**
+	 * @param {string} type 
+	 * @param {function(Event)} listener 
+	 */
+	removeEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) return;
 
@@ -55,9 +78,13 @@ Object.assign( EventDispatcher.prototype, {
 
 		}
 
-	},
+	}
 
-	dispatchEvent: function ( event ) {
+	/**
+	 * 
+	 * @param {Event} event 
+	 */
+	dispatchEvent( event ) {
 
 		if ( this._listeners === undefined ) return;
 
@@ -81,7 +108,7 @@ Object.assign( EventDispatcher.prototype, {
 
 	}
 
-} );
+}
 
 
-export { EventDispatcher };
+export { EventDispatcher, Event };

@@ -1,6 +1,12 @@
 import { Vector3 } from './Vector3.js';
 import { Plane } from './Plane.js';
 
+//closure compiler
+import { TriangleInterface } from '../closure/math/TriangleInterface.js';
+import { Box3Interface } from '../closure/math/Box3Interface.js';
+import { Vector2 } from './Vector2.js';
+
+
 const _v0 = /*@__PURE__*/ new Vector3();
 const _v1 = /*@__PURE__*/ new Vector3();
 const _v2 = /*@__PURE__*/ new Vector3();
@@ -13,8 +19,17 @@ const _vap = /*@__PURE__*/ new Vector3();
 const _vbp = /*@__PURE__*/ new Vector3();
 const _vcp = /*@__PURE__*/ new Vector3();
 
+/**
+ * @implements {TriangleInterface}
+ */
 class Triangle {
 
+	/**
+	 * 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c 
+	 */
 	constructor( a = new Vector3(), b = new Vector3(), c = new Vector3() ) {
 
 		this.a = a;
@@ -23,6 +38,14 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c 
+	 * @param {Vector3} target
+	 * @return {Vector3} 
+	 */
 	static getNormal( a, b, c, target ) {
 
 		if ( target === undefined ) {
@@ -49,6 +72,16 @@ class Triangle {
 
 	// static/instance method to calculate barycentric coordinates
 	// based on: http://www.blackpawn.com/texts/pointinpoly/default.html
+
+		/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c 
+	 * @param {Vector3} target
+	 * @return {Vector3} 
+	 */
 	static getBarycoord( point, a, b, c, target ) {
 
 		_v0.subVectors( c, a );
@@ -88,6 +121,14 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c 
+	 * @return {boolean} 
+	 */
 	static containsPoint( point, a, b, c ) {
 
 		this.getBarycoord( point, a, b, c, _v3 );
@@ -96,6 +137,18 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} p1 
+	 * @param {Vector3} p2 
+	 * @param {Vector3} p3 
+	 * @param {Vector2} uv1 
+	 * @param {Vector2} uv2 
+	 * @param {Vector2} uv3 
+	 * @param {Vector2} target 
+	 * @return {Vector2}
+	 */
 	static getUV( point, p1, p2, p3, uv1, uv2, uv3, target ) {
 
 		this.getBarycoord( point, p1, p2, p3, _v3 );
@@ -109,6 +162,14 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c 
+	 * @param {Vector3} direction 
+	 * @return {boolean}
+	 */
 	static isFrontFacing( a, b, c, direction ) {
 
 		_v0.subVectors( c, b );
@@ -119,6 +180,13 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} a 
+	 * @param {Vector3} b 
+	 * @param {Vector3} c
+	 * @return {Triangle} 
+	 */
 	set( a, b, c ) {
 
 		this.a.copy( a );
@@ -129,6 +197,13 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<Vector3>} points 
+	 * @param {number} i0 
+	 * @param {number} i1 
+	 * @param {number} i2 
+	 */
 	setFromPointsAndIndices( points, i0, i1, i2 ) {
 
 		this.a.copy( points[ i0 ] );
@@ -139,12 +214,20 @@ class Triangle {
 
 	}
 
+	/**
+	 * @return {Triangle}
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );
 
 	}
 
+	/**
+	 * 
+	 * @param {Triangle} triangle 
+ 	 * @return {Triangle}
+	 */
 	copy( triangle ) {
 
 		this.a.copy( triangle.a );
@@ -155,6 +238,9 @@ class Triangle {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	getArea() {
 
 		_v0.subVectors( this.c, this.b );
@@ -164,6 +250,11 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	getMidpoint( target ) {
 
 		if ( target === undefined ) {
@@ -177,12 +268,22 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	getNormal( target ) {
 
 		return Triangle.getNormal( this.a, this.b, this.c, target );
 
 	}
 
+	/**
+	 * 
+	 * @param {Plane} target 
+	 * @return {Plane}
+	 */
 	getPlane( target ) {
 
 		if ( target === undefined ) {
@@ -196,36 +297,70 @@ class Triangle {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector3} target
+	 * @return {Vector3} 
+	 */
 	getBarycoord( point, target ) {
 
 		return Triangle.getBarycoord( point, this.a, this.b, this.c, target );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @param {Vector2} uv1 
+	 * @param {Vector2} uv2 
+	 * @param {Vector2} uv3 
+	 * @param {Vector2} target 
+	 */
 	getUV( point, uv1, uv2, uv3, target ) {
 
 		return Triangle.getUV( point, this.a, this.b, this.c, uv1, uv2, uv3, target );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {boolean}
+	 */
 	containsPoint( point ) {
 
 		return Triangle.containsPoint( point, this.a, this.b, this.c );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} direction 
+	 * @return {boolean}
+	 */
 	isFrontFacing( direction ) {
 
 		return Triangle.isFrontFacing( this.a, this.b, this.c, direction );
 
 	}
 
+	/**
+	 * @param {Box3Interface} box 
+	 * @return {boolean}
+	 */
 	intersectsBox( box ) {
 
 		return box.intersectsTriangle( this );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} p 
+	 * @param {Vector3} target 
+	 * @return {Vector3}
+	 */
 	closestPointToPoint( p, target ) {
 
 		if ( target === undefined ) {
@@ -314,6 +449,10 @@ class Triangle {
 
 	}
 
+	/**
+	 * @param {Triangle} triangle
+	 * @return {boolean} 
+	 */
 	equals( triangle ) {
 
 		return triangle.a.equals( this.a ) && triangle.b.equals( this.b ) && triangle.c.equals( this.c );

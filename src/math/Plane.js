@@ -1,21 +1,41 @@
 import { Matrix3 } from './Matrix3.js';
+import { Matrix4 } from './Matrix4.js';
 import { Vector3 } from './Vector3.js';
+
+//closure compiler
+import { Box3Interface } from '../closure/math/Box3Interface.js';
+import { PlaneInterface } from '../closure/math/PlaneInterface.js';
+import { SphereInterface } from '../closure/math/SphereInterface.js';
 
 const _vector1 = /*@__PURE__*/ new Vector3();
 const _vector2 = /*@__PURE__*/ new Vector3();
 const _normalMatrix = /*@__PURE__*/ new Matrix3();
 
+/**
+ * @implements { PlaneInterface }
+ */
 class Plane {
 
+	/**
+	 * @param {Vector3=} normal 
+	 * @param {number=} constant 
+	 */
 	constructor( normal = new Vector3( 1, 0, 0 ), constant = 0 ) {
 
 		// normal is assumed to be normalized
 
+		/** @type {Vector3} */
 		this.normal = normal;
+		/** @type {number} */
 		this.constant = constant;
 
 	}
 
+	/**
+	 * @param {Vector3} normal 
+	 * @param {number} constant
+	 * @return {Plane} 
+	 */
 	set( normal, constant ) {
 
 		this.normal.copy( normal );
@@ -25,6 +45,13 @@ class Plane {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @param {number} w 
+	 * @return {Plane} 
+	 */
 	setComponents( x, y, z, w ) {
 
 		this.normal.set( x, y, z );
@@ -34,6 +61,11 @@ class Plane {
 
 	}
 
+	/**
+	 * @param {Vector3} normal 
+	 * @param {Vector3} point
+	 * @return {Plane} 
+	 */
 	setFromNormalAndCoplanarPoint( normal, point ) {
 
 		this.normal.copy( normal );
@@ -43,6 +75,12 @@ class Plane {
 
 	}
 
+	/**
+	* @param {Vector3} a 
+	* @param {Vector3} b
+	* @param {Vector3} c
+	* @return {Plane} 
+	*/
 	setFromCoplanarPoints( a, b, c ) {
 
 		const normal = _vector1.subVectors( c, b ).cross( _vector2.subVectors( a, b ) ).normalize();
@@ -55,6 +93,10 @@ class Plane {
 
 	}
 
+	/**
+	* @param {Plane} plane
+	* @return {Plane} 
+	*/
 	copy( plane ) {
 
 		this.normal.copy( plane.normal );
@@ -64,6 +106,9 @@ class Plane {
 
 	}
 
+	/**
+	* @return {Plane} 
+	*/
 	normalize() {
 
 		// Note: will lead to a divide by zero if the plane is invalid.
@@ -76,6 +121,9 @@ class Plane {
 
 	}
 
+	/**
+	* @return {Plane} 
+	*/
 	negate() {
 
 		this.constant *= - 1;
@@ -85,18 +133,31 @@ class Plane {
 
 	}
 
+	/**
+	* @param {Vector3} point
+	* @return {number} 
+	*/
 	distanceToPoint( point ) {
 
 		return this.normal.dot( point ) + this.constant;
 
 	}
 
+	/**
+	 * @param { SphereInterface } sphere
+	* @return {number} 
+	*/
 	distanceToSphere( sphere ) {
 
 		return this.distanceToPoint( sphere.center ) - sphere.radius;
 
 	}
 
+	/**
+	* @param {Vector3} point
+	* @param {Vector3=} target
+	* @return {Vector3} 
+	*/
 	projectPoint( point, target ) {
 
 		if ( target === undefined ) {
@@ -110,6 +171,11 @@ class Plane {
 
 	}
 
+	/**
+	 * @param { { delta : function(Vector3) : Vector3, start : Vector3 } } line
+	 * @param {Vector3} target
+	 * @return {Vector3|undefined} 
+	 */
 	intersectLine( line, target ) {
 
 		if ( target === undefined ) {
@@ -149,6 +215,10 @@ class Plane {
 
 	}
 
+	/**
+	 * @param {{start : Vector3, end: Vector3}} line
+	* @return {boolean} 
+	*/
 	intersectsLine( line ) {
 
 		// Note: this tests if a line intersects the plane, not whether it (or its end-points) are coplanar with it.
@@ -160,18 +230,30 @@ class Plane {
 
 	}
 
+	/**
+	 * @param { Box3Interface } box
+	* @return {boolean} 
+	*/
 	intersectsBox( box ) {
 
 		return box.intersectsPlane( this );
 
 	}
 
+	/**
+	 * @param { SphereInterface } sphere
+	* @return {boolean} 
+	*/
 	intersectsSphere( sphere ) {
 
 		return sphere.intersectsPlane( this );
 
 	}
 
+	/**
+	* @param {Vector3} target 
+	* @return {Vector3} 
+	*/
 	coplanarPoint( target ) {
 
 		if ( target === undefined ) {
@@ -185,6 +267,13 @@ class Plane {
 
 	}
 
+	/**
+	 * 
+	 * @suppress {checkTypes} 
+	 * @param {Matrix4} matrix
+	 * @param {Matrix3} optionalNormalMatrix
+	 * @return {Plane} 
+	*/
 	applyMatrix4( matrix, optionalNormalMatrix ) {
 
 		const normalMatrix = optionalNormalMatrix || _normalMatrix.getNormalMatrix( matrix );
@@ -199,6 +288,10 @@ class Plane {
 
 	}
 
+	/**
+	 * @param {Vector3} offset
+	* @return {Plane} 
+	*/
 	translate( offset ) {
 
 		this.constant -= offset.dot( this.normal );
@@ -207,12 +300,19 @@ class Plane {
 
 	}
 
+	/**
+	 * @param {Plane} plane
+	 * @return {boolean} 
+	 */
 	equals( plane ) {
 
 		return plane.normal.equals( this.normal ) && ( plane.constant === this.constant );
 
 	}
 
+	/**
+	 * @return {Plane} 
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );

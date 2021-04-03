@@ -1,36 +1,63 @@
+//closure compiler
+import { MatrixInterface } from "../closure/math/MatrixInterface.js";
+
 class Vector2 {
 
+	/**
+	 * @param {number=} x 
+	 * @param {number=} y 
+	 */
 	constructor( x = 0, y = 0 ) {
 
+		/** @type {number} */
 		this.x = x;
+		/** @type {number} */
 		this.y = y;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get width() {
 
 		return this.x;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set width( value ) {
 
 		this.x = value;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get height() {
 
 		return this.y;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set height( value ) {
 
 		this.y = value;
 
 	}
 
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number} y
+	 * @return {Vector2} 
+	 */
 	set( x, y ) {
 
 		this.x = x;
@@ -40,6 +67,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} scalar
+	 * @return {Vector2} 
+	 */
 	setScalar( scalar ) {
 
 		this.x = scalar;
@@ -49,6 +80,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @return {Vector2}
+	 */
 	setX( x ) {
 
 		this.x = x;
@@ -57,6 +92,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} y 
+	 * @return {Vector2}
+	 */
 	setY( y ) {
 
 		this.y = y;
@@ -65,6 +104,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} index 
+	 * @param {number} value
+	 * @return {Vector2} 
+	 */
 	setComponent( index, value ) {
 
 		switch ( index ) {
@@ -79,6 +123,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} index 
+	 * @return {number}
+	 */
 	getComponent( index ) {
 
 		switch ( index ) {
@@ -91,12 +139,20 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	clone() {
 
 		return new this.constructor( this.x, this.y );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} v 
+	 * @return {Vector2}
+	 */
 	copy( v ) {
 
 		this.x = v.x;
@@ -106,6 +162,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} v 
+	 * @param {Vector2=} w
+	 * @return {Vector2} 
+	 */
 	add( v, w ) {
 
 		if ( w !== undefined ) {
@@ -122,6 +184,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} s 
+	 * @return {Vector2}
+	 */
 	addScalar( s ) {
 
 		this.x += s;
@@ -131,6 +197,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} a 
+	 * @param {Vector2} b
+	 * @return {Vector2} 
+	 */
 	addVectors( a, b ) {
 
 		this.x = a.x + b.x;
@@ -140,6 +211,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} v 
+	 * @param {number} s
+	 * @return {Vector2} 
+	 */
 	addScaledVector( v, s ) {
 
 		this.x += v.x * s;
@@ -149,6 +226,12 @@ class Vector2 {
 
 	}
 
+		/**
+	 *
+	 * @param {Vector2} v
+	 * @param {Vector2=} w
+ 	 * @return {Vector2}
+	 */
 	sub( v, w ) {
 
 		if ( w !== undefined ) {
@@ -165,6 +248,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} s
+	 * @return {Vector2} 
+	 */
 	subScalar( s ) {
 
 		this.x -= s;
@@ -174,6 +261,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} a 
+	 * @param {Vector2} b 
+	 * @return {Vector2}
+	 */
 	subVectors( a, b ) {
 
 		this.x = a.x - b.x;
@@ -183,6 +275,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v 
+ 	 * @return {Vector2}
+	 */
 	multiply( v ) {
 
 		this.x *= v.x;
@@ -192,6 +288,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * 
+	 * @param {number} scalar
+	 * @return {Vector2} 
+	 */
 	multiplyScalar( scalar ) {
 
 		this.x *= scalar;
@@ -201,6 +302,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {Vector2} 
+	 */
 	divide( v ) {
 
 		this.x /= v.x;
@@ -210,12 +315,20 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} scalar 
+ 	 * @return {Vector2} 
+	 */
 	divideScalar( scalar ) {
 
 		return this.multiplyScalar( 1 / scalar );
 
 	}
 
+	/**
+	 * @param { MatrixInterface } m
+	 * @return {Vector2} 
+	 */
 	applyMatrix3( m ) {
 
 		const x = this.x, y = this.y;
@@ -228,6 +341,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {Vector2} 
+	 */
 	min( v ) {
 
 		this.x = Math.min( this.x, v.x );
@@ -237,6 +354,10 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {Vector2} 
+	 */
 	max( v ) {
 
 		this.x = Math.max( this.x, v.x );
@@ -246,6 +367,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} min 
+	 * @param {Vector2} max
+	 * @return {Vector2} 
+	 */
 	clamp( min, max ) {
 
 		// assumes min < max, componentwise
@@ -257,6 +383,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} minVal 
+	 * @param {number} maxVal 
+ 	 * @return {Vector2} 
+	 */
 	clampScalar( minVal, maxVal ) {
 
 		this.x = Math.max( minVal, Math.min( maxVal, this.x ) );
@@ -266,6 +397,11 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {number} min 
+	 * @param {number} max 
+ 	 * @return {Vector2} 
+	 */
 	clampLength( min, max ) {
 
 		const length = this.length();
@@ -274,6 +410,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	floor() {
 
 		this.x = Math.floor( this.x );
@@ -283,6 +422,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	ceil() {
 
 		this.x = Math.ceil( this.x );
@@ -292,6 +434,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	round() {
 
 		this.x = Math.round( this.x );
@@ -301,6 +446,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	roundToZero() {
 
 		this.x = ( this.x < 0 ) ? Math.ceil( this.x ) : Math.floor( this.x );
@@ -310,6 +458,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	negate() {
 
 		this.x = - this.x;
@@ -319,42 +470,65 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {number} 
+	 */
 	dot( v ) {
 
 		return this.x * v.x + this.y * v.y;
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {number} 
+	 */
 	cross( v ) {
 
 		return this.x * v.y - this.y * v.x;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	lengthSq() {
 
 		return this.x * this.x + this.y * this.y;
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	length() {
 
 		return Math.sqrt( this.x * this.x + this.y * this.y );
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	manhattanLength() {
 
 		return Math.abs( this.x ) + Math.abs( this.y );
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	normalize() {
 
 		return this.divideScalar( this.length() || 1 );
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	angle() {
 
 		// computes the angle in radians with respect to the positive x-axis
@@ -365,12 +539,20 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {number} 
+	 */
 	distanceTo( v ) {
 
 		return Math.sqrt( this.distanceToSquared( v ) );
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {number} 
+	 */
 	distanceToSquared( v ) {
 
 		const dx = this.x - v.x, dy = this.y - v.y;
@@ -378,18 +560,33 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v
+	 * @return {number} 
+	 */
 	manhattanDistanceTo( v ) {
 
 		return Math.abs( this.x - v.x ) + Math.abs( this.y - v.y );
 
 	}
 
+	/**
+	 * 
+	 * @param {number} length 
+	 * @return {Vector2}
+	 */
 	setLength( length ) {
 
 		return this.normalize().multiplyScalar( length );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} v 
+	 * @param {number} alpha 
+	 * @return {Vector2}
+	 */
 	lerp( v, alpha ) {
 
 		this.x += ( v.x - this.x ) * alpha;
@@ -399,6 +596,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v1 
+	 * @param {Vector2} v2 
+	 * @param {number} alpha 
+	 * @return {Vector2}
+	 */
 	lerpVectors( v1, v2, alpha ) {
 
 		this.x = v1.x + ( v2.x - v1.x ) * alpha;
@@ -408,12 +611,22 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @param {Vector2} v 
+	 * @return {boolean}
+	 */
 	equals( v ) {
 
 		return ( ( v.x === this.x ) && ( v.y === this.y ) );
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>|TypedArray|null} array 
+	 * @param {number=} offset 
+	 * @return {Vector2}
+	 */
 	fromArray( array, offset = 0 ) {
 
 		this.x = array[ offset ];
@@ -423,6 +636,12 @@ class Vector2 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>=} array 
+	 * @param {number=} offset 
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		array[ offset ] = this.x;
@@ -432,6 +651,13 @@ class Vector2 {
 
 	}
 
+	/**
+	 *
+	 * @param {Object} attribute
+	 * @param {number} index
+	 * @param {number=} offset
+	 * @return {Vector2}
+	 */
 	fromBufferAttribute( attribute, index, offset ) {
 
 		if ( offset !== undefined ) {
@@ -440,13 +666,19 @@ class Vector2 {
 
 		}
 
-		this.x = attribute.getX( index );
-		this.y = attribute.getY( index );
+		this.x = ( /** @type {{ getX : function(number): number}} */ (attribute)).getX( index );
+		this.y = ( /** @type {{ getY : function(number): number}} */ (attribute)).getY( index );
 
 		return this;
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector2} center 
+	 * @param {number} angle 
+	 * @return {Vector2}
+	 */
 	rotateAround( center, angle ) {
 
 		const c = Math.cos( angle ), s = Math.sin( angle );
@@ -461,6 +693,9 @@ class Vector2 {
 
 	}
 
+	/**
+	 * @return {Vector2}
+	 */
 	random() {
 
 		this.x = Math.random();

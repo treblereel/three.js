@@ -1,6 +1,7 @@
 import { Color } from '../../math/Color.js';
 import { Vector2 } from '../../math/Vector2.js';
 import { Matrix3 } from '../../math/Matrix3.js';
+import { BasicDepthPacking } from '../../constants.js';
 
 /**
  * Uniforms library for shared webgl shaders

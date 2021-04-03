@@ -2,17 +2,40 @@ import { Vector3 } from './Vector3.js';
 import { Sphere } from './Sphere.js';
 import { Plane } from './Plane.js';
 
+//closure compiler
+import {Box3Interface} from '../closure/math/Box3Interface.js';
+import {MatrixInterface} from '../closure/math/MatrixInterface.js';
+
 const _sphere = /*@__PURE__*/ new Sphere();
 const _vector = /*@__PURE__*/ new Vector3();
 
 class Frustum {
 
+	/**
+	 * 
+	 * @param {Plane=} p0 
+	 * @param {Plane=} p1 
+	 * @param {Plane=} p2 
+	 * @param {Plane=} p3 
+	 * @param {Plane=} p4 
+	 * @param {Plane=} p5 
+	 */
 	constructor( p0 = new Plane(), p1 = new Plane(), p2 = new Plane(), p3 = new Plane(), p4 = new Plane(), p5 = new Plane() ) {
 
+		/** @type {Array<Plane>} */
 		this.planes = [ p0, p1, p2, p3, p4, p5 ];
 
 	}
 
+	/**
+	 * @param {Plane} p0 
+	 * @param {Plane} p1 
+	 * @param {Plane} p2 
+	 * @param {Plane} p3 
+	 * @param {Plane} p4 
+	 * @param {Plane} p5
+	 * @return {Frustum} 
+	 */
 	set( p0, p1, p2, p3, p4, p5 ) {
 
 		const planes = this.planes;
@@ -28,6 +51,10 @@ class Frustum {
 
 	}
 
+	/**
+	 * @param {Frustum} frustum
+	 * @return {Frustum} 
+	 */
 	copy( frustum ) {
 
 		const planes = this.planes;
@@ -42,6 +69,11 @@ class Frustum {
 
 	}
 
+	/**
+	 * 
+	 * @param {MatrixInterface} m 
+	 * @returns {Frustum}
+	 */
 	setFromProjectionMatrix( m ) {
 
 		const planes = this.planes;
@@ -62,6 +94,9 @@ class Frustum {
 
 	}
 
+	/**
+	 * @return {boolean}
+	 */
 	intersectsObject( object ) {
 
 		const geometry = object.geometry;
@@ -74,6 +109,9 @@ class Frustum {
 
 	}
 
+	/**
+	 * @return {boolean}
+	 */
 	intersectsSprite( sprite ) {
 
 		_sphere.center.set( 0, 0, 0 );
@@ -84,6 +122,11 @@ class Frustum {
 
 	}
 
+	/**
+	 * 
+	 * @param {Sphere} sphere 
+	 * @return {boolean}
+	 */
 	intersectsSphere( sphere ) {
 
 		const planes = this.planes;
@@ -106,6 +149,10 @@ class Frustum {
 
 	}
 
+	/**
+	 * @param {Box3Interface} box 
+	 * @return {boolean}
+	 */
 	intersectsBox( box ) {
 
 		const planes = this.planes;
@@ -132,6 +179,11 @@ class Frustum {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} point 
+	 * @return {boolean}
+	 */
 	containsPoint( point ) {
 
 		const planes = this.planes;
@@ -150,6 +202,9 @@ class Frustum {
 
 	}
 
+	/**
+	 * @return {Frustum}
+	 */
 	clone() {
 
 		return new this.constructor().copy( this );

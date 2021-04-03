@@ -1,9 +1,18 @@
 import { Vector3 } from './Vector3.js';
 
+//closure compiler
+import { EulerInterface } from '../closure/math/EulerInterface.js';
+import { MatrixInterface } from '../closure/math/MatrixInterface.js';
+import { QuaternionInterface } from '../closure/math/QuaternionInterface.js';
+
+/**
+ * @implements {MatrixInterface}
+ */
 class Matrix4 {
 
 	constructor() {
 
+		/** @type {Array<number>} */
 		this.elements = [
 
 			1, 0, 0, 0,
@@ -21,6 +30,25 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} n11 
+	 * @param {number} n12 
+	 * @param {number} n13 
+	 * @param {number} n14 
+	 * @param {number} n21 
+	 * @param {number} n22 
+	 * @param {number} n23 
+	 * @param {number} n24 
+	 * @param {number} n31 
+	 * @param {number} n32 
+	 * @param {number} n33 
+	 * @param {number} n34 
+	 * @param {number} n41 
+	 * @param {number} n42 
+	 * @param {number} n43 
+	 * @param {number} n44
+	 * @return {Matrix4} 
+	 */
 	set( n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44 ) {
 
 		const te = this.elements;
@@ -34,6 +62,9 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {Matrix4}
+	 */
 	identity() {
 
 		this.set(
@@ -49,12 +80,19 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {Matrix4}
+	 */
 	clone() {
 
 		return new Matrix4().fromArray( this.elements );
 
 	}
 
+	/**
+	 * @param {Matrix4} m
+	 * @return {Matrix4}
+	 */
 	copy( m ) {
 
 		const te = this.elements;
@@ -69,6 +107,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Matrix4} m
+	 * @return {Matrix4}
+	 */
 	copyPosition( m ) {
 
 		const te = this.elements, me = m.elements;
@@ -81,6 +123,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {MatrixInterface} m
+	 * @return {Matrix4} 
+	 */
 	setFromMatrix3( m ) {
 
 		const me = m.elements;
@@ -98,6 +144,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3} xAxis 
+	 * @param {Vector3} yAxis 
+	 * @param {Vector3} zAxis 
+	 * @return {Matrix4}
+	 */
 	extractBasis( xAxis, yAxis, zAxis ) {
 
 		xAxis.setFromMatrixColumn( this, 0 );
@@ -108,6 +160,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3} xAxis 
+	 * @param {Vector3} yAxis 
+	 * @param {Vector3} zAxis 
+ 	 * @return {Matrix4}
+	 */
 	makeBasis( xAxis, yAxis, zAxis ) {
 
 		this.set(
@@ -121,6 +179,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Matrix4} m
+	 * @return {Matrix4} 
+	 */
 	extractRotation( m ) {
 
 		// this method does not support reflection matrices
@@ -156,6 +218,11 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * 
+	 * @param { EulerInterface } euler 
+	 * @return {Matrix4}
+	 */
 	makeRotationFromEuler( euler ) {
 
 		if ( ! ( euler && euler.isEuler ) ) {
@@ -284,12 +351,22 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {QuaternionInterface} q 
+	 */
 	makeRotationFromQuaternion( q ) {
 
 		return this.compose( _zero, q, _one );
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} eye 
+	 * @param {Vector3} target 
+	 * @param {Vector3} up
+	 * @return {Matrix4} 
+	 */
 	lookAt( eye, target, up ) {
 
 		const te = this.elements;
@@ -337,6 +414,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Matrix4} m 
+	 * @param {Matrix4=} n 
+	 * @return {Matrix4}
+	 */
 	multiply( m, n ) {
 
 		if ( n !== undefined ) {
@@ -350,12 +433,21 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Matrix4} m
+	 * @return {Matrix4} 
+	 */
 	premultiply( m ) {
 
 		return this.multiplyMatrices( m, this );
 
 	}
 
+	/**
+	 * @param {Matrix4} a 
+	 * @param {Matrix4} b 
+ 	 * @return {Matrix4} 
+	 */
 	multiplyMatrices( a, b ) {
 
 		const ae = a.elements;
@@ -396,6 +488,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} s
+	 * @return {Matrix4} 
+	 */
 	multiplyScalar( s ) {
 
 		const te = this.elements;
@@ -409,6 +505,9 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	determinant() {
 
 		const te = this.elements;
@@ -459,6 +558,9 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {Matrix4}
+	 */
 	transpose() {
 
 		const te = this.elements;
@@ -476,6 +578,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3|number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @return {Matrix4}
+	 */
 	setPosition( x, y, z ) {
 
 		const te = this.elements;
@@ -488,7 +596,7 @@ class Matrix4 {
 
 		} else {
 
-			te[ 12 ] = x;
+			te[ 12 ] = /** @type {number} */ (x);
 			te[ 13 ] = y;
 			te[ 14 ] = z;
 
@@ -498,6 +606,9 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {Matrix4}
+	 */
 	invert() {
 
 		// based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
@@ -543,6 +654,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3} v 
+	 * @return {Matrix4}
+	 */
 	scale( v ) {
 
 		const te = this.elements;
@@ -557,6 +672,9 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	getMaxScaleOnAxis() {
 
 		const te = this.elements;
@@ -569,6 +687,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z
+	 * @return {Matrix4} 
+	 */
 	makeTranslation( x, y, z ) {
 
 		this.set(
@@ -584,6 +708,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} theta 
+	 * @return {Matrix4}
+	 */
 	makeRotationX( theta ) {
 
 		const c = Math.cos( theta ), s = Math.sin( theta );
@@ -601,6 +729,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} theta 
+	 * @return {Matrix4}
+	 */
 	makeRotationY( theta ) {
 
 		const c = Math.cos( theta ), s = Math.sin( theta );
@@ -618,6 +750,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} theta 
+	 * @return {Matrix4}
+	 */
 	makeRotationZ( theta ) {
 
 		const c = Math.cos( theta ), s = Math.sin( theta );
@@ -635,6 +771,11 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3} axis 
+	 * @param {number} angle
+	 * @return {Matrix4} 
+	 */
 	makeRotationAxis( axis, angle ) {
 
 		// Based on http://www.gamedev.net/reference/articles/article1199.asp
@@ -658,6 +799,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z
+	 * @return {Matrix4} 
+	 */
 	makeScale( x, y, z ) {
 
 		this.set(
@@ -673,6 +820,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z
+	 * @return {Matrix4} 
+	 */
 	makeShear( x, y, z ) {
 
 		this.set(
@@ -688,6 +841,12 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Vector3} position 
+	 * @param {QuaternionInterface} quaternion 
+	 * @param {Vector3} scale 
+	 * @return {Matrix4}
+	 */
 	compose( position, quaternion, scale ) {
 
 		const te = this.elements;
@@ -724,13 +883,20 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * 
+	 * @param {Vector3} position 
+	 * @param { QuaternionInterface } quaternion 
+	 * @param {Vector3} scale
+	 * @return {Matrix4} 
+	 */
 	decompose( position, quaternion, scale ) {
 
 		const te = this.elements;
 
-		let sx = _v1.set( te[ 0 ], te[ 1 ], te[ 2 ] ).length();
-		const sy = _v1.set( te[ 4 ], te[ 5 ], te[ 6 ] ).length();
-		const sz = _v1.set( te[ 8 ], te[ 9 ], te[ 10 ] ).length();
+		/** @type {number} */ let sx = _v1.set( te[ 0 ], te[ 1 ], te[ 2 ] ).length();
+		/** @type {number} */ const sy = _v1.set( te[ 4 ], te[ 5 ], te[ 6 ] ).length();
+		/** @type {number} */ const sz = _v1.set( te[ 8 ], te[ 9 ], te[ 10 ] ).length();
 
 		// if determine is negative, we need to invert one scale
 		const det = this.determinant();
@@ -769,6 +935,15 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} left 
+	 * @param {number} right 
+	 * @param {number} top 
+	 * @param {number} bottom 
+	 * @param {number} near 
+	 * @param {number} far
+	 * @return {Matrix4} 
+	 */
 	makePerspective( left, right, top, bottom, near, far ) {
 
 		if ( far === undefined ) {
@@ -795,6 +970,15 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {number} left 
+	 * @param {number} right 
+	 * @param {number} top 
+	 * @param {number} bottom 
+	 * @param {number} near 
+	 * @param {number} far
+	 * @return {Matrix4} 
+	 */
 	makeOrthographic( left, right, top, bottom, near, far ) {
 
 		const te = this.elements;
@@ -815,6 +999,10 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Matrix4} matrix
+	 * @return {boolean} 
+	 */
 	equals( matrix ) {
 
 		const te = this.elements;
@@ -830,6 +1018,11 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Array<number>} array 
+	 * @param {number=} offset 
+	 * @return {Matrix4}
+	 */
 	fromArray( array, offset = 0 ) {
 
 		for ( let i = 0; i < 16; i ++ ) {
@@ -842,6 +1035,11 @@ class Matrix4 {
 
 	}
 
+	/**
+	 * @param {Array<number>=} array 
+	 * @param {number=} offset 
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		const te = this.elements;
@@ -874,12 +1072,12 @@ class Matrix4 {
 
 Matrix4.prototype.isMatrix4 = true;
 
-const _v1 = /*@__PURE__*/ new Vector3();
-const _m1 = /*@__PURE__*/ new Matrix4();
-const _zero = /*@__PURE__*/ new Vector3( 0, 0, 0 );
-const _one = /*@__PURE__*/ new Vector3( 1, 1, 1 );
-const _x = /*@__PURE__*/ new Vector3();
-const _y = /*@__PURE__*/ new Vector3();
-const _z = /*@__PURE__*/ new Vector3();
+/** @type {Vector3} */ const _v1 = /*@__PURE__*/ new Vector3();
+/** @type {Matrix4} */ const _m1 = /*@__PURE__*/ new Matrix4();
+/** @type {Vector3} */ const _zero = /*@__PURE__*/ new Vector3( 0, 0, 0 );
+/** @type {Vector3} */ const _one = /*@__PURE__*/ new Vector3( 1, 1, 1 );
+/** @type {Vector3} */ const _x = /*@__PURE__*/ new Vector3();
+/** @type {Vector3} */ const _y = /*@__PURE__*/ new Vector3();
+/** @type {Vector3} */ const _z = /*@__PURE__*/ new Vector3();
 
 export { Matrix4 };

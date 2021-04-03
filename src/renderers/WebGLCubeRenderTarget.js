@@ -7,22 +7,35 @@ import { WebGLRenderTarget } from './WebGLRenderTarget.js';
 import { CubeCamera } from '../cameras/CubeCamera.js';
 import { CubeTexture } from '../textures/CubeTexture.js';
 
+import { WebGLRenderTargetOptions } from './WebGLRenderTargetOptions.js';
+
+import { WebGLRenderer } from './WebGLRenderer.js';
+import { Texture } from './../textures/Texture.js';
+
+
+
 class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
-	constructor( size, options, dummy ) {
+	/**
+	 * 
+	 * @param {number} size 
+	 * @param {WebGLRenderTargetOptions=} options 
+	 */
+	constructor( size, options ) {
 
-		if ( Number.isInteger( options ) ) {
+/* 		if ( Number.isInteger( options ) ) {
 
 			console.warn( 'THREE.WebGLCubeRenderTarget: constructor signature is now WebGLCubeRenderTarget( size, options )' );
 
 			options = dummy;
 
-		}
+		} */
 
 		super( size, size, options );
 
 		options = options || {};
 
+		/** @type {CubeTexture} */
 		this.texture = new CubeTexture( undefined, options.mapping, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding );
 
 		this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
@@ -32,6 +45,12 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
 	}
 
+	/**
+	 * 
+	 * @param {WebGLRenderer} renderer 
+	 * @param {Texture} texture
+	 * @return {WebGLCubeRenderTarget} 
+	 */
 	fromEquirectangularTexture( renderer, texture ) {
 
 		this.texture.type = texture.type;
@@ -123,6 +142,12 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
 	}
 
+	/**
+	 * @param {WebGLRenderer} renderer 
+	 * @param {boolean} color 
+	 * @param {boolean} depth 
+	 * @param {boolean} stencil 
+	 */
 	clear( renderer, color, depth, stencil ) {
 
 		const currentRenderTarget = renderer.getRenderTarget();

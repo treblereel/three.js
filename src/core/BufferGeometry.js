@@ -10,6 +10,7 @@ import { Matrix3 } from '../math/Matrix3.js';
 import { MathUtils } from '../math/MathUtils.js';
 import { arrayMax } from '../utils.js';
 
+/** @type {number} */
 let _id = 0;
 
 const _m1 = new Matrix4();
@@ -19,45 +20,70 @@ const _box = new Box3();
 const _boxMorphTargets = new Box3();
 const _vector = new Vector3();
 
-function BufferGeometry() {
+class BufferGeometry extends EventDispatcher {
 
-	Object.defineProperty( this, 'id', { value: _id ++ } );
+	constructor() {
 
-	this.uuid = MathUtils.generateUUID();
+		super();
 
-	this.name = '';
-	this.type = 'BufferGeometry';
+		//Object.defineProperty( this, 'id', { value: _id ++ } );
 
-	this.index = null;
-	this.attributes = {};
+		/** @type {number} */
+		this.id = _id ++ ;
+		/**@type {string} */
+		this.uuid = MathUtils.generateUUID();
+		/**@type {string} */
+		this.name = '';
+		/**@type {string} */
+		this.type = 'BufferGeometry';
+		/** @type {BufferAttribute|null} */
+		this.index = null;
+		/** 
+		* @type { { normal : BufferAttribute, position : BufferAttribute, tangent : BufferAttribute, uv : BufferAttribute, array : Array<number> }| Object }
+		*/
+		this.attributes = {};
+		/** 
+		* @type { { normal : Array<BufferAttribute>, position : Array<BufferAttribute>, tangent : Array<BufferAttribute> } | Object }
+		*/
+		this.morphAttributes = {};
+		
+		/** @type {boolean} */
+		this.morphTargetsRelative = false;
 
-	this.morphAttributes = {};
-	this.morphTargetsRelative = false;
+		
+		/** @type {Array<{start: number, count: number, materialIndex: number}> | Array } */
+		this.groups = [];
 
-	this.groups = [];
+		/** @type {Box3|null} */
+		this.boundingBox = null;
+		/** @type {Sphere|null} */
+		this.boundingSphere = null;
+		/** @type {{start : number, count:number}} */
+		this.drawRange = { start: 0, count: Infinity };
 
-	this.boundingBox = null;
-	this.boundingSphere = null;
+		this.userData = {};
 
-	this.drawRange = { start: 0, count: Infinity };
+		/** @type {boolean} */
+		this.isBufferGeometry = true;
+		/** @type {Object} */
+		this.parameters = null;
 
-	this.userData = {};
+	}
 
-}
-
-BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
-
-	constructor: BufferGeometry,
-
-	isBufferGeometry: true,
-
-	getIndex: function () {
+	/**
+	 * @return {BufferAttribute|null}
+	 */
+	getIndex() {
 
 		return this.index;
 
-	},
+	}
 
-	setIndex: function ( index ) {
+	/**
+	 * @param {Array|BufferAttribute|null} index 
+	 * @return {BufferGeometry}
+	 */
+	setIndex( index ) {
 
 		if ( Array.isArray( index ) ) {
 
@@ -71,37 +97,64 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	getAttribute: function ( name ) {
+	/**
+	 * 
+	 * @param {string} name 
+	 * @return {BufferAttribute}
+	 */
+	getAttribute( name ) {
 
 		return this.attributes[ name ];
 
-	},
+	}
 
-	setAttribute: function ( name, attribute ) {
+	/**
+	 * 
+	 * @param {string} name 
+	 * @param {BufferAttribute} attribute
+	 * @return {BufferGeometry}
+	 */
+	setAttribute( name, attribute ) {
 
 		this.attributes[ name ] = attribute;
 
 		return this;
 
-	},
+	}
 
-	deleteAttribute: function ( name ) {
+	/**
+	 * 
+	 * @param {string} name 
+	 * @return {BufferGeometry}
+	 */
+	deleteAttribute( name ) {
 
 		delete this.attributes[ name ];
 
 		return this;
 
-	},
+	}
 
-	hasAttribute: function ( name ) {
+	/**
+	 * 
+	 * @param {string} name 
+	 * @return {boolean}
+	 */
+	hasAttribute( name ) {
 
 		return this.attributes[ name ] !== undefined;
 
-	},
+	}
 
-	addGroup: function ( start, count, materialIndex = 0 ) {
+	/**
+	 * 
+	 * @param {number} start 
+	 * @param {number} count 
+	 * @param {number=} materialIndex 
+	 */
+	addGroup( start, count, materialIndex = 0 ) {
 
 		this.groups.push( {
 
@@ -111,22 +164,31 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		} );
 
-	},
+	}
 
-	clearGroups: function () {
+	clearGroups() {
 
 		this.groups = [];
 
-	},
+	}
 
-	setDrawRange: function ( start, count ) {
+	/**
+	 * 
+	 * @param {number} start 
+	 * @param {number} count 
+	 */
+	setDrawRange( start, count ) {
 
 		this.drawRange.start = start;
 		this.drawRange.count = count;
 
-	},
+	}
 
-	applyMatrix4: function ( matrix ) {
+	/**
+	 * @param {Matrix4} matrix 
+	 * @return {BufferGeometry}
+	 */
+	applyMatrix4( matrix ) {
 
 		const position = this.attributes.position;
 
@@ -174,9 +236,13 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	rotateX: function ( angle ) {
+	/**
+	 * @param {number} angle 
+	 * @return {BufferGeometry}
+	 */
+	rotateX( angle ) {
 
 		// rotate geometry around world x-axis
 
@@ -186,9 +252,13 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	rotateY: function ( angle ) {
+	/**
+	 * @param {number} angle 
+	 * @return {BufferGeometry}
+	 */
+	rotateY( angle ) {
 
 		// rotate geometry around world y-axis
 
@@ -198,9 +268,13 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	rotateZ: function ( angle ) {
+	/**
+	 * @param {number} angle 
+	 * @return {BufferGeometry}
+	 */
+	rotateZ( angle ) {
 
 		// rotate geometry around world z-axis
 
@@ -210,9 +284,15 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	translate: function ( x, y, z ) {
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @return {BufferGeometry}
+	 */
+	translate( x, y, z ) {
 
 		// translate geometry
 
@@ -222,9 +302,15 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	scale: function ( x, y, z ) {
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @return {BufferGeometry}
+	 */
+	scale( x, y, z ) {
 
 		// scale geometry
 
@@ -234,9 +320,12 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	lookAt: function ( vector ) {
+	/**
+	 * @param {Vector3} vector 
+	 */
+	lookAt( vector ) {
 
 		_obj.lookAt( vector );
 
@@ -246,9 +335,12 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	center: function () {
+	/**
+	 * @return {BufferGeometry}
+	 */
+	center() {
 
 		this.computeBoundingBox();
 
@@ -258,9 +350,14 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	setFromPoints: function ( points ) {
+	/**
+	 * 
+	 * @param {Array<Vector3>} points 
+ 	 * @return {BufferGeometry}
+	 */
+	setFromPoints( points ) {
 
 		const position = [];
 
@@ -275,9 +372,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	computeBoundingBox: function () {
+	computeBoundingBox() {
 
 		if ( this.boundingBox === null ) {
 
@@ -345,9 +442,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		}
 
-	},
+	}
 
-	computeBoundingSphere: function () {
+	computeBoundingSphere() {
 
 		if ( this.boundingSphere === null ) {
 
@@ -457,15 +554,15 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		}
 
-	},
+	}
 
-	computeFaceNormals: function () {
+	computeFaceNormals() {
 
 		// backwards compatibility
 
-	},
+	}
 
-	computeTangents: function () {
+	computeTangents() {
 
 		const index = this.index;
 		const attributes = this.attributes;
@@ -484,7 +581,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 		}
 
 		const indices = index.array;
+		/** @type {Array<number>|null} */
 		const positions = attributes.position.array;
+		/** @type {Array<number>|null} */
 		const normals = attributes.normal.array;
 		const uvs = attributes.uv.array;
 
@@ -498,7 +597,10 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		const tangents = attributes.tangent.array;
 
-		const tan1 = [], tan2 = [];
+		/** @type {Array<Vector3>} */
+		const tan1 = [];
+		/** @type {Array<Vector3>} */
+		const tan2 = [];
 
 		for ( let i = 0; i < nVertices; i ++ ) {
 
@@ -518,6 +620,11 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 			sdir = new Vector3(),
 			tdir = new Vector3();
 
+		/**
+		 * @param {number} a 
+		 * @param {number} b 
+		 * @param {number} c 
+		 */	
 		function handleTriangle( a, b, c ) {
 
 			vA.fromArray( positions, a * 3 );
@@ -566,7 +673,7 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		for ( let i = 0, il = groups.length; i < il; ++ i ) {
 
-			const group = groups[ i ];
+			const group = /** @type { { start: number, count: number, materialIndex: number } } */ (groups[ i ]);
 
 			const start = group.start;
 			const count = group.count;
@@ -586,6 +693,10 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 		const tmp = new Vector3(), tmp2 = new Vector3();
 		const n = new Vector3(), n2 = new Vector3();
 
+		/**
+		 * 
+		 * @param {number} v 
+		 */
 		function handleVertex( v ) {
 
 			n.fromArray( normals, v * 3 );
@@ -613,6 +724,7 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		for ( let i = 0, il = groups.length; i < il; ++ i ) {
 
+			 /** @type { { start: number, count: number, materialIndex: number } } */
 			const group = groups[ i ];
 
 			const start = group.start;
@@ -628,9 +740,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		}
 
-	},
+	}
 
-	computeVertexNormals: function () {
+	computeVertexNormals() {
 
 		const index = this.index;
 		const positionAttribute = this.getAttribute( 'position' );
@@ -720,9 +832,15 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		}
 
-	},
+	}
 
-	merge: function ( geometry, offset ) {
+	/**
+	 * 
+	 * @param {BufferGeometry} geometry 
+	 * @param {number=} offset 
+	 * @return {BufferGeometry|undefined}
+	 */
+	merge( geometry, offset ) {
 
 		if ( ! ( geometry && geometry.isBufferGeometry ) ) {
 
@@ -748,9 +866,11 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 			if ( geometry.attributes[ key ] === undefined ) continue;
 
+			/** @type {BufferAttribute} */
 			const attribute1 = attributes[ key ];
 			const attributeArray1 = attribute1.array;
 
+			/** @type {BufferAttribute} */
 			const attribute2 = geometry.attributes[ key ];
 			const attributeArray2 = attribute2.array;
 
@@ -767,9 +887,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	normalizeNormals: function () {
+	normalizeNormals() {
 
 		const normals = this.attributes.normal;
 
@@ -783,10 +903,19 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		}
 
-	},
+	}
 
-	toNonIndexed: function () {
+	/**
+	 * @return {BufferGeometry}
+	 */
+	toNonIndexed() {
 
+		/**
+		 * 
+		 * @param {BufferAttribute} attribute 
+		 * @param {Array<number>|TypedArray|null} indices 
+		 * @return {BufferAttribute}
+		 */
 		function convertBufferAttribute( attribute, indices ) {
 
 			const array = attribute.array;
@@ -845,7 +974,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		for ( const name in morphAttributes ) {
 
+			/** @type {Array<BufferAttribute>} */
 			const morphArray = [];
+			/** @type {Array<BufferAttribute>} */
 			const morphAttribute = morphAttributes[ name ]; // morphAttribute: array of Float32BufferAttributes
 
 			for ( let i = 0, il = morphAttribute.length; i < il; i ++ ) {
@@ -877,9 +1008,9 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return geometry2;
 
-	},
+	}
 
-	toJSON: function () {
+	toJSON() {
 
 		const data = {
 			metadata: {
@@ -900,8 +1031,10 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 			const parameters = this.parameters;
 
-			for ( const key in parameters ) {
 
+			//CHECK THIS
+			for ( const key in parameters ) {
+	
 				if ( parameters[ key ] !== undefined ) data[ key ] = parameters[ key ];
 
 			}
@@ -996,9 +1129,12 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return data;
 
-	},
+	}
 
-	clone: function () {
+	/**
+	 * @return {BufferGeometry}
+	 */
+	clone() {
 
 		/*
 		 // Handle primitives
@@ -1026,9 +1162,13 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return new BufferGeometry().copy( this );
 
-	},
+	}
 
-	copy: function ( source ) {
+	/**
+	 * @param {BufferGeometry} source
+	 * @return {BufferGeometry}
+	 */
+	copy( source ) {
 
 		// reset
 
@@ -1075,6 +1215,7 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 		for ( const name in morphAttributes ) {
 
 			const array = [];
+			/** @type {Array<Float32BufferAttribute>} */
 			const morphAttribute = morphAttributes[ name ]; // morphAttribute: array of Float32BufferAttributes
 
 			for ( let i = 0, l = morphAttribute.length; i < l; i ++ ) {
@@ -1131,15 +1272,15 @@ BufferGeometry.prototype = Object.assign( Object.create( EventDispatcher.prototy
 
 		return this;
 
-	},
+	}
 
-	dispose: function () {
+	dispose() {
 
 		this.dispatchEvent( { type: 'dispose' } );
 
 	}
 
-} );
+}
 
 
 export { BufferGeometry };

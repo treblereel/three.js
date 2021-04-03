@@ -1,15 +1,28 @@
-function WebGLProperties() {
+import {WebGLProperty} from '../../closure/renderers/webgl/WebGLProperty.js';
 
-	let properties = new WeakMap();
+class WebGLProperties {
 
-	function get( object ) {
 
-		let map = properties.get( object );
+	constructor() {
+		/**
+		 * @type {WeakMap<Object, WebGLProperty>}
+		 */
+		this.properties = new WeakMap();
+
+	}
+
+	/**
+	 * @param {Object} object 
+	 * @return {WebGLProperty}
+	 */
+	get( object ) {
+
+		let map = this.properties.get( object );
 
 		if ( map === undefined ) {
 
 			map = {};
-			properties.set( object, map );
+			this.properties.set( object, map );
 
 		}
 
@@ -17,30 +30,33 @@ function WebGLProperties() {
 
 	}
 
-	function remove( object ) {
+	/**
+	 * 
+	 * @param {Object} object 
+	 */
+	remove( object ) {
 
-		properties.delete( object );
-
-	}
-
-	function update( object, key, value ) {
-
-		properties.get( object )[ key ] = value;
+		this.properties.delete( object );
 
 	}
 
-	function dispose() {
+	/**
+	 * 
+	 * @param {Object} object 
+	 * @param {string} key 
+	 * @param {*} value 
+	 */
+	update( object, key, value ) {
 
-		properties = new WeakMap();
+		this.properties.get( object )[ key ] = value;
 
 	}
 
-	return {
-		get: get,
-		remove: remove,
-		update: update,
-		dispose: dispose
-	};
+	dispose() {
+
+		this.properties = new WeakMap();
+
+	}
 
 }
 

@@ -1,9 +1,25 @@
 import { MathUtils } from './MathUtils.js';
 
+//closure compiler
+import { EulerInterface } from '../closure/math/EulerInterface.js';
+import { Vector3Interface } from '../closure/math/Vector3Interface.js';
+import { QuaternionInterface } from '../closure/math/QuaternionInterface.js';
+import { MatrixInterface } from '../closure/math/MatrixInterface.js';
+
+/**
+ * @implements {QuaternionInterface}
+ */
 class Quaternion {
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @param {number} w 
+	 */
 	constructor( x = 0, y = 0, z = 0, w = 1 ) {
 
+		/** {number} */
 		this._x = x;
 		this._y = y;
 		this._z = z;
@@ -11,12 +27,29 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Quaternion} qa 
+	 * @param {Quaternion} qb 
+	 * @param {Quaternion} qm 
+	 * @param {number} t 
+	 * @return {Quaternion}
+	 */
 	static slerp( qa, qb, qm, t ) {
 
 		return qm.copy( qa ).slerp( qb, t );
 
 	}
 
+	/**
+	 * @param {Array<number>} dst 
+	 * @param {number} dstOffset 
+	 * @param {Array<number>} src0 
+	 * @param {number} srcOffset0 
+	 * @param {Array<number>} src1 
+	 * @param {number} srcOffset1 
+	 * @param {number} t 
+ 	 * @return {Quaternion|undefined}
+	 */
 	static slerpFlat( dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t ) {
 
 		// fuzz-free, array-based Quaternion SLERP operation
@@ -97,6 +130,16 @@ class Quaternion {
 
 	}
 
+	/**
+	 * 
+	 * @param {Array<number>} dst 
+	 * @param {number} dstOffset 
+	 * @param {Array<number>} src0 
+	 * @param {number} srcOffset0 
+	 * @param {Array<number>} src1 
+	 * @param {number} srcOffset1 
+	 * @return {Array<number>}
+	 */
 	static multiplyQuaternionsFlat( dst, dstOffset, src0, srcOffset0, src1, srcOffset1 ) {
 
 		const x0 = src0[ srcOffset0 ];
@@ -118,12 +161,18 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get x() {
 
 		return this._x;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set x( value ) {
 
 		this._x = value;
@@ -131,12 +180,18 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get y() {
 
 		return this._y;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set y( value ) {
 
 		this._y = value;
@@ -144,12 +199,18 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get z() {
 
 		return this._z;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set z( value ) {
 
 		this._z = value;
@@ -157,12 +218,18 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {number}
+	 */
 	get w() {
 
 		return this._w;
 
 	}
 
+	/**
+	 * @param {number} value
+	 */
 	set w( value ) {
 
 		this._w = value;
@@ -170,6 +237,13 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} z 
+	 * @param {number} w
+	 * @return {Quaternion} 
+	 */
 	set( x, y, z, w ) {
 
 		this._x = x;
@@ -183,12 +257,19 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {Quaternion}
+	 */
 	clone() {
 
 		return new this.constructor( this._x, this._y, this._z, this._w );
 
 	}
 
+	/**
+	 * @param {Quaternion} quaternion
+	 * @return {Quaternion}
+	 */
 	copy( quaternion ) {
 
 		this._x = quaternion.x;
@@ -202,6 +283,12 @@ class Quaternion {
 
 	}
 
+	/**
+	 *
+	 * @param { EulerInterface } euler
+	 * @param {boolean=} update
+	 * @return {Quaternion}
+	 */
 	setFromEuler( euler, update ) {
 
 		if ( ! ( euler && euler.isEuler ) ) {
@@ -282,6 +369,11 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param { Vector3Interface } axis 
+	 * @param {number} angle
+	 * @return {Quaternion} 
+	 */
 	setFromAxisAngle( axis, angle ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
@@ -301,6 +393,10 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param { MatrixInterface } m 
+	 * @return {Quaternion}
+	 */
 	setFromRotationMatrix( m ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
@@ -359,6 +455,11 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param { Vector3Interface } vFrom 
+	 * @param { Vector3Interface } vTo 
+	 * @return { Quaternion }
+	 */
 	setFromUnitVectors( vFrom, vTo ) {
 
 		// assumes direction vectors vFrom and vTo are normalized
@@ -402,12 +503,21 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Quaternion} q
+	 * @return {number} 
+	 */
 	angleTo( q ) {
 
 		return 2 * Math.acos( Math.abs( MathUtils.clamp( this.dot( q ), - 1, 1 ) ) );
 
 	}
 
+	/**
+	 * @param {Quaternion} q
+	 * @param {number} step
+	 * @return {Quaternion} 
+	 */
 	rotateTowards( q, step ) {
 
 		const angle = this.angleTo( q );
@@ -422,12 +532,18 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {Quaternion} 
+	 */
 	identity() {
 
 		return this.set( 0, 0, 0, 1 );
 
 	}
 
+	/**
+	 * @return {Quaternion} 
+	 */
 	invert() {
 
 		// quaternion is assumed to have unit length
@@ -436,6 +552,9 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @return {Quaternion} 
+	 */
 	conjugate() {
 
 		this._x *= - 1;
@@ -448,24 +567,37 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Quaternion} v
+	 * @return {number} 
+	 */
 	dot( v ) {
 
 		return this._x * v._x + this._y * v._y + this._z * v._z + this._w * v._w;
 
 	}
 
+	/**
+	 * @return {number} 
+	 */
 	lengthSq() {
 
 		return this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w;
 
 	}
 
+	/**
+	 * @return {number} 
+	 */
 	length() {
 
 		return Math.sqrt( this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w );
 
 	}
 
+	/**
+	 * @return {Quaternion} 
+	 */
 	normalize() {
 
 		let l = this.length();
@@ -494,6 +626,13 @@ class Quaternion {
 
 	}
 
+
+	/**
+	 * 
+	 * @param {Quaternion} q 
+	 * @param {Quaternion=} p 
+	 * @return {Quaternion}
+	 */
 	multiply( q, p ) {
 
 		if ( p !== undefined ) {
@@ -507,12 +646,22 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Quaternion} q
+	 * @return {Quaternion} 
+	 */
 	premultiply( q ) {
 
 		return this.multiplyQuaternions( q, this );
 
 	}
 
+		/**
+	 * 
+	 * @param {Quaternion} a
+	 * @param {Quaternion} b 
+	 * @return {Quaternion}
+	 */
 	multiplyQuaternions( a, b ) {
 
 		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
@@ -531,6 +680,12 @@ class Quaternion {
 
 	}
 
+	/**
+	 * 
+	 * @param {Quaternion} qb 
+	 * @param {number} t 
+	 * @return {Quaternion}
+	 */
 	slerp( qb, t ) {
 
 		if ( t === 0 ) return this;
@@ -601,12 +756,21 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Quaternion} quaternion
+	 * @return {boolean} 
+	 */
 	equals( quaternion ) {
 
 		return ( quaternion._x === this._x ) && ( quaternion._y === this._y ) && ( quaternion._z === this._z ) && ( quaternion._w === this._w );
 
 	}
 
+	/**
+	 * @param {Array<number>} array 
+	 * @param {number} offset 
+	 * @return {Quaternion}
+	 */
 	fromArray( array, offset = 0 ) {
 
 		this._x = array[ offset ];
@@ -620,6 +784,11 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {Array<number>} array 
+	 * @param {number} offset 
+	 * @return {Array<number>}
+	 */
 	toArray( array = [], offset = 0 ) {
 
 		array[ offset ] = this._x;
@@ -631,6 +800,12 @@ class Quaternion {
 
 	}
 
+	/**
+	 * 
+	 * @param {{count : number, getX : function(number): number, getY : function(number): number, getZ : function(number): number, getW : function(number): number }} attribute 
+	 * @param {number} index 
+	 * @return {Quaternion}
+	 */
 	fromBufferAttribute( attribute, index ) {
 
 		this._x = attribute.getX( index );
@@ -642,6 +817,10 @@ class Quaternion {
 
 	}
 
+	/**
+	 * @param {function()} callback 
+	 * @return {Quaternion}
+	 */
 	_onChange( callback ) {
 
 		this._onChangeCallback = callback;

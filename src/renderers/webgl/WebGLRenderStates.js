@@ -1,85 +1,118 @@
 import { WebGLLights } from './WebGLLights.js';
 
-function WebGLRenderState( extensions, capabilities ) {
+import { WebGLExtensions } from './WebGLExtensions.js';
+import { WebGLCapabilities } from './WebGLCapabilities.js';
 
-	const lights = new WebGLLights( extensions, capabilities );
+import { Scene } from '../../scenes/Scene.js';
+import { Camera } from '../../cameras/Camera.js';
+//import { Light } from '../../lights/Light.js';
 
-	const lightsArray = [];
-	const shadowsArray = [];
+class WebGLRenderState {
 
-	function init() {
+	/**
+	 * @param {WebGLExtensions} extensions 
+	 * @param {WebGLCapabilities} capabilities 
+	 */
+	constructor( extensions, capabilities ) {
 
-		lightsArray.length = 0;
-		shadowsArray.length = 0;
+		/** @type {WebGLLights} */
+		this.lights = new WebGLLights( extensions, capabilities );
+
+		/** @type {Array} */
+		this.lightsArray = [];
+		/** @type {Array} */
+		this.shadowsArray = [];
+
+		this.state = {
+			lightsArray: this.lightsArray,
+			shadowsArray: this.shadowsArray,
+	
+			lights: this.lights
+		};
+
+	}	
+
+	init() {
+
+		this.lightsArray.length = 0;
+		this.shadowsArray.length = 0;
 
 	}
 
-	function pushLight( light ) {
+	/**
+	 * @param {Object} light 
+	 */
+	pushLight( light ) {
 
-		lightsArray.push( light );
-
-	}
-
-	function pushShadow( shadowLight ) {
-
-		shadowsArray.push( shadowLight );
+		this.lightsArray.push( light );
 
 	}
 
-	function setupLights() {
+	/**
+	 * @param {Object} shadowLight 
+	 */
+	pushShadow( shadowLight ) {
 
-		lights.setup( lightsArray );
-
-	}
-
-	function setupLightsView( camera ) {
-
-		lights.setupView( lightsArray, camera );
+		this.shadowsArray.push( shadowLight );
 
 	}
 
-	const state = {
-		lightsArray: lightsArray,
-		shadowsArray: shadowsArray,
+	setupLights() {
 
-		lights: lights
-	};
+		this.lights.setup( this.lightsArray );
 
-	return {
-		init: init,
-		state: state,
-		setupLights: setupLights,
-		setupLightsView: setupLightsView,
+	}
 
-		pushLight: pushLight,
-		pushShadow: pushShadow
-	};
+	/**
+	 * @param {Camera} camera 
+	 */
+	setupLightsView( camera ) {
+
+		this.lights.setupView( this.lightsArray, camera );
+
+	}
 
 }
 
-function WebGLRenderStates( extensions, capabilities ) {
+class WebGLRenderStates {
 
-	let renderStates = new WeakMap();
+	/**
+	 * @param {WebGLExtensions} extensions 
+	 * @param {WebGLCapabilities} capabilities 
+	 */
+	constructor( extensions, capabilities ) {
 
-	function get( scene, renderCallDepth = 0 ) {
+		this.extensions = extensions;
+		this.capabilities = capabilities;
+
+		this.renderStates = new WeakMap();
+	}	
+
+	/**
+	 * 
+	 * @param {Scene=} scene 
+	 * @param {number=} renderCallDepth 
+	 * @return { WebGLRenderState}
+	 */
+	get( scene = undefined, renderCallDepth = 0 ) {
 
 		let renderState;
 
-		if ( renderStates.has( scene ) === false ) {
+		if ( this.renderStates.has( scene ) === false ) {
 
-			renderState = new WebGLRenderState( extensions, capabilities );
-			renderStates.set( scene, [ renderState ] );
+			renderState = new WebGLRenderState( this.extensions, this.capabilities );
+			this.renderStates.set( scene, [ renderState ] );
 
 		} else {
 
-			if ( renderCallDepth >= renderStates.get( scene ).length ) {
+			if ( renderCallDepth >= this.renderStates.get( scene ).length ) {
 
-				renderState = new WebGLRenderState( extensions, capabilities );
-				renderStates.get( scene ).push( renderState );
+				renderState = new WebGLRenderState( this.extensions, this.capabilities );
+				this.renderStates.get( scene ).push( renderState );
 
 			} else {
 
-				renderState = renderStates.get( scene )[ renderCallDepth ];
+				renderState = this.renderStates.get( scene )[ renderCallDepth ];
 
 			}
 
@@ -89,18 +122,13 @@ function WebGLRenderStates( extensions, capabilities ) {
 
 	}
 
-	function dispose() {
+	dispose() {
 
-		renderStates = new WeakMap();
+		this.renderStates = new WeakMap();
 
 	}
-
-	return {
-		get: get,
-		dispose: dispose
-	};
 
 }
 
 
-export { WebGLRenderStates };
+export { WebGLRenderState, WebGLRenderStates };

@@ -1,3 +1,42 @@
+//closure compiler
+import { Object3DInterface } from '../../closure/core/Object3DInterface.js';
+import { MaterialInterface } from './../../closure/material/MaterialInterface.js';
+import { WebGLProgram } from './WebGLProgram.js';
+import { Group } from './../../objects/Group.js';
+import { Scene } from './../../scenes/Scene.js';
+import { BufferGeometry } from '../../core/BufferGeometry.js';
+import { WebGLProperties } from './WebGLProperties.js';
+
+
+/**
+ * @record
+ */
+var RenderItem  = function() {};
+/** @type {number|null} */
+RenderItem.prototype.id;
+/** @type {Object3DInterface} */
+RenderItem.prototype.object;
+/** @type {BufferGeometry | null} */
+RenderItem.prototype.geometry;
+/** @type {MaterialInterface} */
+RenderItem.prototype.material;
+/** @type {WebGLProgram} */
+RenderItem.prototype.program;
+/** @type {number} */
+RenderItem.prototype.groupOrder;
+/** @type {number} */
+RenderItem.prototype.renderOrder;
+/** @type {number} */
+RenderItem.prototype.z;
+/** @type {Group|null} */
+RenderItem.prototype.group;
+
+/**
+ * 
+ * @param {RenderItem} a 
+ * @param {RenderItem} b
+ * @return {number} 
+ */
 function painterSortStable( a, b ) {
 
 	if ( a.groupOrder !== b.groupOrder ) {
@@ -28,6 +67,12 @@ function painterSortStable( a, b ) {
 
 }
 
+/**
+ * 
+ * @param {RenderItem} a 
+ * @param {RenderItem} b
+ * @return {number} 
+ */
 function reversePainterSortStable( a, b ) {
 
 	if ( a.groupOrder !== b.groupOrder ) {
@@ -51,29 +96,52 @@ function reversePainterSortStable( a, b ) {
 }
 
 
-function WebGLRenderList( properties ) {
+class WebGLRenderList {
 
-	const renderItems = [];
-	let renderItemsIndex = 0;
+	/**
+	 * 
+	 * @param {WebGLProperties} properties 
+	 */
+	constructor( properties ) {
 
-	const opaque = [];
-	const transparent = [];
+		this.properties = properties;
+		/** @type {Array<RenderItem>} */
+		this.renderItems = [];
+		this.renderItemsIndex = 0;
 
-	const defaultProgram = { id: - 1 };
+		/** @type {Array<RenderItem>} */
+		this.opaque = [];
+		/** @type {Array<RenderItem>} */
+		this.transparent = [];
 
-	function init() {
-
-		renderItemsIndex = 0;
-
-		opaque.length = 0;
-		transparent.length = 0;
+		this.defaultProgram = { id: - 1 };
 
 	}
 
-	function getNextRenderItem( object, geometry, material, groupOrder, z, group ) {
+	init() {
 
-		let renderItem = renderItems[ renderItemsIndex ];
-		const materialProperties = properties.get( material );
+		this.renderItemsIndex = 0;
+
+		this.opaque.length = 0;
+		this.transparent.length = 0;
+
+	}
+
+	/**
+	 * 
+	 * @param {Object3DInterface} object 
+	 * @param {BufferGeometry|null} geometry 
+	 * @param {MaterialInterface} material 
+	 * @param {number} groupOrder 
+	 * @param {number} z 
+	 * @param {Group|null} group 
+	 * @return {RenderItem}
+	 */
+	getNextRenderItem( object, geometry, material, groupOrder, z, group ) {
+
+		/** @type {RenderItem} */
+		let renderItem = this.renderItems[ this.renderItemsIndex ];
+		const materialProperties = this.properties.get( material );
 
 		if ( renderItem === undefined ) {
 
@@ -82,14 +150,14 @@ function WebGLRenderList( properties ) {
 				object: object,
 				geometry: geometry,
 				material: material,
-				program: materialProperties.program || defaultProgram,
+				program: materialProperties.program || this.defaultProgram,
 				groupOrder: groupOrder,
 				renderOrder: object.renderOrder,
 				z: z,
 				group: group
 			};
 
-			renderItems[ renderItemsIndex ] = renderItem;
+			this.renderItems[ this.renderItemsIndex ] = renderItem;
 
 		} else {
 
@@ -97,7 +165,7 @@ function WebGLRenderList( properties ) {
 			renderItem.object = object;
 			renderItem.geometry = geometry;
 			renderItem.material = material;
-			renderItem.program = materialProperties.program || defaultProgram;
+			renderItem.program = materialProperties.program || this.defaultProgram;
 			renderItem.groupOrder = groupOrder;
 			renderItem.renderOrder = object.renderOrder;
 			renderItem.z = z;
@@ -105,42 +173,64 @@ function WebGLRenderList( properties ) {
 
 		}
 
-		renderItemsIndex ++;
+		this.renderItemsIndex ++;
 
 		return renderItem;
 
 	}
 
-	function push( object, geometry, material, groupOrder, z, group ) {
+	/**
+	 * @param {Object3DInterface} object 
+	 * @param {BufferGeometry} geometry 
+	 * @param {MaterialInterface} material 
+	 * @param {number} groupOrder 
+	 * @param {number} z 
+	 * @param {Group|null} group 
+	 */
+	push( object, geometry, material, groupOrder, z, group ) {
 
-		const renderItem = getNextRenderItem( object, geometry, material, groupOrder, z, group );
+		const renderItem = this.getNextRenderItem( object, geometry, material, groupOrder, z, group );
 
-		( material.transparent === true ? transparent : opaque ).push( renderItem );
-
-	}
-
-	function unshift( object, geometry, material, groupOrder, z, group ) {
-
-		const renderItem = getNextRenderItem( object, geometry, material, groupOrder, z, group );
-
-		( material.transparent === true ? transparent : opaque ).unshift( renderItem );
-
-	}
-
-	function sort( customOpaqueSort, customTransparentSort ) {
-
-		if ( opaque.length > 1 ) opaque.sort( customOpaqueSort || painterSortStable );
-		if ( transparent.length > 1 ) transparent.sort( customTransparentSort || reversePainterSortStable );
+		( material.transparent === true ? this.transparent : this.opaque ).push( renderItem );
 
 	}
 
-	function finish() {
+	/**
+	 * @param {Object3DInterface} object 
+	 * @param {BufferGeometry} geometry 
+	 * @param {MaterialInterface} material 
+	 * @param {number} groupOrder 
+	 * @param {number} z 
+	 * @param {Group|null} group 
+	 */
+	unshift( object, geometry, material, groupOrder, z, group ) {
+
+		const renderItem = this.getNextRenderItem( object, geometry, material, groupOrder, z, group );
+
+		( material.transparent === true ? this.transparent : this.opaque ).unshift( renderItem );
+
+	}
+
+	/**
+	 * 
+	 * @param {function(RenderItem) : number} customOpaqueSort 
+	 * @param {function(RenderItem) : number} customTransparentSort 
+	 */
+	sort( customOpaqueSort, customTransparentSort ) {
+
+		if ( this.opaque.length > 1 ) this.opaque.sort( customOpaqueSort || painterSortStable );
+		if ( this.transparent.length > 1 ) this.transparent.sort( customTransparentSort || reversePainterSortStable );
+
+	}
+
+	finish() {
 
 		// Clear references from inactive renderItems in the list
 
-		for ( let i = renderItemsIndex, il = renderItems.length; i < il; i ++ ) {
+		for ( let i = this.renderItemsIndex, il = this.renderItems.length; i < il; i ++ ) {
 
-			const renderItem = renderItems[ i ];
+			/** @type {RenderItem} */
+			const renderItem = this.renderItems[ i ];
 
 			if ( renderItem.id === null ) break;
 
@@ -155,44 +245,46 @@ function WebGLRenderList( properties ) {
 
 	}
 
-	return {
-
-		opaque: opaque,
-		transparent: transparent,
-
-		init: init,
-		push: push,
-		unshift: unshift,
-		finish: finish,
-
-		sort: sort
-	};
-
 }
 
-function WebGLRenderLists( properties ) {
+class WebGLRenderLists {
 
-	let lists = new WeakMap();
+	/**
+	 * 
+	 * @param {WebGLProperties} properties 
+	 */
+	constructor( properties ) {
+		this.properties = properties;
+		/** @type {Map<Scene, Array<WebGLRenderList>>}*/
+		this.lists = new WeakMap();
+	}
 
-	function get( scene, renderCallDepth ) {
+	/**
+	 * 
+	 * @param {Scene} scene 
+	 * @param {number} renderCallDepth 
+	 * @return {WebGLRenderList}
+	 */
+	get( scene, renderCallDepth ) {
 
+		/** @type {WebGLRenderList} */
 		let list;
 
-		if ( lists.has( scene ) === false ) {
+		if ( this.lists.has( scene ) === false ) {
 
-			list = new WebGLRenderList( properties );
-			lists.set( scene, [ list ] );
+			list = new WebGLRenderList( this.properties );
+			this.lists.set( scene, [ list ] );
 
 		} else {
 
-			if ( renderCallDepth >= lists.get( scene ).length ) {
+			if ( renderCallDepth >= this.lists.get( scene ).length ) {
 
-				list = new WebGLRenderList( properties );
-				lists.get( scene ).push( list );
+				list = new WebGLRenderList( this.properties );
+				this.lists.get( scene ).push( list );
 
 			} else {
 
-				list = lists.get( scene )[ renderCallDepth ];
+				list = this.lists.get( scene )[ renderCallDepth ];
 
 			}
 
@@ -202,16 +294,11 @@ function WebGLRenderLists( properties ) {
 
 	}
 
-	function dispose() {
+	dispose() {
 
-		lists = new WeakMap();
+		this.lists = new WeakMap();
 
 	}
-
-	return {
-		get: get,
-		dispose: dispose
-	};
 
 }
 

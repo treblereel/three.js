@@ -1,52 +1,69 @@
-function WebGLAnimation() {
+class WebGLAnimation {
 
-	let context = null;
-	let isAnimating = false;
-	let animationLoop = null;
-	let requestId = null;
+	constructor() {
 
-	function onAnimationFrame( time, frame ) {
-
-		animationLoop( time, frame );
-
-		requestId = context.requestAnimationFrame( onAnimationFrame );
+		/** @type {Window|null} */
+		this.context = null;
+		/** @type {boolean} */
+		this.isAnimating = false;
+		/** @type {function(number, number)|null} */
+		this.animationLoop = null;
+		/** @type {?number} */
+		this.requestId = null;
 
 	}
 
-	return {
+	/**
+	 * 
+	 * @param {number} time 
+	 * @param {number} frame 
+	 */
+	onAnimationFrame(time, frame) {
 
-		start: function () {
+		this.animationLoop(time, frame);
 
-			if ( isAnimating === true ) return;
-			if ( animationLoop === null ) return;
+		this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame);
 
-			requestId = context.requestAnimationFrame( onAnimationFrame );
+	}
 
-			isAnimating = true;
+	start() {
 
-		},
+		if (this.isAnimating === true) return;
+		if (this.animationLoop === null) return;
 
-		stop: function () {
+		this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame);
 
-			context.cancelAnimationFrame( requestId );
+		this.isAnimating = true;
 
-			isAnimating = false;
+	}
 
-		},
+	stop() {
 
-		setAnimationLoop: function ( callback ) {
+		this.context.cancelAnimationFrame(this.requestId);
 
-			animationLoop = callback;
+		this.isAnimating = false;
 
-		},
+	}
 
-		setContext: function ( value ) {
+	/**
+	 * 
+	 * @param {function(number)} callback 
+	 */
+	setAnimationLoop(callback) {
 
-			context = value;
+		this.animationLoop = callback;
 
-		}
+	}
 
-	};
+	/**
+	 * 
+	 * @param {Window} value 
+	 */
+	setContext(value) {
+
+		this.context = value;
+
+	}
 
 }
 

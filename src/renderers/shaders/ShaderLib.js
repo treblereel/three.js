@@ -8,7 +8,7 @@ import { Matrix3 } from '../../math/Matrix3.js';
 
 const ShaderLib = {
 
-	basic: {
+	'basic': {
 
 		uniforms: mergeUniforms( [
 			UniformsLib.common,
@@ -19,8 +19,8 @@ const ShaderLib = {
 			UniformsLib.fog
 		] ),
 
-		vertexShader: ShaderChunk.meshbasic_vert,
-		fragmentShader: ShaderChunk.meshbasic_frag
+		vertexShader: ShaderChunk['meshbasic_vert'], //TODO do the rest
+		fragmentShader: ShaderChunk['meshbasic_frag']
 
 	},
 
@@ -306,6 +306,22 @@ ShaderLib.physical = {
 	fragmentShader: ShaderChunk.meshphysical_frag
 
 };
+
+	/**
+	 * 
+	 * @param {string} name 
+	 */
+ 	ShaderLib.get = function( name ) {
+			
+		console.log('GET ' + name);
+
+		switch(name) {
+			case 'basic' : return ShaderLib.basic; 
+		}
+
+		throw new Error('Not able to find ShaderLib : ' + name);
+
+	}
 
 
 export { ShaderLib };

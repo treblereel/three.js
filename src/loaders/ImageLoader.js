@@ -1,14 +1,28 @@
 import { Cache } from './Cache.js';
 import { Loader } from './Loader.js';
 
+import { LoadingManager } from './LoadingManager.js';
+
 class ImageLoader extends Loader {
 
+		/**
+	 * 
+	 * @param {LoadingManager=} manager 
+	 */
 	constructor( manager ) {
 
 		super( manager );
 
 	}
 
+	/**
+     * @suppress{checkTypes}
+	 * @param {string} url 
+	 * @param {function(HTMLImageElement)=} onLoad 
+	 * @param {function(*)=} onProgress 
+	 * @param {function(*)=} onError 
+	 * @return {Element}
+	 */
 	load( url, onLoad, onProgress, onError ) {
 
 		if ( this.path !== undefined ) url = this.path + url;

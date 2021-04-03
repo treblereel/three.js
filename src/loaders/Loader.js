@@ -1,70 +1,83 @@
 import { DefaultLoadingManager } from './LoadingManager.js';
 
-function Loader( manager ) {
+import { LoadingManager } from './LoadingManager.js';
 
-	this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
-	this.crossOrigin = 'anonymous';
-	this.withCredentials = false;
-	this.path = '';
-	this.resourcePath = '';
-	this.requestHeader = {};
+class Loader {
 
-}
 
-Object.assign( Loader.prototype, {
+		/**
+	 * 
+	 * @param {LoadingManager=} manager 
+	 */
+	constructor( manager ) {
 
-	load: function ( /* url, onLoad, onProgress, onError */ ) {},
+		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
-	loadAsync: function ( url, onProgress ) {
+		this.crossOrigin = 'anonymous';
+		this.withCredentials = false;
+		this.path = '';
+		this.resourcePath = '';
+		this.requestHeader = {};
 
-		const scope = this;
+	}
+
+	/**
+	 * 
+	 * @param {String=} url 
+	 * @param {function(*): ?=} onLoad 
+	 * @param {function(*): ?=} onProgress 
+	 * @param {function(*): ?=} onError 
+	 */
+	load( /* url, onLoad, onProgress, onError */url, onLoad, onProgress, onError) {}
+
+	loadAsync( url, onProgress ) {
 
 		return new Promise( function ( resolve, reject ) {
 
-			scope.load( url, resolve, onProgress, reject );
+			this.load( url, resolve, onProgress, reject );
 
 		} );
 
-	},
+	}
 
-	parse: function ( /* data */ ) {},
+	parse( /* data */ ) {}
 
-	setCrossOrigin: function ( crossOrigin ) {
+	setCrossOrigin( crossOrigin ) {
 
 		this.crossOrigin = crossOrigin;
 		return this;
 
-	},
+	}
 
-	setWithCredentials: function ( value ) {
+	setWithCredentials( value ) {
 
 		this.withCredentials = value;
 		return this;
 
-	},
+	}
 
-	setPath: function ( path ) {
+	setPath( path ) {
 
 		this.path = path;
 		return this;
 
-	},
+	}
 
-	setResourcePath: function ( resourcePath ) {
+	setResourcePath( resourcePath ) {
 
 		this.resourcePath = resourcePath;
 		return this;
 
-	},
+	}
 
-	setRequestHeader: function ( requestHeader ) {
+	setRequestHeader( requestHeader ) {
 
 		this.requestHeader = requestHeader;
 		return this;
 
 	}
 
-} );
+}
 
 export { Loader };

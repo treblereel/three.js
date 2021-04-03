@@ -1,3 +1,4 @@
+/** @type {Array<string>} */
 const _lut = [];
 
 for ( let i = 0; i < 256; i ++ ) {
@@ -13,6 +14,10 @@ const MathUtils = {
 	DEG2RAD: Math.PI / 180,
 	RAD2DEG: 180 / Math.PI,
 
+	/**
+	 * 
+	 * @return {string}
+	 */
 	generateUUID: function () {
 
 		// http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
@@ -31,6 +36,12 @@ const MathUtils = {
 
 	},
 
+	/**
+	 * @param {number} value 
+	 * @param {number} min 
+	 * @param {number} max
+	 * @return {number} 
+	 */
 	clamp: function ( value, min, max ) {
 
 		return Math.max( min, Math.min( max, value ) );
@@ -40,6 +51,11 @@ const MathUtils = {
 	// compute euclidian modulo of m % n
 	// https://en.wikipedia.org/wiki/Modulo_operation
 
+	/**
+	 * @param {number} n 
+	 * @param {number} m
+	 * @return {number} 
+	 */
 	euclideanModulo: function ( n, m ) {
 
 		return ( ( n % m ) + m ) % m;
@@ -48,6 +64,14 @@ const MathUtils = {
 
 	// Linear mapping from range <a1, a2> to range <b1, b2>
 
+	/**
+	 * @param {number} x 
+	 * @param {number} a1 
+	 * @param {number} a2 
+	 * @param {number} b1 
+	 * @param {number} b2
+	 * @return {number} 
+	 */
 	mapLinear: function ( x, a1, a2, b1, b2 ) {
 
 		return b1 + ( x - a1 ) * ( b2 - b1 ) / ( a2 - a1 );
@@ -56,6 +80,13 @@ const MathUtils = {
 
 	// https://en.wikipedia.org/wiki/Linear_interpolation
 
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} t
+	 * @return {number} 
+	 */
 	lerp: function ( x, y, t ) {
 
 		return ( 1 - t ) * x + t * y;
@@ -63,7 +94,13 @@ const MathUtils = {
 	},
 
 	// http://www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp/
-
+	/**
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {number} lambda 
+	 * @param {number} dt
+	 * @return {number} 
+	 */
 	damp: function ( x, y, lambda, dt ) {
 
 		return MathUtils.lerp( x, y, 1 - Math.exp( - lambda * dt ) );
@@ -71,7 +108,12 @@ const MathUtils = {
 	},
 
 	// https://www.desmos.com/calculator/vcsjnyz7x4
-
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number=} length
+	 * @return {number} 
+	 */
 	pingpong: function ( x, length = 1 ) {
 
 		return length - Math.abs( MathUtils.euclideanModulo( x, length * 2 ) - length );
@@ -79,7 +121,12 @@ const MathUtils = {
 	},
 
 	// http://en.wikipedia.org/wiki/Smoothstep
-
+	/**
+	 * @param {number} x 
+	 * @param {number} min 
+	 * @param {number} max
+	 * @return {number} 
+	 */
 	smoothstep: function ( x, min, max ) {
 
 		if ( x <= min ) return 0;
@@ -91,6 +138,12 @@ const MathUtils = {
 
 	},
 
+	/**
+	 * @param {number} x 
+	 * @param {number} min 
+	 * @param {number} max
+	 * @return {number} 
+	 */
 	smootherstep: function ( x, min, max ) {
 
 		if ( x <= min ) return 0;
@@ -103,7 +156,11 @@ const MathUtils = {
 	},
 
 	// Random integer from <low, high> interval
-
+	/**
+	 * @param {number} low 
+	 * @param {number} high
+	 * @return {number} 
+	 */
 	randInt: function ( low, high ) {
 
 		return low + Math.floor( Math.random() * ( high - low + 1 ) );
@@ -111,7 +168,11 @@ const MathUtils = {
 	},
 
 	// Random float from <low, high> interval
-
+	/**
+	 * @param {number} low 
+	 * @param {number} high
+	 * @return {number} 
+	 */
 	randFloat: function ( low, high ) {
 
 		return low + Math.random() * ( high - low );
@@ -119,7 +180,10 @@ const MathUtils = {
 	},
 
 	// Random float from <-range/2, range/2> interval
-
+	/**
+	 * @param {number} range
+	 * @return {number} 
+	 */
 	randFloatSpread: function ( range ) {
 
 		return range * ( 0.5 - Math.random() );
@@ -127,7 +191,10 @@ const MathUtils = {
 	},
 
 	// Deterministic pseudo-random float in the interval [ 0, 1 ]
-
+	/**
+	 * @param {number} s
+	 * @return {number} 
+	 */
 	seededRandom: function ( s ) {
 
 		if ( s !== undefined ) _seed = s % 2147483647;
@@ -140,36 +207,64 @@ const MathUtils = {
 
 	},
 
+	/**
+	 * @param {number} degrees 
+	 * @return {number}
+	 */
 	degToRad: function ( degrees ) {
 
 		return degrees * MathUtils.DEG2RAD;
 
 	},
 
+	/**
+	 * @param {number} radians 
+	 * @return {number}
+	 */
 	radToDeg: function ( radians ) {
 
 		return radians * MathUtils.RAD2DEG;
 
 	},
 
+	/**
+	 * @param {number} value 
+	 * @return {boolean}
+	 */
 	isPowerOfTwo: function ( value ) {
 
 		return ( value & ( value - 1 ) ) === 0 && value !== 0;
 
 	},
 
+	/**
+	 * @param {number} value
+ 	 * @return {number}
+	 */
 	ceilPowerOfTwo: function ( value ) {
 
 		return Math.pow( 2, Math.ceil( Math.log( value ) / Math.LN2 ) );
 
 	},
 
+	/**
+	 * @param {number} value
+ 	 * @return {number}
+	 */
 	floorPowerOfTwo: function ( value ) {
 
 		return Math.pow( 2, Math.floor( Math.log( value ) / Math.LN2 ) );
 
 	},
 
+	/**
+	 * 
+	 * @param { { set : function(number,number,number,number) } } q 
+	 * @param {number} a 
+	 * @param {number} b 
+	 * @param {number} c 
+	 * @param {string} order 
+	 */
 	setQuaternionFromProperEuler: function ( q, a, b, c, order ) {
 
 		// Intrinsic Proper Euler Angles - see https://en.wikipedia.org/wiki/Euler_angles

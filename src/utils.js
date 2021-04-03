@@ -1,7 +1,12 @@
+/**
+ * @param {Array<number>} array 
+ * @return {number}
+ */
 function arrayMin( array ) {
 
 	if ( array.length === 0 ) return Infinity;
 
+	/** @type {number} */
 	let min = array[ 0 ];
 
 	for ( let i = 1, l = array.length; i < l; ++ i ) {
@@ -14,10 +19,15 @@ function arrayMin( array ) {
 
 }
 
+/**
+ * @param {Array<number>} array 
+ * @return {number}
+ */
 function arrayMax( array ) {
 
 	if ( array.length === 0 ) return - Infinity;
 
+	/** @type {number} */
 	let max = array[ 0 ];
 
 	for ( let i = 1, l = array.length; i < l; ++ i ) {
@@ -42,6 +52,12 @@ const TYPED_ARRAYS = {
 	Float64Array: Float64Array
 };
 
+/**
+ * 
+ * @param {string} type 
+ * @param {number|ArrayBufferView|Array<number>|ArrayBuffer|SharedArrayBuffer} buffer
+ * @return {TypedArray} 
+ */
 function getTypedArray( type, buffer ) {
 
 	return new TYPED_ARRAYS[ type ]( buffer );
