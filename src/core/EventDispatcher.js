@@ -68,6 +68,7 @@ class EventDispatcher {
 		const listenerArray = listeners[ event.type ];
 
 		if ( listenerArray !== undefined ) {
+			console.log('EventDesp 1')
 
 			event.target = this;
 

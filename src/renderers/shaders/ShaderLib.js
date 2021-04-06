@@ -8,7 +8,7 @@ import { Matrix3 } from '../../math/Matrix3.js';
 
 const ShaderLib = {
 
-	basic: {
+	'basic': {
 
 		uniforms: mergeUniforms( [
 			UniformsLib.common,
@@ -19,8 +19,8 @@ const ShaderLib = {
 			UniformsLib.fog
 		] ),
 
-		vertexShader: ShaderChunk.meshbasic_vert,
-		fragmentShader: ShaderChunk.meshbasic_frag
+		vertexShader: ShaderChunk['meshbasic_vert'], //TODO do the rest
+		fragmentShader: ShaderChunk['meshbasic_frag']
 
 	},
 

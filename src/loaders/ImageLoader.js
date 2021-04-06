@@ -26,6 +26,7 @@ class ImageLoader extends Loader {
 	load( url, onLoad, onProgress, onError ) {
 
 		if ( this.path !== undefined ) url = this.path + url;
+		console.log('ImageLoader 1')
 
 		url = this.manager.resolveURL( url );
 
@@ -34,6 +35,7 @@ class ImageLoader extends Loader {
 		const cached = Cache.get( url );
 
 		if ( cached !== undefined ) {
+			console.log('ImageLoader 2')
 
 			scope.manager.itemStart( url );
 

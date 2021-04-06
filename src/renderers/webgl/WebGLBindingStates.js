@@ -336,7 +336,8 @@
 				const geometryAttribute = geometryAttributes[ name ];
 
 				if ( geometryAttribute !== undefined ) {
-
+					console.log('WebGLBindingStates 1')
+	
 					const normalized = geometryAttribute.normalized;
 					const size = geometryAttribute.itemSize;
 
@@ -439,10 +440,13 @@
 					this.gl.vertexAttribPointer( programAttribute, 3, type, false, 12, 0 );
 
 				} else if ( materialDefaultAttributeValues !== undefined ) {
+					console.log('WebGLBindingStates 2')
 
 					const value = materialDefaultAttributeValues[ name ];
 
 					if ( value !== undefined ) {
+						console.log('WebGLBindingStates 3')
+
 
 						switch ( value.length ) {
 

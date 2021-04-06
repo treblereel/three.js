@@ -135,6 +135,7 @@ class BufferGeometry extends EventDispatcher {
 		const position = this.attributes.position;
 
 		if ( position !== undefined ) {
+			console.log('BufferGeometry 1')
 
 			position.applyMatrix4( matrix );
 
@@ -145,6 +146,7 @@ class BufferGeometry extends EventDispatcher {
 		const normal = this.attributes.normal;
 
 		if ( normal !== undefined ) {
+			console.log('BufferGeometry 2')
 
 			const normalMatrix = new Matrix3().getNormalMatrix( matrix );
 
@@ -157,6 +159,7 @@ class BufferGeometry extends EventDispatcher {
 		const tangent = (/** @type {{tangent: BufferAttribute }}*/(this.attributes)).tangent;
 
 		if ( tangent !== undefined ) {
+			console.log('BufferGeometry 3')
 
 			tangent.transformDirection( matrix );
 
@@ -306,6 +309,7 @@ class BufferGeometry extends EventDispatcher {
 		}
 
 		if ( position !== undefined ) {
+			console.log('BufferGeometry 4')
 
 			this.boundingBox.setFromBufferAttribute( position );
 
@@ -640,6 +644,7 @@ class BufferGeometry extends EventDispatcher {
 		const positionAttribute = this.getAttribute( 'position' );
 
 		if ( positionAttribute !== undefined ) {
+			console.log('BufferGeometry 5')
 
 			let normalAttribute = this.getAttribute( 'normal' );
 
@@ -901,13 +906,15 @@ class BufferGeometry extends EventDispatcher {
 		if ( Object.keys( this.userData ).length > 0 ) data.userData = this.userData;
 
 		if ( this.parameters !== undefined ) {
+			console.log('BufferGeometry 6')
 
 			const parameters = this.parameters;
 
 
 			//CHECK THIS
 			for ( const key in parameters ) {
-
+				console.log('CHECK THIS ' + key + (parameters[ key ] !== undefined ))
+	
 				if ( parameters[ key ] !== undefined ) data[ key ] = parameters[ key ];
 
 			}

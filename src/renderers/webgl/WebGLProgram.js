@@ -384,6 +384,94 @@ class WebGLProgram {
 
 	constructor( renderer, cacheKey, parameters, bindingStates ) {
 
+/* 		console.log('WebGLProgram isWebGL2' +parameters.isWebGL2 );
+		console.log('WebGLProgram shaderID' +parameters.shaderID);
+		console.log('WebGLProgram shaderName' +parameters.shaderName);
+		console.log('WebGLProgram vertexShader' +parameters.vertexShader);
+		console.log('WebGLProgram fragmentShader' +parameters.fragmentShader);
+		console.log('WebGLProgram isRawShaderMaterial' +parameters.isRawShaderMaterial);
+		console.log('WebGLProgram precision' +parameters.precision);
+		console.log('WebGLProgram instancing' +parameters.instancing);
+		console.log('WebGLProgram instancingColor' +parameters.instancingColor);
+		console.log('WebGLProgram supportsVertexTextures' +parameters.supportsVertexTextures);
+		console.log('WebGLProgram outputEncoding' +parameters.outputEncoding);
+		console.log('WebGLProgram map' +parameters.map);
+		console.log('WebGLProgram mapEncoding' +parameters.mapEncoding);
+		console.log('WebGLProgram matcap' +parameters.matcap);
+		console.log('WebGLProgram matcapEncoding' +parameters.matcapEncoding);
+		console.log('WebGLProgram envMap' +parameters.envMap);
+		console.log('WebGLProgram envMapMode' +parameters.envMapMode);
+		console.log('WebGLProgram envMapEncoding' +parameters.envMapEncoding);
+		console.log('WebGLProgram envMapCubeUV' +parameters.envMapCubeUV);
+		console.log('WebGLProgram lightMap' +parameters.lightMap);
+		console.log('WebGLProgram lightMapEncoding' +parameters.lightMapEncoding);
+		console.log('WebGLProgram aoMap' +parameters.aoMap);
+		console.log('WebGLProgram emissiveMap' +parameters.emissiveMap);
+		console.log('WebGLProgram emissiveMapEncoding' +parameters.emissiveMapEncoding);
+		console.log('WebGLProgram bumpMap' +parameters.bumpMap);
+		console.log('WebGLProgram normalMap' +parameters.normalMap);
+		console.log('WebGLProgram objectSpaceNormalMap' +parameters.objectSpaceNormalMap);
+		console.log('WebGLProgram tangentSpaceNormalMap' +parameters.tangentSpaceNormalMap);
+		console.log('WebGLProgram clearcoatMap' +parameters.clearcoatMap);
+		console.log('WebGLProgram clearcoatRoughnessMap' +parameters.clearcoatRoughnessMap);
+		console.log('WebGLProgram clearcoatNormalMap' +parameters.clearcoatNormalMap);
+		console.log('WebGLProgram displacementMap' +parameters.displacementMap);
+		console.log('WebGLProgram roughnessMap' +parameters.roughnessMap);
+		console.log('WebGLProgram metalnessMap' +parameters.metalnessMap);
+		console.log('WebGLProgram specularMap' +parameters.specularMap);
+		console.log('WebGLProgram gradientMap' +parameters.alphaMap);
+		console.log('WebGLProgram sheen' +parameters.sheen);
+		console.log('WebGLProgram transmissionMap' +parameters.transmissionMap);
+		console.log('WebGLProgram combine' +parameters.combine);
+		console.log('WebGLProgram vertexColors' +parameters.vertexColors);
+		console.log('WebGLProgram vertexUvs' +parameters.vertexUvs);
+		console.log('WebGLProgram uvsVertexOnly' +parameters.uvsVertexOnly);
+		console.log('WebGLProgram fog' +parameters.fog);
+		console.log('WebGLProgram useFog' +parameters.useFog);
+		console.log('WebGLProgram fogExp2' +parameters.fogExp2);
+		console.log('WebGLProgram flatShading' +parameters.flatShading);
+		console.log('WebGLProgram logarithmicDepthBuffer' +parameters.logarithmicDepthBuffer);
+		console.log('WebGLProgram skinning' +parameters.skinning);
+		console.log('WebGLProgram maxBones' +parameters.maxBones);
+		console.log('WebGLProgram useVertexTexture' +parameters.useVertexTexture);
+		console.log('WebGLProgram morphTargets' +parameters.morphTargets);
+		console.log('WebGLProgram maxMorphTargets' +parameters.maxMorphTargets);
+		console.log('WebGLProgram maxMorphNormals' +parameters.maxMorphNormals);
+		console.log('WebGLProgram numDirLights' +parameters.numDirLights);
+		console.log('WebGLProgram numPointLights' +parameters.numPointLights);
+		console.log('WebGLProgram numSpotLights' +parameters.numSpotLights);
+		console.log('WebGLProgram numRectAreaLights' +parameters.numRectAreaLights);
+		console.log('WebGLProgram numHemiLights' +parameters.numHemiLights);
+		console.log('WebGLProgram numDirLightShadows' +parameters.numDirLightShadows);
+		console.log('WebGLProgram numPointLightShadows' +parameters.numPointLightShadows);
+		console.log('WebGLProgram numSpotLightShadows' +parameters.numSpotLightShadows);
+		console.log('WebGLProgram numClippingPlanes' +parameters.numClippingPlanes);
+		console.log('WebGLProgram numClipIntersection' +parameters.numClipIntersection);
+		console.log('WebGLProgram dithering' +parameters.dithering);
+		console.log('WebGLProgram shadowMapEnabled' +parameters.shadowMapEnabled);
+		console.log('WebGLProgram shadowMapType' +parameters.shadowMapType);
+		console.log('WebGLProgram toneMapping' +parameters.toneMapping);
+		console.log('WebGLProgram physicallyCorrectLights' +parameters.physicallyCorrectLights);
+		console.log('WebGLProgram premultipliedAlpha' +parameters.premultipliedAlpha);
+		console.log('WebGLProgram alphaTest' +parameters.alphaTest);
+		console.log('WebGLProgram doubleSided' +parameters.doubleSided);
+		console.log('WebGLProgram flipSided' +parameters.flipSided);
+		console.log('WebGLProgram depthPacking' +parameters.depthPacking);
+		console.log('WebGLProgram rendererExtensionFragDepth' +parameters.rendererExtensionFragDepth);
+		console.log('WebGLProgram rendererExtensionDrawBuffers' +parameters.rendererExtensionDrawBuffers);
+		console.log('WebGLProgram rendererExtensionShaderTextureLod' +parameters.rendererExtensionShaderTextureLod);
+		console.log('WebGLProgram customProgramCacheKey' +parameters.customProgramCacheKey);
+		console.log('WebGLProgram uniforms' +parameters.uniforms);
+		console.log('WebGLProgram uniforms.diffuse' +parameters.uniforms.diffuse);
+		console.log('WebGLProgram uniforms.diffuse' +parameters.uniforms.diffuse);
+		console.log('WebGLProgram uniforms.opacity' +parameters.uniforms.opacity);
+		console.log('WebGLProgram uniforms.map' +parameters.uniforms.map);
+		console.log('WebGLProgram uniforms.uvTransform' +parameters.uniforms.uvTransform);
+		console.log('WebGLProgram uniforms.uv2Transform' +parameters.uniforms.uv2Transform);
+		console.log('WebGLProgram uniforms.alphaMap' +parameters.uniforms.alphaMap);
+		console.log('WebGLProgram uniforms.fogDensity' +parameters.uniforms.fogDensity);
+		console.log('WebGLProgram uniforms.fogColor' +parameters.uniforms.fogColor);
+ */
 		this.renderer = renderer;
 		this.cacheKey = cacheKey;
 		this.parameters = parameters;
@@ -667,7 +755,7 @@ class WebGLProgram {
 			].filter( filterEmptyLine ).join( '\n' );
 
 		}
-
+		
 		vertexShader = resolveIncludes( vertexShader );
 		vertexShader = replaceLightNums( vertexShader, parameters );
 		vertexShader = replaceClippingPlaneNums( vertexShader, parameters );

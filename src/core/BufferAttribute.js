@@ -28,6 +28,8 @@ class BufferAttribute {
 
 		this.array = array;
 		this.itemSize = itemSize;
+
+		console.log('BufferAttribute 1' + (array !== undefined))
 		this.count = array !== undefined ? array.length / itemSize : 0;
 		this.normalized = normalized === true;
 

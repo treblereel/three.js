@@ -4,6 +4,10 @@
 
 export function cloneUniforms( src ) {
 
+
+/* 	console.log('cloneUniforms before ' + JSON.stringify(src))
+ */
+
 	const dst = {};
 
 	for ( const u in src ) {
@@ -34,12 +38,33 @@ export function cloneUniforms( src ) {
 		}
 
 	}
+/* 	console.log('cloneUniforms return ' + JSON.stringify(dst))
+
+	if( dst.specularMap !== undefined)
+		console.log('cloneUniforms return ? specularMap ' + dst.specularMap.value)
+	if( dst.aoMap !== undefined)
+		console.log('cloneUniforms return ? aoMap ' + dst.aoMap.value)
+	if( dst.map !== undefined)
+		console.log('cloneUniforms return ? map ' + dst.map.value)
+	if( dst.lightMapIntensity !== undefined)
+		console.log('cloneUniforms return ? lightMapIntensity ' + dst.lightMapIntensity.value)
+	if( dst.fogDensity !== undefined)
+		console.log('cloneUniforms return ? fogDensity ' + dst.fogDensity.value)
+	if( dst.fogNear !== undefined)
+		console.log('cloneUniforms return ? fogNear ' + dst.fogNear.value)
+	if( dst.fogFar !== undefined)
+		console.log('cloneUniforms return ? fogFar ' + dst.fogFar.value)
+	if( dst.fogColor !== undefined)
+		console.log('cloneUniforms return ? fogColor ' + dst.fogColor.value) */
 
 	return dst;
 
 }
 
 export function mergeUniforms( uniforms ) {
+
+/* 	console.log('mergeUniforms before ' + JSON.stringify(uniforms))
+ */
 
 	const merged = {};
 
@@ -54,6 +79,9 @@ export function mergeUniforms( uniforms ) {
 		}
 
 	}
+
+/* 	console.log('mergeUniforms return ' + JSON.stringify(merged))
+ */
 
 	return merged;
 

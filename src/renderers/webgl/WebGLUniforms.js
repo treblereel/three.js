@@ -192,6 +192,9 @@ class UniformParent {
 
 		if ( v.x !== undefined ) {
 
+			console.log('WebGlUniforms setValueV2f ');
+
+
 			if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y ) {
 
 				gl.uniform2f( this.addr, v.x, v.y );
@@ -215,9 +218,18 @@ class UniformParent {
 
 	setValueV3f( gl, v ) {
 
+		if(true) {
+			throw new Error();
+		}
+
+		console.log('WebGlUniforms pre ' + JSON.stringify(v))
+
 		const cache = this.cache;
 
 		if ( v.x !== undefined ) {
+
+			console.log('WebGlUniforms setValueV3f ');
+
 
 			if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z ) {
 
@@ -230,6 +242,9 @@ class UniformParent {
 			}
 
 		} else if ( v.r !== undefined ) {
+
+			console.log('WebGlUniforms setValueV3f 1' );
+
 
 			if ( cache[ 0 ] !== v.r || cache[ 1 ] !== v.g || cache[ 2 ] !== v.b ) {
 
@@ -258,6 +273,9 @@ class UniformParent {
 		const cache = this.cache;
 
 		if ( v.x !== undefined ) {
+
+			console.log('WebGlUniforms setValueV4f 1');
+
 
 			if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z || cache[ 3 ] !== v.w ) {
 
@@ -499,6 +517,53 @@ class UniformParent {
 
 	getSingularSetter( type ) {
 
+		console.log('                   getSingularSetter ' + type)
+
+
+		switch ( type ) {
+
+			case 0x1406: {console.log(1); break}// FLOAT
+			case 0x8b50: {console.log(2); break} // _VEC2
+			case 0x8b51: {console.log(3); break}  // _VEC3
+			case 0x8b52: {console.log(4); break} // _VEC4
+
+			case 0x8b5a: {console.log(5); break} // _MAT2
+			case 0x8b5b: {console.log(6); break} // _MAT3
+			case 0x8b5c: {console.log(7); break} // _MAT4
+
+			case 0x1404: case 0x8b56: {console.log(8); break} // INT, BOOL
+			case 0x8b53: case 0x8b57: {console.log(9); break} // _VEC2
+			case 0x8b54: case 0x8b58: {console.log(10); break} // _VEC3
+			case 0x8b55: case 0x8b59: {console.log(11); break} // _VEC4
+
+			case 0x1405: {console.log(1); break}// UINT
+
+			case 0x8b5e: // SAMPLER_2D
+			case 0x8d66: // SAMPLER_EXTERNAL_OES
+			case 0x8dca: // INT_SAMPLER_2D
+			case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+			case 0x8b62: // SAMPLER_2D_SHADOW
+				{console.log(11); break}
+
+			case 0x8b5f: // SAMPLER_3D
+			case 0x8dcb: // INT_SAMPLER_3D
+			case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
+				{console.log(11); break}
+
+			case 0x8b60: // SAMPLER_CUBE
+			case 0x8dcc: // INT_SAMPLER_CUBE
+			case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
+			case 0x8dc5: // SAMPLER_CUBE_SHADOW
+				{console.log(12); break}
+
+			case 0x8dc1: // SAMPLER_2D_ARRAY
+			case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+			case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+			case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
+				{console.log(13); break}
+
+		}
+
 		switch ( type ) {
 
 			case 0x1406: return this.setValueV1f; // FLOAT
@@ -668,6 +733,9 @@ class UniformParent {
 
 	getPureArraySetter( type ) {
 
+		console.log('WebGlUniforms getPureArraySetter ' + JSON.stringify(type));
+
+
 		switch ( type ) {
 
 			case 0x1406: return this.setValueV1fArray; // FLOAT
@@ -710,10 +778,15 @@ class SingleUniform extends UniformParent {
 
 		super(id, activeInfo, addr);
 
+
+		console.log('SingleUniform activeInfo ' + JSON.stringify(activeInfo))
+
 		this.id = id;
 		this.addr = addr;
 		this.cache = [];
 		this.setValue = this.getSingularSetter( activeInfo.type );
+
+		console.log('SingleUniform after setValue ' + this.setValue)
 
 		// this.path = activeInfo.name; // DEBUG
 
@@ -882,6 +955,9 @@ class WebGLUniforms {
 
 		const u = this.map[ name ];
 
+		console.log('WebGlUniforms setValue  1 ' + (u !== undefined));
+
+
 		if ( u !== undefined ) u.setValue( gl, value, textures );
 
 	}
@@ -889,6 +965,9 @@ class WebGLUniforms {
 	setOptional( gl, object, name ) {
 
 		const v = object[ name ];
+
+		console.log('WebGlUniforms setValue  2 ');
+
 
 		if ( v !== undefined ) this.setValue( gl, name, v );
 
@@ -899,12 +978,19 @@ class WebGLUniforms {
 
 WebGLUniforms.upload = function ( gl, seq, values, textures ) {
 
+	console.log('WebGLUniforms.upload ' + JSON.stringify(seq))
+
 	for ( let i = 0, n = seq.length; i !== n; ++ i ) {
 
 		const u = seq[ i ],
 			v = values[ u.id ];
 
+		console.log('WebGLUniforms.upload needsUpdate ?' +  (v.needsUpdate !== false))
+
+
 		if ( v.needsUpdate !== false ) {
+			
+			console.log('U ' +  u + ' -> ' + JSON.stringify(u) + ' -> ' +  JSON.stringify(v));
 
 			// note: always updating when .needsUpdate is undefined
 			u.setValue( gl, v.value, textures );

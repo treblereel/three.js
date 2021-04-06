@@ -52,7 +52,7 @@ function onWindowResize() {
 
 function animate() {
 
-	requestAnimationFrame( animate );
+	//requestAnimationFrame( animate );
 
 	mesh.rotation.x += 0.005;
 	mesh.rotation.y += 0.01;

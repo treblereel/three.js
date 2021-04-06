@@ -45,6 +45,7 @@ class TextureLoader extends Loader {
 			texture.needsUpdate = true;
 
 			if ( onLoad !== undefined ) {
+				console.log('TextureLoader 1')
 
 				onLoad( texture );
 

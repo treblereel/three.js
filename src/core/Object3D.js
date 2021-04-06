@@ -455,6 +455,7 @@ class Object3D extends EventDispatcher {
 			const object = child.getObjectByProperty( name, value );
 
 			if ( object !== undefined ) {
+				console.log('Object3D 1')
 
 				return object;
 
@@ -748,7 +749,8 @@ class Object3D extends EventDispatcher {
 			const parameters = this.geometry.parameters;
 
 			if ( parameters !== undefined && parameters.shapes !== undefined ) {
-
+				console.log('Object3D 2')
+	
 				const shapes = parameters.shapes;
 
 				if ( Array.isArray( shapes ) ) {
@@ -777,6 +779,7 @@ class Object3D extends EventDispatcher {
 			object.bindMatrix = (/** @type {{ bindMatrix : Matrix4}} */(this)).bindMatrix.toArray();
 
 			if ( ( /** @type {{ skeleton : Object}}*/ (this)).skeleton !== undefined ) {
+				console.log('Object3D 2')
 
 				serialize( meta.skeletons, ( /** @type {{ skeleton : Object}} */ (this)).skeleton );
 
@@ -788,6 +791,7 @@ class Object3D extends EventDispatcher {
 
 		if ( ( /** @type {{ material : Object}} */ (this)).material !== undefined ) {
 			if ( Array.isArray( ( /** @type {{ material : Object}} */ (this)).material ) ) {
+				console.log('Object3D 3')
 
 				const uuids = [];
 

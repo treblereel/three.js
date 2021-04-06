@@ -38,21 +38,21 @@ class WebGLPrograms {
 
 		/** @const */
 		this.shaderIDs = {
-			MeshDepthMaterial: 'depth',
-			MeshDistanceMaterial: 'distanceRGBA',
-			MeshNormalMaterial: 'normal',
-			MeshBasicMaterial: 'basic',
-			MeshLambertMaterial: 'lambert',
-			MeshPhongMaterial: 'phong',
-			MeshToonMaterial: 'toon',
-			MeshStandardMaterial: 'physical',
-			MeshPhysicalMaterial: 'physical',
-			MeshMatcapMaterial: 'matcap',
-			LineBasicMaterial: 'basic',
-			LineDashedMaterial: 'dashed',
-			PointsMaterial: 'points',
-			ShadowMaterial: 'shadow',
-			SpriteMaterial: 'sprite'
+			'MeshDepthMaterial': 'depth',
+			'MeshDistanceMaterial': 'distanceRGBA',
+			'MeshNormalMaterial': 'normal',
+			'MeshBasicMaterial': 'basic',
+			'MeshLambertMaterial': 'lambert',
+			'MeshPhongMaterial': 'phong',
+			'MeshToonMaterial': 'toon',
+			'MeshStandardMaterial': 'physical',
+			'MeshPhysicalMaterial': 'physical',
+			'MeshMatcapMaterial': 'matcap',
+			'LineBasicMaterial': 'basic',
+			'LineDashedMaterial': 'dashed',
+			'PointsMaterial': 'points',
+			'ShadowMaterial': 'shadow',
+			'SpriteMaterial': 'sprite'
 		};
 
 		/** @const */
@@ -389,6 +389,8 @@ class WebGLPrograms {
 		}
 
 		if ( program === undefined ) {
+
+			//console.log('before new WebGLProgram ' + parameters.vertexShader )
 
 			program = new WebGLProgram( this.renderer, cacheKey, parameters, this.bindingStates );
 			this.programs.push( program );

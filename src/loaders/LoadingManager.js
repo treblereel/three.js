@@ -31,7 +31,8 @@ class LoadingManager {
 		if ( this.isLoading === false ) {
 
 			if ( this.onStart !== undefined ) {
-
+				console.log('LoadingManager 1')
+	
 				this.onStart( url, this.itemsLoaded, this.itemsTotal );
 
 			}
@@ -47,6 +48,7 @@ class LoadingManager {
 		this.itemsLoaded ++;
 
 		if ( this.onProgress !== undefined ) {
+			console.log('LoadingManager 2')
 
 			this.onProgress( url, this.itemsLoaded, this.itemsTotal );
 
@@ -57,7 +59,8 @@ class LoadingManager {
 			this.isLoading = false;
 
 			if ( this.onLoad !== undefined ) {
-
+				console.log('LoadingManager 3')
+	
 				this.onLoad();
 
 			}
@@ -69,6 +72,7 @@ class LoadingManager {
 	itemError( url ) {
 
 		if ( this.onError !== undefined ) {
+			console.log('LoadingManager 4')
 
 			this.onError( url );
 

@@ -18,6 +18,11 @@ class CubeTexture extends Texture {
 	 */
 	constructor( images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding ) {
 
+		console.log('CubeTexture constructor images ' + (images !== undefined ));
+		console.log('CubeTexture constructor mapping ' + (mapping !== undefined ));
+		console.log('CubeTexture constructor format ' + (format !== undefined ));
+
+
 		images = images !== undefined ? images : [];
 		mapping = mapping !== undefined ? mapping : CubeReflectionMapping;
 		format = format !== undefined ? format : RGBFormat;

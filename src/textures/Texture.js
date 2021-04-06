@@ -134,7 +134,8 @@ class Texture extends EventDispatcher {
 		const isRootObject = ( meta === undefined || typeof meta === 'string' );
 
 		if ( ! isRootObject && meta.textures[ this.uuid ] !== undefined ) {
-
+			console.log('Texture toJSON' );
+	
 			return meta.textures[ this.uuid ];
 
 		}
@@ -175,6 +176,8 @@ class Texture extends EventDispatcher {
 		};
 
 		if ( this.image !== undefined ) {
+
+			console.log('Texture IMAGE' );
 
 			// TODO: Move to THREE.Image
 
