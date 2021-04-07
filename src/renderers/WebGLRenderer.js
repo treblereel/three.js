@@ -1532,6 +1532,8 @@ class WebGLRenderer {
 		}
 
 		const progUniforms = materialProperties.program.getUniforms();
+
+		//TODO !!!!	
 		const uniformsList = WebGLUniforms.seqWithValue( progUniforms.seq, uniforms );
 
 		materialProperties.uniformsList = uniformsList;

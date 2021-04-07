@@ -217,11 +217,6 @@ class UniformParent {
 	}
 
 	setValueV3f( gl, v ) {
-
-		if(true) {
-			throw new Error();
-		}
-
 		console.log('WebGlUniforms pre ' + JSON.stringify(v))
 
 		const cache = this.cache;
@@ -1008,7 +1003,13 @@ WebGLUniforms.seqWithValue = function ( seq, values ) {
 	for ( let i = 0, n = seq.length; i !== n; ++ i ) {
 
 		const u = seq[ i ];
-		if ( u.id in values ) r.push( u );
+
+		console.log('?? ' + JSON.stringify(values))
+
+		if ( u.id in values ) {
+			console.log("EE " + u.id)
+			r.push( u );
+		}
 
 	}
 

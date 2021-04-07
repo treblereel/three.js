@@ -307,5 +307,21 @@ ShaderLib.physical = {
 
 };
 
+	/**
+	 * 
+	 * @param {string} name 
+	 */
+ 	ShaderLib.get = function( name ) {
+			
+		console.log('GET ' + name);
+
+		switch(name) {
+			case 'basic' : return ShaderLib.basic; 
+		}
+
+		throw new Error('Not able to find ShaderLib : ' + name);
+
+	}
+
 
 export { ShaderLib };

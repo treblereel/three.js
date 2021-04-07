@@ -162,8 +162,8 @@ class WebGLPrograms {
 		let vertexShader, fragmentShader;
 
 		if ( shaderID ) {
-
-			const shader = ShaderLib[ shaderID ];
+			console.log('GET ' + shaderID)
+			const shader = ShaderLib.get(shaderID);
 
 			vertexShader = shader.vertexShader;
 			fragmentShader = shader.fragmentShader;
@@ -354,8 +354,8 @@ class WebGLPrograms {
 		let uniforms;
 
 		if ( shaderID ) {
-
-			const shader = ShaderLib[ shaderID ];
+			console.log('GET ' + shaderID)
+			const shader = ShaderLib.get(shaderID);
 			uniforms = UniformsUtils.clone( shader.uniforms );
 
 		} else {

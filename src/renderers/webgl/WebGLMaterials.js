@@ -100,6 +100,8 @@ class WebGLMaterials {
 		} else if ( material.isShadowMaterial ) {
 
 			uniforms.color.value.copy( material.color );
+
+			console.log("1")
 			uniforms.opacity.value = material.opacity;
 
 		} else if ( material.isShaderMaterial ) {
@@ -111,6 +113,7 @@ class WebGLMaterials {
 	}
 
 	refreshUniformsCommon( uniforms, material ) {
+		console.log("2 " + JSON.stringify(uniforms))
 
 		uniforms.opacity.value = material.opacity;
 
@@ -304,6 +307,8 @@ class WebGLMaterials {
 	refreshUniformsLine( uniforms, material ) {
 
 		uniforms.diffuse.value.copy( material.color );
+		console.log("3")
+
 		uniforms.opacity.value = material.opacity;
 
 	}
@@ -319,6 +324,8 @@ class WebGLMaterials {
 	refreshUniformsPoints( uniforms, material, pixelRatio, height ) {
 
 		uniforms.diffuse.value.copy( material.color );
+		console.log("4")
+
 		uniforms.opacity.value = material.opacity;
 		uniforms.size.value = material.size * pixelRatio;
 		uniforms.scale.value = height * 0.5;
@@ -368,6 +375,8 @@ class WebGLMaterials {
 	refreshUniformsSprites( uniforms, material ) {
 
 		uniforms.diffuse.value.copy( material.color );
+		console.log("5")
+
 		uniforms.opacity.value = material.opacity;
 		uniforms.rotation.value = material.rotation;
 

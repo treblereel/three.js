@@ -63,8 +63,8 @@ export function cloneUniforms( src ) {
 
 export function mergeUniforms( uniforms ) {
 
-/* 	console.log('mergeUniforms before ' + JSON.stringify(uniforms))
- */
+ 	console.log('mergeUniforms before ' + JSON.stringify(uniforms))
+ 
 
 	const merged = {};
 
@@ -80,8 +80,8 @@ export function mergeUniforms( uniforms ) {
 
 	}
 
-/* 	console.log('mergeUniforms return ' + JSON.stringify(merged))
- */
+ 	console.log('mergeUniforms return ' + JSON.stringify(merged))
+ 
 
 	return merged;
 
